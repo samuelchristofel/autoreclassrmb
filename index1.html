@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avian OEE Kaleng - Reclass RMB Prototype</title>
+  <style>
+    :root {
+      --bg: #f2f5f7;
+      --surface: #ffffff;
+      --surface-soft: #f8fafb;
+      --primary: #0b7f60;
+      --primary-dark: #066548;
+      --success: #2ea05c;
+      --success-soft: #e4f3ec;
+      --danger: #e03b3b;
+      --danger-soft: #fde6e6;
+      --info: #2d7dc1;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: linear-gradient(180deg, #124f42 0%, #0d3f33 100%);
+      color: #edf2f7;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+      gap: 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.16);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .nav-section .nav-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 8px;
+    }
+    .nav-link,
+    .submenu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: #e8f7f1;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover,
+    .submenu-link:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateX(2px);
+    }
+    .nav-link.active,
+    .submenu-link.active {
+      background: rgba(255,255,255,0.15);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.16);
+    }
+    .submenu {
+      display: grid;
+      padding-left: 26px;
+      gap: 6px;
+    }
+    .main-content {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+    .header-row h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
+    .header-row .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: #eef9f5;
+      color: #0f5d44;
+      border-radius: 999px;
+      font-size: 14px;
+      border: 1px solid rgba(14, 81, 60, 0.12);
+    }
+    .content-card {
+      background: var(--surface);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .filter-grid .field {
+      display: grid;
+      gap: 8px;
+    }
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+    }
+    .field input:focus,
+    .field select:focus {
+      border-color: rgba(11, 127, 96, 0.5);
+      box-shadow: 0 0 0 3px rgba(11, 127, 96, 0.1);
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+    }
+    .controls button,
+    .top-actions button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-weight: 700;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .controls button:hover,
+    .top-actions button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 20px rgba(15, 23, 42, 0.12);
+    }
+    .btn-primary {
+      background: var(--primary);
+    }
+    .btn-secondary {
+      background: #30475e;
+    }
+    .btn-outline {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.03);
+    }
+    .table-card {
+      overflow-x: auto;
+      background: var(--surface);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 920px;
+      font-size: 14px;
+    }
+    thead {
+      background: #f8fafb;
+    }
+    th, td {
+      padding: 16px 14px;
+      text-align: left;
+      vertical-align: middle;
+      border-bottom: 1px solid #edf2f7;
+    }
+    th {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    td {
+      color: #1f2937;
+    }
+    tbody tr:hover {
+      background: rgba(11, 127, 96, 0.04);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .badge.success { background: var(--success-soft); color: var(--success); }
+    .badge.danger { background: var(--danger-soft); color: var(--danger); }
+    .badge.info { background: rgba(45, 125, 193, 0.12); color: var(--info); }
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .action-btn {
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      background: #fff;
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s ease;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
+    }
+    .action-btn.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 16, 26, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 20;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal {
+      width: min(800px, 100%);
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 35px 80px rgba(15, 23, 42, 0.18);
+    }
+    .modal h2 {
+      margin: 0 0 20px;
+      font-size: 22px;
+    }
+    .modal-form {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .modal-form .field {
+      margin: 0;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .modal .btn-cancel {
+      background: #f3f4f6;
+      color: var(--text);
+    }
+    .modal .btn-save {
+      background: var(--primary);
+    }
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px;
+      }
+      .main-content {
+        padding: 18px;
+      }
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+      .controls {
+        justify-content: stretch;
+      }
+      .modal-form {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">A</div>
+        <div>
+          <div style="font-size:13px;opacity:.7;">Avian</div>
+          <div class="brand-title">PPIC</div>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Navigation</div>
+        <a href="#" class="nav-link">Home</a>
+        <div class="nav-link active">Metal Admin</div>
+        <div class="submenu">
+          <a href="#" class="submenu-link active">Reclass RMB</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">OEE</div>
+        <a href="#" class="nav-link">OEE</a>
+        <a href="#" class="nav-link">OEE IOT</a>
+        <a href="#" class="nav-link">OEE Manual</a>
+        <a href="#" class="nav-link">Koreksi Downtime</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <section class="header-row">
+        <div>
+          <div style="font-size:12px;color:var(--muted);text-transform: uppercase;letter-spacing:0.18em;">Dashboard</div>
+          <h1>Avian OEE Kaleng</h1>
+        </div>
+        <div class="header-right">
+          <div class="header-pill">Reclass RMB Active</div>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <div class="section-title">
+          <span>Filter Reclass Data</span>
+          <div class="top-actions controls">
+            <button class="btn-outline" id="refreshBtn">Refresh</button>
+            <button class="btn-primary" id="addReclassBtn">+ Add Reclass</button>
+          </div>
+        </div>
+        <div class="filter-grid">
+          <div class="field">
+            <label for="dateFilter">Date Filter</label>
+            <input type="date" id="dateFilter" />
+          </div>
+          <div class="field">
+            <label for="categoryFilter">Item Category</label>
+            <select id="categoryFilter">
+              <option value="">All Categories</option>
+              <option>Assembling</option>
+              <option>Komponen</option>
+              <option>Cutting</option>
+              <option>Printing sheet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="binFilter">New Bin Code</label>
+            <select id="binFilter">
+              <option value="">All Bin Codes</option>
+              <option>KL-AAP-RMB</option>
+              <option>GT-AAP-RMB</option>
+              <option>TD-AAP-RMB</option>
+            </select>
+          </div>
+          <div class="field" style="align-self:end;display:flex;justify-content:flex-end;">
+            <div class="controls" style="justify-content:flex-end;flex-wrap:wrap;">
+              <button class="btn-secondary" id="filterBtn">Filter</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-weight:700;font-size:16px;">Reclass Data Table</div>
+          <div style="color: var(--muted);font-size:14px;">Showing latest activity</div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table id="reclassTable">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Document Number</th>
+                <th>Date & Time</th>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Qty</th>
+                <th>New Bin Code</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h2 id="modalTitle">Add Reclass Record</h2>
+      <div class="modal-form">
+        <div class="field">
+          <label for="modalDocumentNo">Document Number</label>
+          <input id="modalDocumentNo" type="text" placeholder="DOC/RMB/2026/0006" />
+        </div>
+        <div class="field">
+          <label for="modalItemCode">Item Code</label>
+          <input id="modalItemCode" type="text" placeholder="02KM-KAVSY001LB4" />
+        </div>
+        <div class="field">
+          <label for="modalItemName">Item Name</label>
+          <input id="modalItemName" type="text" placeholder="KL AVIAN H G E 0.9 LT AW-03" />
+        </div>
+        <div class="field">
+          <label for="modalCategory">Category</label>
+          <select id="modalCategory">
+            <option>Assembling</option>
+            <option>Komponen</option>
+            <option>Cutting</option>
+            <option>Printing sheet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="modalQty">Qty</label>
+          <input id="modalQty" type="number" min="1" placeholder="3780" />
+        </div>
+        <div class="field">
+          <label for="modalBinCode">New Bin Code</label>
+          <select id="modalBinCode">
+            <option>KL-AAP-RMB</option>
+            <option>GT-AAP-RMB</option>
+            <option>TD-AAP-RMB</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel action-btn" id="cancelModal">Cancel</button>
+        <button class="btn-save action-btn" id="saveModal">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const today = new Date();
+    const formatDateTime = (dateObj) => {
+      const date = new Date(dateObj);
+      const options = { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', hour12:false };
+      return date.toLocaleString('en-GB', options).replace(',', ' ·');
+    };
+    const formatDateOnly = (dateObj) => {
+      const date = new Date(dateObj);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const mockData = [
+      {
+        document: 'DOC/RMB/2026/0001',
+        datetime: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9, 15),
+        itemCode: '02KM-KAVSY001LB4',
+        itemName: 'KL AVIAN H G E 0.9 LT AW-03',
+        category: 'Assembling',
+        qty: '3.780',
+        binCode: 'KL-AAP-RMB',
+        status: 'Sync Otomatis Sukses'
+      },
+      {
+        document: 'DOC/RMB/2026/0002',
+        datetime: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 11, 42),
+        itemCode: '03PR-PNTY002TX1',
+        itemName: 'Printing Sheet Silver 0.45',
+        category: 'Printing sheet',
+        qty: '1.250',
+        binCode: 'GT-AAP-RMB',
+        status: 'Resync Sukses'
+      },
+      {
+        document: 'DOC/RMB/2026/0003',
+        datetime: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2, 15, 22),
+        itemCode: '05CT-CLTH005LM2',
+        itemName: 'Cutting Plate Seri X',
+        category: 'Cutting',
+        qty: '2.480',
+        binCode: 'TD-AAP-RMB',
+        status: 'Sync Otomatis Gagal'
+      },
+      {
+        document: 'DOC/RMB/2026/0004',
+        datetime: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2, 8, 7),
+        itemCode: '01KM-KCMP007PN8',
+        itemName: 'Komponen Roller Set',
+        category: 'Komponen',
+        qty: '6.120',
+        binCode: 'KL-AAP-RMB',
+        status: 'Sync Otomatis Sukses'
+      },
+      {
+        document: 'DOC/RMB/2026/0005',
+        datetime: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2, 13, 35),
+        itemCode: '04AS-ASMB009XX4',
+        itemName: 'Assembly Kit Rangka',
+        category: 'Assembling',
+        qty: '4.950',
+        binCode: 'GT-AAP-RMB',
+        status: 'Resync Sukses'
+      }
+    ];
+
+    const tableBody = document.querySelector('#reclassTable tbody');
+    const dateFilter = document.querySelector('#dateFilter');
+    const categoryFilter = document.querySelector('#categoryFilter');
+    const binFilter = document.querySelector('#binFilter');
+    const filterBtn = document.querySelector('#filterBtn');
+    const refreshBtn = document.querySelector('#refreshBtn');
+    const addReclassBtn = document.querySelector('#addReclassBtn');
+    const modalBackdrop = document.querySelector('#modalBackdrop');
+    const cancelModal = document.querySelector('#cancelModal');
+    const saveModal = document.querySelector('#saveModal');
+    const modalDocumentNo = document.querySelector('#modalDocumentNo');
+    const modalItemCode = document.querySelector('#modalItemCode');
+    const modalItemName = document.querySelector('#modalItemName');
+    const modalCategory = document.querySelector('#modalCategory');
+    const modalQty = document.querySelector('#modalQty');
+    const modalBinCode = document.querySelector('#modalBinCode');
+
+    const renderRows = (rows) => {
+      tableBody.innerHTML = '';
+      if (!rows.length) {
+        tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:28px 14px;color:var(--muted);">No data available in table</td></tr>';
+        return;
+      }
+      rows.forEach((row, index) => {
+        const rowDate = new Date(formatDateOnly(row.datetime));
+        const diffDays = Math.floor((today - rowDate) / (1000 * 60 * 60 * 24));
+        const hideEditDelete = diffDays > 1;
+        const statusClass = row.status.includes('Gagal') ? 'danger' : row.status.includes('Resync') ? 'info' : 'success';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${row.document}</td>
+          <td>${formatDateTime(row.datetime)}</td>
+          <td>${row.itemCode}</td>
+          <td>${row.itemName}</td>
+          <td>${row.category}</td>
+          <td>${row.qty}</td>
+          <td>${row.binCode}</td>
+          <td><span class="badge ${statusClass}">${row.status}</span></td>
+          <td>
+            <div class="action-group">
+              <button class="action-btn" onclick="alert('View ${row.document}')">👁️ View</button>
+              <button class="action-btn" onclick="alert('Resync ${row.document}')">🔄 Resync</button>
+              <button class="action-btn ${hideEditDelete ? 'disabled' : ''}" ${hideEditDelete ? 'disabled' : ''} onclick="alert('Edit ${row.document}')">✏️ Edit</button>
+              <button class="action-btn ${hideEditDelete ? 'disabled' : ''}" ${hideEditDelete ? 'disabled' : ''} onclick="alert('Delete ${row.document}')">🗑️ Delete</button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    };
+
+    const applyFilters = () => {
+      let filtered = [...mockData];
+      const selectedDate = dateFilter.value;
+      const selectedCategory = categoryFilter.value;
+      const selectedBin = binFilter.value;
+
+      if (selectedDate) {
+        filtered = filtered.filter(item => formatDateOnly(item.datetime) === selectedDate);
+      }
+      if (selectedCategory) {
+        filtered = filtered.filter(item => item.category === selectedCategory);
+      }
+      if (selectedBin) {
+        filtered = filtered.filter(item => item.binCode === selectedBin);
+      }
+
+      renderRows(filtered);
+    };
+
+    const resetFilters = () => {
+      dateFilter.value = '';
+      categoryFilter.value = '';
+      binFilter.value = '';
+      renderRows(mockData);
+    };
+
+    const openModal = () => {
+      modalBackdrop.classList.add('active');
+      modalDocumentNo.value = `DOC/RMB/2026/000${mockData.length + 1}`;
+      modalItemCode.value = '';
+      modalItemName.value = '';
+      modalCategory.value = 'Assembling';
+      modalQty.value = '';
+      modalBinCode.value = 'KL-AAP-RMB';
+    };
+
+    const closeModal = () => {
+      modalBackdrop.classList.remove('active');
+    };
+
+    const saveNewRecord = () => {
+      const newRecord = {
+        document: modalDocumentNo.value || `DOC/RMB/2026/000${mockData.length + 1}`,
+        datetime: new Date(),
+        itemCode: modalItemCode.value || 'UNKNOWN',
+        itemName: modalItemName.value || 'Unknown item',
+        category: modalCategory.value,
+        qty: modalQty.value ? Number(modalQty.value).toLocaleString('id-ID', { minimumFractionDigits: 0 }) : '0',
+        binCode: modalBinCode.value,
+        status: 'Sync Otomatis Sukses'
+      };
+      mockData.unshift(newRecord);
+      closeModal();
+      resetFilters();
+    };
+
+    filterBtn.addEventListener('click', applyFilters);
+    refreshBtn.addEventListener('click', resetFilters);
+    addReclassBtn.addEventListener('click', openModal);
+    cancelModal.addEventListener('click', closeModal);
+    saveModal.addEventListener('click', saveNewRecord);
+    modalBackdrop.addEventListener('click', (event) => {
+      if (event.target === modalBackdrop) closeModal();
+    });
+
+    resetFilters();
+  </script>
+</body>
+</html>
