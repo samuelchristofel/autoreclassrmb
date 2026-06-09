@@ -36,11 +36,11 @@
       min-height: 100%;
       background: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
+      overflow-x: auto;
     }
 
     body {
-      overflow-x: hidden;
+      overflow-x: auto;
     }
 
     button,
@@ -314,6 +314,11 @@
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       min-width: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .card-head {
@@ -1339,13 +1344,23 @@
         <div class="nav-group">
           <div class="nav-group-title">Metal Admin</div>
           <div class="subnav">
-            <button class="nav-subitem active" type="button">
+            <button class="nav-subitem active" id="navReclass" type="button">
               <span class="nav-icon">
                 <svg class="icon svg-stroke" viewBox="0 0 24 24">
                   <path d="M5 7h14M5 12h14M5 17h14"/>
                 </svg>
               </span>
               <span class="nav-text">Reclass RMB</span>
+            </button>
+            <button class="nav-subitem" id="navMaster" type="button">
+              <span class="nav-icon">
+                <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                  <path d="M4 6h16M4 10h16M4 14h8M4 18h8"/>
+                  <circle cx="17" cy="17" r="3"/>
+                  <path d="m21 21-1.5-1.5"/>
+                </svg>
+              </span>
+              <span class="nav-text">Master Data</span>
             </button>
           </div>
         </div>
@@ -1588,7 +1603,122 @@
             </div>
           </section>
         </section>
+
+        <!-- ═══════════ MASTER DATA VIEW ═══════════ -->
+        <section id="masterView" class="hidden" style="padding:20px 24px 32px;">
+          <div class="page-header">
+            <div class="page-title">Master Data Reclass RMB</div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">List Master Data</div>
+              <div class="toolbar">
+                <button class="tool-btn primary" id="masterAddBtn" type="button" title="Tambah master data">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M12 5v14M5 12h14"/></svg>
+                  Add
+                </button>
+              </div>
+            </div>
+
+            <div class="table-tools">
+              <div class="show-entries">
+                Show
+                <select id="masterPageSizeSelect">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                entries
+              </div>
+              <div class="search-box">
+                Search:
+                <input id="masterQuickSearch" class="search-input" type="text" placeholder="Cari item no, deskripsi..." />
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width:90px;">Action</th>
+                    <th style="width:138px;">Item No.</th>
+                    <th style="width:220px;">Item Description</th>
+                    <th style="width:88px;">Base Qty</th>
+                    <th style="width:52px;">Layer</th>
+                    <th style="width:110px;">Location Code</th>
+                    <th style="width:120px;">Bin Code</th>
+                    <th style="width:110px;">New Location Code</th>
+                    <th style="width:108px;">New Bin Code</th>
+                  </tr>
+                </thead>
+                <tbody id="masterTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-footer">
+              <div id="masterEntrySummary">Showing 0 to 0 of 0 entries</div>
+              <div class="pagination">
+                <button class="page-btn" id="masterPrevBtn" type="button">Previous</button>
+                <button class="page-btn" id="masterNextBtn" type="button">Next</button>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+    </div>
+  </div>
+
+  <!-- ═══════════ MASTER DATA MODAL ═══════════ -->
+  <div class="modal-backdrop hidden" id="masterModal">
+    <div class="modal" style="max-width:520px;width:100%;">
+      <div class="modal-header">
+        <div class="modal-title" id="masterModalTitle">Add Master Data</div>
+        <button class="modal-close" id="masterModalClose" type="button" aria-label="Close">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;padding:20px 24px;">
+          <div>
+            <div class="form-label required" style="margin-bottom:4px;">Item No.</div>
+            <input id="mfItemNo" class="form-input" type="text" placeholder="02KM-KAVSY025C" />
+          </div>
+          <div>
+            <div class="form-label required" style="margin-bottom:4px;">Layer per Palet</div>
+            <input id="mfLayer" class="form-input" type="text" inputmode="decimal" placeholder="16" />
+          </div>
+          <div style="grid-column:1/-1;">
+            <div class="form-label required" style="margin-bottom:4px;">Item Description</div>
+            <input id="mfItemDesc" class="form-input" type="text" placeholder="Deskripsi item material" />
+          </div>
+          <div>
+            <div class="form-label required" style="margin-bottom:4px;">Base Quantity</div>
+            <input id="mfBaseQty" class="form-input" type="text" inputmode="decimal" placeholder="41600" />
+          </div>
+          <div>
+            <div class="form-label required" style="margin-bottom:4px;">New Bin Code</div>
+            <input id="mfNewBinCode" class="form-input" type="text" placeholder="KL-AAP-RMB" />
+          </div>
+          <div>
+            <div class="form-label required" style="margin-bottom:4px;">Location Code</div>
+            <input id="mfLocationCode" class="form-input" type="text" placeholder="AAP-RMK-PI" />
+          </div>
+          <div>
+            <div class="form-label required" style="margin-bottom:4px;">Bin Code</div>
+            <input id="mfBinCode" class="form-input" type="text" placeholder="KLG-AAP-RMK-PI" />
+          </div>
+          <div style="grid-column:1/-1;">
+            <div class="form-label" style="margin-bottom:4px;">New Location Code</div>
+            <input id="mfNewLocationCode" class="form-input readonly-input" type="text" value="AAP-RMB" readonly />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="foot-btn" id="masterModalCancelBtn" type="button">Close</button>
+        <button class="foot-btn primary" id="masterModalSaveBtn" type="button">Save</button>
+      </div>
     </div>
   </div>
 
@@ -3594,6 +3724,229 @@
       persistAndRender();
       showToast("Sync All", syncedCount + " data berhasil di-sync.");
     });
+
+    // ═══════════ MASTER DATA LOGIC ═══════════
+
+    const masterStorageKey = "avian-oee-master-data-overrides";
+    let masterRows = loadMasterRows();
+    let masterFilteredRows = null;
+    let masterCurrentPage = 1;
+    let masterPageSize = 10;
+    let masterEditingItemNo = null; // null = add mode, string = edit mode
+
+    function loadMasterRows() {
+      try {
+        const raw = localStorage.getItem(masterStorageKey);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+      // Fall back to masterData from Excel
+      return masterData.map(m => ({ ...m }));
+    }
+
+    function saveMasterRows() {
+      localStorage.setItem(masterStorageKey, JSON.stringify(masterRows));
+    }
+
+    function getMasterPageRows() {
+      const source = masterFilteredRows !== null ? masterFilteredRows : masterRows;
+      const start = (masterCurrentPage - 1) * masterPageSize;
+      return { pageRows: source.slice(start, start + masterPageSize), total: source.length };
+    }
+
+    function renderMasterTable() {
+      const { pageRows, total } = getMasterPageRows();
+      const source = masterFilteredRows !== null ? masterFilteredRows : masterRows;
+      const start = (masterCurrentPage - 1) * masterPageSize;
+      const end = Math.min(start + masterPageSize, total);
+
+      masterTableBody.innerHTML = pageRows.length === 0
+        ? '<tr><td colspan="9" style="text-align:center;color:#6b7680;font-size:14px;padding:24px 10px;">No data available in table</td></tr>'
+        : pageRows.map(row => `
+          <tr>
+            <td class="action-cell">
+              <div class="action-group">
+                <button class="action-chip edit" type="button" data-master-action="edit" data-item-no="${row.itemNo}" aria-label="Edit" title="Edit">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M3 17.25V21h3.75L19 8.75l-3.75-3.75L3 17.25z"/>
+                    <path d="M14.25 5 19 9.75"/>
+                  </svg>
+                </button>
+                <button class="action-chip danger" type="button" data-master-action="delete" data-item-no="${row.itemNo}" aria-label="Delete" title="Delete">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+            <td>${row.itemNo}</td>
+            <td>${row.itemDesc}</td>
+            <td>${Number(row.baseQuantity).toLocaleString("id-ID")}</td>
+            <td>${row.layer}</td>
+            <td>${row.locationCode}</td>
+            <td>${row.binCode}</td>
+            <td>${row.newLocationCode}</td>
+            <td>${row.newBinCode}</td>
+          </tr>`).join("");
+
+      masterEntrySummary.textContent = total === 0
+        ? "Showing 0 to 0 of 0 entries"
+        : `Showing ${start + 1} to ${end} of ${total} entries`;
+
+      masterPrevBtn.disabled = masterCurrentPage <= 1;
+      masterNextBtn.disabled = end >= total;
+    }
+
+    function applyMasterFilter() {
+      const keyword = masterQuickSearch.value.trim().toLowerCase();
+      if (!keyword) {
+        masterFilteredRows = null;
+      } else {
+        masterFilteredRows = masterRows.filter(row =>
+          [row.itemNo, row.itemDesc, row.binCode, row.newBinCode, row.locationCode]
+            .join(" ").toLowerCase().includes(keyword)
+        );
+      }
+      masterCurrentPage = 1;
+      renderMasterTable();
+    }
+
+    function openMasterModal(itemNo = null) {
+      masterEditingItemNo = itemNo;
+      masterModalTitle.textContent = itemNo ? "Edit Master Data" : "Add Master Data";
+      if (itemNo) {
+        const row = masterRows.find(r => r.itemNo === itemNo);
+        if (row) {
+          mfItemNo.value = row.itemNo;
+          mfItemNo.readOnly = true;
+          mfItemNo.classList.add("readonly-input");
+          mfItemDesc.value = row.itemDesc;
+          mfBaseQty.value = row.baseQuantity;
+          mfLayer.value = row.layer;
+          mfLocationCode.value = row.locationCode;
+          mfBinCode.value = row.binCode;
+          mfNewLocationCode.value = row.newLocationCode;
+          mfNewBinCode.value = row.newBinCode;
+        }
+      } else {
+        mfItemNo.value = ""; mfItemNo.readOnly = false; mfItemNo.classList.remove("readonly-input");
+        mfItemDesc.value = ""; mfBaseQty.value = ""; mfLayer.value = "";
+        mfLocationCode.value = ""; mfBinCode.value = "";
+        mfNewLocationCode.value = "AAP-RMB"; mfNewBinCode.value = "";
+      }
+      masterModal.classList.remove("hidden");
+    }
+
+    function closeMasterModal() {
+      masterModal.classList.add("hidden");
+    }
+
+    function saveMasterModal() {
+      const itemNo = mfItemNo.value.trim();
+      const itemDesc = mfItemDesc.value.trim();
+      const baseQty = parseFloat(mfBaseQty.value) || 0;
+      const layer = parseFloat(mfLayer.value) || 0;
+      const locationCode = mfLocationCode.value.trim();
+      const binCode = mfBinCode.value.trim();
+      const newLocationCode = mfNewLocationCode.value.trim();
+      const newBinCode = mfNewBinCode.value.trim();
+
+      if (!itemNo || !itemDesc || !baseQty || !layer || !locationCode || !binCode || !newBinCode) {
+        alert("Semua field wajib diisi."); return;
+      }
+
+      if (masterEditingItemNo) {
+        const idx = masterRows.findIndex(r => r.itemNo === masterEditingItemNo);
+        if (idx >= 0) masterRows[idx] = { ...masterRows[idx], itemDesc, baseQuantity: baseQty, layer, locationCode, binCode, newLocationCode, newBinCode };
+      } else {
+        if (masterRows.find(r => r.itemNo === itemNo)) {
+          alert("Item No. sudah ada di master data."); return;
+        }
+        masterRows.push({ itemNo, itemDesc, baseQuantity: baseQty, category: "Komponen", layer, locationCode, binCode, newLocationCode, newBinCode });
+      }
+
+      saveMasterRows();
+      renderMasterTable();
+      closeMasterModal();
+      showToast("Master Data", masterEditingItemNo ? "Data berhasil diperbarui." : "Data baru berhasil ditambahkan.");
+    }
+
+    // Master data element refs
+    const masterView = document.getElementById("masterView");
+    const masterTableBody = document.getElementById("masterTableBody");
+    const masterEntrySummary = document.getElementById("masterEntrySummary");
+    const masterPrevBtn = document.getElementById("masterPrevBtn");
+    const masterNextBtn = document.getElementById("masterNextBtn");
+    const masterPageSizeSelect = document.getElementById("masterPageSizeSelect");
+    const masterQuickSearch = document.getElementById("masterQuickSearch");
+    const masterAddBtn = document.getElementById("masterAddBtn");
+    const masterModal = document.getElementById("masterModal");
+    const masterModalTitle = document.getElementById("masterModalTitle");
+    const masterModalClose = document.getElementById("masterModalClose");
+    const masterModalCancelBtn = document.getElementById("masterModalCancelBtn");
+    const masterModalSaveBtn = document.getElementById("masterModalSaveBtn");
+    const mfItemNo = document.getElementById("mfItemNo");
+    const mfItemDesc = document.getElementById("mfItemDesc");
+    const mfBaseQty = document.getElementById("mfBaseQty");
+    const mfLayer = document.getElementById("mfLayer");
+    const mfLocationCode = document.getElementById("mfLocationCode");
+    const mfBinCode = document.getElementById("mfBinCode");
+    const mfNewLocationCode = document.getElementById("mfNewLocationCode");
+    const mfNewBinCode = document.getElementById("mfNewBinCode");
+
+    // Nav switching
+    const navReclass = document.getElementById("navReclass");
+    const navMaster = document.getElementById("navMaster");
+
+    function setActiveNav(view) {
+      navReclass.classList.toggle("active", view === "reclass");
+      navMaster.classList.toggle("active", view === "master");
+      listView.classList.toggle("hidden", view !== "reclass" || false);
+      formView.classList.toggle("hidden", true);
+      masterView.classList.toggle("hidden", view !== "master");
+      if (view === "reclass") { setActiveView("list"); }
+    }
+
+    navReclass.addEventListener("click", () => setActiveNav("reclass"));
+    navMaster.addEventListener("click", () => { setActiveNav("master"); renderMasterTable(); });
+
+    masterAddBtn.addEventListener("click", () => openMasterModal(null));
+    masterModalClose.addEventListener("click", closeMasterModal);
+    masterModalCancelBtn.addEventListener("click", closeMasterModal);
+    masterModalSaveBtn.addEventListener("click", saveMasterModal);
+
+    masterQuickSearch.addEventListener("input", applyMasterFilter);
+
+    masterPageSizeSelect.addEventListener("change", () => {
+      masterPageSize = parseInt(masterPageSizeSelect.value);
+      masterCurrentPage = 1;
+      renderMasterTable();
+    });
+
+    masterPrevBtn.addEventListener("click", () => { if (masterCurrentPage > 1) { masterCurrentPage--; renderMasterTable(); } });
+    masterNextBtn.addEventListener("click", () => {
+      const total = masterFilteredRows !== null ? masterFilteredRows.length : masterRows.length;
+      if (masterCurrentPage * masterPageSize < total) { masterCurrentPage++; renderMasterTable(); }
+    });
+
+    masterTableBody.addEventListener("click", (e) => {
+      const editBtn = e.target.closest('[data-master-action="edit"]');
+      const delBtn = e.target.closest('[data-master-action="delete"]');
+      if (editBtn) { openMasterModal(editBtn.dataset.itemNo); }
+      if (delBtn) {
+        const itemNo = delBtn.dataset.itemNo;
+        if (confirm(`Hapus master data "${itemNo}"? Tindakan ini tidak dapat dibatalkan.`)) {
+          masterRows = masterRows.filter(r => r.itemNo !== itemNo);
+          saveMasterRows();
+          applyMasterFilter();
+          showToast("Master Data", "Data berhasil dihapus.");
+        }
+      }
+    });
+
+    // ═══════════ END MASTER DATA ═══════════
 
     setActiveView("list");
     filteredRows = null;
