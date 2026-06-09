@@ -547,7 +547,7 @@
     th,
     td {
       border: 1px solid #ccd4db;
-      padding: 6px 7px;
+      padding: 5px 6px;
       vertical-align: middle;
       background: #fff;
     }
@@ -575,9 +575,36 @@
       background: #fafcfd;
     }
 
+    tbody tr.row-failed td {
+      background: #fff0f0 !important;
+    }
+
+    tbody tr.row-failed:hover td {
+      background: #ffe0e0 !important;
+    }
+
     .action-cell {
       min-width: 120px;
       white-space: nowrap;
+    }
+
+    .select-cell {
+      width: 36px;
+      text-align: center;
+    }
+
+    .select-cell input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      accent-color: #148d67;
+    }
+
+    .toolbar .tool-btn.sync-all-btn {
+      border-radius: 0 3px 3px 0;
+      background: linear-gradient(180deg, #2d76c9, #245fa7);
+      border-color: #245fa7;
+      color: #fff;
     }
 
     .action-group {
@@ -1374,6 +1401,7 @@
                   </svg>
                   Add
                 </button>
+
               </div>
             </div>
 
@@ -1408,6 +1436,22 @@
                   <option value="TD-AAP-RMB">TD-AAP-RMB</option>
                 </select>
               </div>
+              <div class="filter-row" style="grid-template-columns: 170px 18px 250px auto 1fr;">
+                <label for="statusLogFilter">Status Log</label>
+                <div class="filter-colon">:</div>
+                <select class="filter-input" id="statusLogFilter" style="max-width:250px;">
+                  <option value="">All status</option>
+                  <option value="Sync Sukses">Sync Sukses</option>
+                  <option value="Sync Gagal">Sync Gagal</option>
+                </select>
+                <button id="syncAllBtn" type="button" title="Sync semua yang dipilih" style="width:32px;height:32px;border:1px solid #245fa7;background:linear-gradient(180deg,#2d76c9,#245fa7);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;margin-left:8px;flex-shrink:0;">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24" width="14" height="14" style="color:#fff;">
+                    <path d="M4 4v6h6M20 20v-6h-6"/>
+                    <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3"/>
+                  </svg>
+                </button>
+              </div>
+
             </div>
 
             <div class="table-tools">
@@ -1431,18 +1475,20 @@
                 <table aria-label="Reclass RMB table">
                   <thead>
                   <tr>
-                      <th style="width:128px;">Action</th>
-                      <th style="width:132px;">No. Dokumen</th>
-                      <th style="width:112px;">Tanggal</th>
-                      <th style="width:138px;">Item No.</th>
-                      <th style="width:240px;">Item Description</th>
-                      <th style="width:88px;">Quantity</th>
-                      <th style="width:70px;">Layer</th>
-                      <th style="width:122px;">Location Code</th>
-                      <th style="width:118px;">Bin Code</th>
-                      <th style="width:132px;">New Location Code</th>
-                      <th style="width:118px;">New Bin Code</th>
-                      <th style="width:170px;">Status Log</th>
+                      <th class="select-cell"><input type="checkbox" id="selectAllChk" title="Select all" /></th>
+                      <th style="width:110px;">Action</th>
+                      <th style="width:128px;">No. Dokumen</th>
+                      <th style="width:88px;">Tanggal</th>
+                      <th style="width:124px;">Item No.</th>
+                      <th style="width:180px;">Item Description</th>
+                      <th style="width:72px;">Quantity</th>
+                      <th style="width:52px;">Layer</th>
+                      <th style="width:100px;">Location Code</th>
+                      <th style="width:108px;">Bin Code</th>
+                      <th style="width:100px;">New Location Code</th>
+                      <th style="width:96px;">New Bin Code</th>
+                      <th style="width:110px;">Status</th>
+                      <th style="width:80px;">Note</th>
                     </tr>
                   </thead>
                   <tbody id="tableBody"></tbody>
@@ -1505,11 +1551,19 @@
                   </div>
                   <div class="form-row">
                     <div class="form-label required">Quantity</div>
-                    <input id="formQty" class="form-input" type="number" min="0" />
+                    <input id="formQty" class="form-input" type="text" inputmode="decimal" />
                   </div>
                   <div class="form-row">
                     <div class="form-label required">Jumlah Cetak Barcode</div>
-                    <input id="formBarcodeCount" class="form-input" type="number" min="1" />
+                    <input id="formBarcodeCount" class="form-input" type="text" inputmode="decimal" />
+                  </div>
+                  <div class="form-row">
+                    <div class="form-label">Layer per Palet</div>
+                    <input id="formLayerPerPalet" class="form-input" type="text" inputmode="decimal" placeholder="-" />
+                  </div>
+                  <div class="form-row">
+                    <div class="form-label">Total Layer</div>
+                    <input id="formTotalLayer" class="form-input readonly-input" type="text" readonly placeholder="-" />
                   </div>
                 </div>
                 <div class="form-col">
@@ -1523,15 +1577,14 @@
                   </div>
                   <div class="form-row">
                     <div class="form-label required">New Location Code</div>
-                    <input id="formNewLocationCode" class="form-input" type="text" />
+                    <input id="formNewLocationCode" class="form-input readonly-input" type="text" value="AAP-RMB" readonly />
                   </div>
                   <div class="form-row">
                     <div class="form-label required">New Bin Code</div>
-                    <input id="formNewBinCode" class="form-input" type="text" />
+                    <select id="formNewBinCode" class="form-select"><option value="">Pilih Bin Code...</option><option value="KL-AAP-RMB">KL-AAP-RMB</option><option value="GT-AAP-RMB">GT-AAP-RMB</option><option value="TD-AAP-RMB">TD-AAP-RMB</option></select>
                   </div>
                 </div>
               </div>
-              <div class="mini-help">Quantity akan dihitung sebagai total qty per item dikali jumlah cetak barcode.</div>
             </div>
           </section>
         </section>
@@ -1554,7 +1607,7 @@
           <p id="barcodeModalSubtitle">Preview label yang akan dicetak.</p>
         </div>
         <div class="barcode-modal-actions">
-          <button class="foot-btn primary" id="barcodeDownloadBtn" type="button">Download</button>
+          <button class="foot-btn primary" id="barcodeDownloadBtn" type="button">Print</button>
           <button class="foot-btn" id="barcodeCloseBtn" type="button">Close</button>
         </div>
       </div>
@@ -1566,6 +1619,8 @@
 
   <script>
     const storageKey = "avian-oee-reclass-rmb-rows";
+    const storageVersion = "v2";
+    const storageVersionKey = "avian-oee-reclass-rmb-version";
     const today = new Date();
     const tableBody = document.getElementById("tableBody");
     const entrySummary = document.getElementById("entrySummary");
@@ -1579,6 +1634,7 @@
     const dateEndFilter = document.getElementById("dateEndFilter");
     const categoryFilter = document.getElementById("categoryFilter");
     const binFilter = document.getElementById("binFilter");
+    const statusLogFilter = document.getElementById("statusLogFilter");
     const searchInput = document.getElementById("searchInput");
     const pageSizeSelect = document.getElementById("pageSize");
 
@@ -1645,7 +1701,7 @@
         itemNo: "02KM-KAVSY100CB6",
         itemDesc: "KL AVIAN - ALU SYN 100 CC AW-06",
         baseQuantity: 14400,
-        category: "Assembling",
+        category: "Komponen",
         layer: 1,
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
@@ -1656,7 +1712,7 @@
         itemNo: "02KM-KAVSY100CB2",
         itemDesc: "KL AVIAN 100 CC AW-02",
         baseQuantity: 14400,
-        category: "Assembling",
+        category: "Komponen",
         layer: 1,
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
@@ -1667,7 +1723,249 @@
         itemNo: "02KM-KPOLO100C",
         itemDesc: "KL POLOS 100 CC W.COATING",
         baseQuantity: 14400,
-        category: "Cutting",
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOHEH170G",
+        itemDesc: "KL NONSAG EPOXY HEMAT HARDENER 170G",
+        baseQuantity: 14400,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOHER170G",
+        itemDesc: "KL NONSAG EPOXY HEMAT RESIN 170G",
+        baseQuantity: 14400,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOH170G",
+        itemDesc: "KL NONSAG EPOXY SUPER HARDENER 170G",
+        baseQuantity: 14400,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOR170G",
+        itemDesc: "KL NONSAG EPOXY SUPER RESIN 170G",
+        baseQuantity: 14400,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KACSY200C",
+        itemDesc: "KL AVIAN Synthetic Cling 200cc",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY200CB5",
+        itemDesc: "KL AVIAN 200 CC AW-05",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOR400GB3",
+        itemDesc: "KL NONSAG EPOXY SUPER RESIN 400G AW-03",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOH400GB3",
+        itemDesc: "KL NONSAG EPOXY SUPER HARDENER 400G AW-03",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE200CHEHAR",
+        itemDesc: "KLG AVIAN Lem Epoxy Hemat Hardener 170g",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KSULA200CB2",
+        itemDesc: "KL SUZUKA DUCO OTOMOTIF  200 CC",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOHER400G",
+        itemDesc: "KL NONSAG EPOXY HEMAT RESIN 400G",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE200CHEPOX",
+        itemDesc: "KLG AVIAN Lem Epoxy Hemat Resin 170g",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE200CPOX",
+        itemDesc: "KLG AVIAN Lem Epoxy Super Resin 170g AW-04",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE200CHAR",
+        itemDesc: "KLG AVIAN Lem Epoxy Super Hardener 170g AW-04",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KPOLO200CWC",
+        itemDesc: "KL POLOS 200 CC W.COATING",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY200CB6",
+        itemDesc: "KL AVIAN - ALU SYN 200 CC AW-06",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KPLCC200C",
+        itemDesc: "KL PLATINUM CLEAR C 200CC",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOHEH400G",
+        itemDesc: "KL NONSAG EPOXY HEMAT HARDENER 400G",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KADWF400CA",
+        itemDesc: "KL ADMIRAL WOOD FILLER EPOXY A 200gr",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KADWF400CB",
+        itemDesc: "KL ADMIRAL WOOD FILLER EPOXY B 200gr",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KPLHA200C",
+        itemDesc: "KL PLATINUM HARD 200 CC",
+        baseQuantity: 3360,
+        category: "Komponen",
+        layer: 16,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVTH500C",
+        itemDesc: "KM AVIAN Thinner 0.5L",
+        baseQuantity: 8100,
+        category: "Komponen",
         layer: 1,
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
@@ -1675,21 +1973,717 @@
         newBinCode: "TD-AAP-RMB"
       },
       {
-        itemNo: "02KM-KAVNOHEH170G",
-        itemDesc: "KL NONSAG EPOXY HEMAT HARDENER 170G",
-        baseQuantity: 14400,
-        category: "Printing sheet",
+        itemNo: "02KM-KAVSY003L",
+        itemDesc: "KL AVIAN HGE 2.5 LT",
+        baseQuantity: 400,
+        category: "Komponen",
         layer: 1,
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "GT-AAP-RMB"
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KYOPR004KB3",
+        itemDesc: "KL YOKO SP 3.5 KG AW-03",
+        baseQuantity: 400,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY450CB3",
+        itemDesc: "KL AVIAN 0.45 LT AW-03",
+        baseQuantity: 1995,
+        category: "Komponen",
+        layer: 20,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KYOPR001KB3",
+        itemDesc: "KL YOKO SP 0.7KG AW-03",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KBEZI001KB4",
+        itemDesc: "KL B.Z.CHROMATE 1KG AW-05",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KBOPO500CB3",
+        itemDesc: "KL BOYO POLITUR  0.5 LT AW-03",
+        baseQuantity: 1785,
+        category: "Komponen",
+        layer: 18,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY450CB6",
+        itemDesc: "KL AVIAN - ALU SYN 0.45 LT AW-06",
+        baseQuantity: 1995,
+        category: "Komponen",
+        layer: 20,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KACSY001K",
+        itemDesc: "KL AVIAN Synthetic Cling 0.85L",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KGLSY001K",
+        itemDesc: "KL GLOVIN 0.8 LT AW-01",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY001LB4",
+        itemDesc: "KL AVIAN H G E  0.9 LT AW-03",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KYOSY001KB4",
+        itemDesc: "KL YOKO BLUE 0.7LT AW-04",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE001KHAR",
+        itemDesc: "KLG AVIAN Lem Epoxy Super Hardener 800g AW-04",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE001KPOX",
+        itemDesc: "KLG AVIAN Lem Epoxy Super Resin 800g AW-04",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KACZI001K",
+        itemDesc: "KL AVIAN Cling Zinc Chromate 1Kg",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE001KHEPOX",
+        itemDesc: "KLG AVIAN Lem Epoxy Hemat Resin 800g",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVLE001KHEHAR",
+        itemDesc: "KLG AVIAN Lem Epoxy Hemat Hardener 800g",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY001LB6",
+        itemDesc: "KL AVIAN - ALU SYN  0.9 LT AW-06",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KZISY001KB2",
+        itemDesc: "KL AV.Z.CHROMATE 1KG AW-05",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KADCK001K",
+        itemDesc: "KL ADMIRAL CAT KAPAL 0.9L",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVKA001K",
+        itemDesc: "KLG AVIAN Anti Karat (Avian 3in1)",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVTH001K",
+        itemDesc: "KM AVIAN Thinner 1L",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KARTH001LB2",
+        itemDesc: "KL A ARIES TH A 0.8L AW02",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KBOPO001LB3",
+        itemDesc: "KL BOYO POLITUR VERNISH SOLVENT BASED 1L",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAPSY001L3",
+        itemDesc: "KL AVIAN PLATINUM 0.9L AW-03",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KBOPM001K",
+        itemDesc: "KL BOYO Politur Melamine 1 L",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KSU41001K",
+        itemDesc: "KALENG SUZUKA EXPOXY FILLER 0.8L AW-00",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KNOLU001L",
+        itemDesc: "KL NO LUMUT SB 1 LT AW-00",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOH1600GA3",
+        itemDesc: "KL NONSAG EPOXY SUPER HARDENER 1.6KG AW-03",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOR1600GA3",
+        itemDesc: "KL NONSAG EPOXY SUPER RESIN 1.6KG AW-03",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVRL001K",
+        itemDesc: "KL AVIA Road Line Paint 1 KG AW-00",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KINCO001KB3",
+        itemDesc: "KL IND COATING 1KG AW-02",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KADFO001K",
+        itemDesc: "KL ADMIRAL ANTI FOULING 1KG",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVFI001K",
+        itemDesc: "KL Avian Epoxy Filler 0.8L",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOHEH1600G",
+        itemDesc: "KL NONSAG EPOXY HEMAT HARDENER 1.6KG",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVNOHER1600G",
+        itemDesc: "KL NONSAG EPOXY HEMAT RESIN 1.6KG",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KSULA001KB2",
+        itemDesc: "KL SUZUKA DUCO OTOMOTIF 1 KG",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KPOLO001LWC",
+        itemDesc: "KL POLOS 1 LTR W.COATING",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KWOWO001KA2",
+        itemDesc: "KL WOOD-ECO Woodstain Solvent 0.9 LT  AW-02",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KPLCC001L",
+        itemDesc: "KL PLATINUM CLEAR C 0.8LT",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KADTH001KSG",
+        itemDesc: "KL ADMIRAL THINNER SERBAGUNA 1L",
+        baseQuantity: 1260,
+        category: "Komponen",
+        layer: 13,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVTH005K",
+        itemDesc: "KM AVIAN Thinner 5L",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KBEZI005KB4",
+        itemDesc: "KL B.Z.CHROMMATE5KG AW-04",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVRL005K",
+        itemDesc: "KL AVIA Road Line Paint 5 KG AW-00",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KADFO005K",
+        itemDesc: "KL ADMIRAL ANTI FOULING 5KG",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVPA005KS",
+        itemDesc: "KALENG AVIAN Paving Paint Solvent 5 KG",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KABRO003L",
+        itemDesc: "KL ABSOLUTE ROOF C.2.5 LT",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KYOSY004LB2",
+        itemDesc: "KL YOKO BLUE 3.5L AW-02",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KZISY005KB1",
+        itemDesc: "KL AV.Z.CHROMATE 3.6 KG",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KACSY005K",
+        itemDesc: "KL AVIAN Synthetic Cling 3.4L",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KACZI005K",
+        itemDesc: "KL AVIAN Cling Zinc Chromate 5Kg",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY005KB3",
+        itemDesc: "KL AVIAN HGE 3.6LT AW-03",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KINCO005KB1",
+        itemDesc: "KL IND COATING 5KG AW-02",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KASTH005LC4",
+        itemDesc: "KL AV.TH ASPECIAL 5L AW-04",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KSATH005LC3",
+        itemDesc: "KL TH SPEC.ARIES 4L AW-03",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KSUTH005LC5",
+        itemDesc: "KL AVIA TH SUPER 5L AW-05",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KARTH005LC3",
+        itemDesc: "KL TH.A ARIES 4LT AW-03",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "TD-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KPOLO005K",
+        itemDesc: "KL POLOS 5KG WC",
+        baseQuantity: 273,
+        category: "Komponen",
+        layer: 8,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KPOPU025K",
+        itemDesc: "PAIL POLOS 25 KG W.COAT",
+        baseQuantity: 240,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KACZI020K",
+        itemDesc: "PAIL AVIAN Cling Zinc Chromate 20Kg",
+        baseQuantity: 240,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KBEZI025KB3",
+        itemDesc: "P.B.Z.CHROMATE 20KG AW-03",
+        baseQuantity: 240,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KZISY025K",
+        itemDesc: "KL AVIAN ZINC CHROMATE 25 KG",
+        baseQuantity: 240,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KACSY020KP",
+        itemDesc: "KL AVIAN Synthetic Cling 17L",
+        baseQuantity: 240,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KAVSY020L",
+        itemDesc: "PAIL AV.KY&BESI 18L AW-00",
+        baseQuantity: 240,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
+      },
+      {
+        itemNo: "02KM-KSULA025K",
+        itemDesc: "PAIL SUZUKA LACQUER",
+        baseQuantity: 240,
+        category: "Komponen",
+        layer: 1,
+        locationCode: "AAP-RMK-PI",
+        binCode: "KLG-AAP-RMK-PI",
+        newLocationCode: "AAP-RMB",
+        newBinCode: "KL-AAP-RMB"
       }
     ];
 
     const filterBtn = document.getElementById("filterBtn");
     const reloadBtn = document.getElementById("reloadBtn");
     const addBtn = document.getElementById("addBtn");
+    const syncAllBtn = document.getElementById("syncAllBtn");
+    const selectAllChk = document.getElementById("selectAllChk");
+    let selectedIds = new Set();
 
     let rows = loadRows();
     let filteredRows = null;
@@ -1942,19 +2936,28 @@
 
     function defaultRows() {
       const now = new Date();
+      const mockConfigs = [
+        // Row 1: Sync Gagal, lewat H+1 → merah, View + Sync saja (no edit/delete)
+        { daysAgo: 3, status: "Sync Gagal", note: "" },
+        // Row 2: Sync Gagal, masih H+1 → merah, View + Sync + Edit + Delete
+        { daysAgo: 1, status: "Sync Gagal", note: "" },
+        // Row 3: Sync Sukses, masih H+1 → View + Sync + Edit + Delete
+        { daysAgo: 0, status: "Sync Sukses", note: "Sync Auto" },
+        // Row 4: Sync Sukses, lewat H+1 → View only
+        { daysAgo: 4, status: "Sync Sukses", note: "Sync Auto" },
+        // Row 5: Belum sync, masih H+1 → View + Sync + Edit + Delete
+        { daysAgo: 0, status: "", note: "" },
+      ];
       return masterData.slice(0, 5).map((item, index) => {
+        const cfg = mockConfigs[index];
         const date = new Date(now);
-        date.setDate(now.getDate() - index);
+        date.setDate(now.getDate() - cfg.daysAgo);
         const barcodeCount = index % 2 === 0 ? 1 : 2;
         const quantityPerBarcode = item.baseQuantity;
         const quantity = quantityPerBarcode * barcodeCount;
-        const statuses = [
-          "Sync Otomatis Sukses",
-          "Resync Sukses",
-          "Sync Otomatis Gagal",
-          "Sync Otomatis Sukses",
-          "Resync Sukses"
-        ];
+        const statusLog = cfg.status
+          ? [{ text: cfg.status, note: cfg.note, at: date.toISOString() }]
+          : [];
         return {
           id: createId(),
           documentNo: buildDocumentNo(date, index + 1),
@@ -1972,13 +2975,7 @@
           category: item.category,
           updatedAt: date.toISOString(),
           notes: "",
-          statusLog: [
-            {
-              text: statuses[index % statuses.length],
-              note: "Seeded mock data for prototype preview.",
-              at: date.toISOString()
-            }
-          ]
+          statusLog,
         };
       });
     }
@@ -1992,8 +2989,8 @@
       const latestStatus = Array.isArray(row.statusLog) && row.statusLog.length
         ? row.statusLog[row.statusLog.length - 1]
         : {
-            text: row.status || "Sync Otomatis Sukses",
-            note: "Normalised from saved data.",
+            text: row.status || "Sync Sukses",
+            note: "Sync Auto",
             at: row.updatedAt || new Date().toISOString()
           };
 
@@ -2020,6 +3017,12 @@
 
     function loadRows() {
       try {
+        const savedVersion = localStorage.getItem(storageVersionKey);
+        if (savedVersion !== storageVersion) {
+          localStorage.removeItem(storageKey);
+          localStorage.setItem(storageVersionKey, storageVersion);
+          return defaultRows();
+        }
         const raw = localStorage.getItem(storageKey);
         if (raw === null) {
           return defaultRows();
@@ -2056,8 +3059,6 @@
     function getStatusTone(status) {
       const lowered = String(status || "").toLowerCase();
       if (lowered.includes("gagal")) return "fail";
-      if (lowered.includes("resync")) return "info";
-      if (lowered.includes("menunggu")) return "warn";
       return "success";
     }
 
@@ -2085,18 +3086,21 @@
       formItemNo.disabled = isReadonly;
       formQty.readOnly = isReadonly;
       formBarcodeCount.readOnly = isReadonly;
+      formLayerPerPalet.readOnly = isReadonly;
       formLocationCode.readOnly = true;
       formBinCode.readOnly = true;
-      formNewLocationCode.readOnly = isReadonly;
-      formNewBinCode.readOnly = isReadonly;
+      formNewLocationCode.readOnly = true; // always readonly
+      formNewBinCode.disabled = isReadonly;
       if (isReadonly) {
         formQty.classList.add("readonly-input");
         formBarcodeCount.classList.add("readonly-input");
+        formLayerPerPalet.classList.add("readonly-input");
         formNewLocationCode.classList.add("readonly-input");
         formNewBinCode.classList.add("readonly-input");
       } else {
         formQty.classList.remove("readonly-input");
         formBarcodeCount.classList.remove("readonly-input");
+        formLayerPerPalet.classList.remove("readonly-input");
         formNewLocationCode.classList.remove("readonly-input");
         formNewBinCode.classList.remove("readonly-input");
       }
@@ -2112,6 +3116,8 @@
       formDescription.value = "";
       formQty.value = "";
       formBarcodeCount.value = "";
+      formLayerPerPalet.value = "";
+      formTotalLayer.value = "";
       formLocationCode.value = "";
       formBinCode.value = "";
       formNewLocationCode.value = "";
@@ -2120,12 +3126,26 @@
       printReadyRowId = null;
     }
 
+    function updateTotalLayer() {
+      const layerPerPalet = parseFloat(formLayerPerPalet.value) || 0;
+      const barcodeCount = parseFloat(formBarcodeCount.value) || 0;
+      formTotalLayer.value = (layerPerPalet && barcodeCount) ? String(layerPerPalet * barcodeCount) : "-";
+    }
+
+    function fillLayerFromMaster() {
+      const master = getMasterItem(formItemNo.value);
+      formLayerPerPalet.value = (master && master.layer) ? String(master.layer) : "";
+      updateTotalLayer();
+    }
+
     function fillFormFromMaster(itemNo) {
       const master = getMasterItem(itemNo) || masterData[0];
       if (!itemNo || !master) {
         formDescription.value = "";
         formQty.value = "";
         formBarcodeCount.value = "";
+        formLayerPerPalet.value = "";
+        formTotalLayer.value = "";
         formLocationCode.value = "";
         formBinCode.value = "";
         formNewLocationCode.value = "";
@@ -2140,6 +3160,7 @@
       formBinCode.value = master.binCode;
       formNewLocationCode.value = master.newLocationCode;
       formNewBinCode.value = master.newBinCode;
+      fillLayerFromMaster();
     }
 
     function openFormPage(mode, row = null) {
@@ -2156,6 +3177,7 @@
         fillFormFromMaster(row.itemNo);
         formQty.value = String(row.quantityPerBarcode ?? row.quantity ?? "");
         formBarcodeCount.value = String(row.barcodeCount ?? 1);
+        updateTotalLayer();
         formLocationCode.value = row.locationCode;
         formBinCode.value = row.binCode;
         formNewLocationCode.value = row.newLocationCode;
@@ -2176,6 +3198,7 @@
       const selectedEndDate = dateEndFilter.value;
       const selectedCategory = categoryFilter.value;
       const selectedBin = binFilter.value;
+      const selectedStatus = statusLogFilter.value;
       const keyword = searchInput.value.trim().toLowerCase();
 
       filteredRows = rows.filter((row) => {
@@ -2183,6 +3206,8 @@
         const dateMatch = (!selectedStartDate || currentDate >= selectedStartDate) && (!selectedEndDate || currentDate <= selectedEndDate);
         const categoryMatch = !selectedCategory || row.category === selectedCategory;
         const binMatch = !selectedBin || row.newBinCode === selectedBin;
+        const latestStatus = row.statusLog?.[row.statusLog.length - 1]?.text || "";
+        const statusMatch = !selectedStatus || latestStatus === selectedStatus;
         const searchable = [
           row.documentNo,
           formatDisplayDate(row.date),
@@ -2197,7 +3222,7 @@
           row.statusLog.map((item) => item.text).join(" ")
         ].join(" ").toLowerCase();
         const keywordMatch = !keyword || searchable.includes(keyword);
-        return dateMatch && categoryMatch && binMatch && keywordMatch;
+        return dateMatch && categoryMatch && binMatch && statusMatch && keywordMatch;
       });
 
       currentPage = 1;
@@ -2209,6 +3234,7 @@
       dateEndFilter.value = "";
       categoryFilter.value = "";
       binFilter.value = "";
+      statusLogFilter.value = "";
       searchInput.value = "";
       pageSizeSelect.value = "10";
       currentPage = 1;
@@ -2218,17 +3244,32 @@
 
     function renderStatusCell(row) {
       const latest = row.statusLog?.[row.statusLog.length - 1];
-      const tone = getStatusTone(latest?.text);
-      return `
-        <div class="status-stack">
-          <span class="status-pill ${tone}">${latest?.text || "-"}</span>
-          <div class="status-meta">${formatDisplayDateTime(latest?.at || row.updatedAt)}</div>
-        </div>
-      `;
+      if (!latest?.text) return '<span style="color:#bbb;font-size:11px;">-</span>';
+      const tone = getStatusTone(latest.text);
+      return `<div class="status-stack"><span class="status-pill ${tone}">${latest.text}</span><div class="status-meta">${formatDisplayDateTime(latest.at || row.updatedAt)}</div></div>`;
+    }
+
+    function renderNoteCell(row) {
+      const latest = row.statusLog?.[row.statusLog.length - 1];
+      if (!latest || !latest.text || latest.text.toLowerCase().includes("gagal")) return '<span style="color:#bbb;font-size:11px;">-</span>';
+      const note = latest?.note || "-";
+      const isAuto = note.toLowerCase().includes("auto");
+      const isManual = note.toLowerCase().includes("manual");
+      const label = isAuto ? "Sync Auto" : isManual ? "Sync Manual" : note;
+      const color = isAuto ? "#6c757d" : "#245fa7";
+      return `<span style="font-size:11px;font-weight:600;color:${color};white-space:nowrap;">${label}</span>`;
     }
 
     function renderTable() {
-      const activeRows = filteredRows === null ? [...rows] : [...filteredRows];
+      let activeRows = filteredRows === null ? [...rows] : [...filteredRows];
+      // Sort failed rows to top (Change 7)
+      activeRows.sort((a, b) => {
+        const aFailed = (a.statusLog?.[a.statusLog.length - 1]?.text || "").toLowerCase().includes("gagal");
+        const bFailed = (b.statusLog?.[b.statusLog.length - 1]?.text || "").toLowerCase().includes("gagal");
+        if (aFailed && !bFailed) return -1;
+        if (!aFailed && bFailed) return 1;
+        return 0;
+      });
       const pageSize = Number(pageSizeSelect.value || 10);
       const totalRows = activeRows.length;
       const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
@@ -2239,14 +3280,18 @@
       if (totalRows === 0) {
         tableBody.innerHTML = `
           <tr class="empty-row">
-            <td colspan="12">No data available in table</td>
+            <td colspan="14">No data available in table</td>
           </tr>
         `;
       } else {
         tableBody.innerHTML = pageRows.map((row, index) => {
           const editable = canEdit(row);
+          const isFailed = (row.statusLog?.[row.statusLog.length - 1]?.text || "").toLowerCase().includes("gagal");
+          const rowClass = isFailed ? "row-failed" : "";
+          const isChecked = selectedIds.has(row.id) ? "checked" : "";
           return `
-            <tr>
+            <tr class="${rowClass}">
+              <td class="select-cell"><input type="checkbox" class="row-select-chk" data-id="${row.id}" ${isChecked} /></td>
               <td class="action-cell">
                 <div class="action-group">
                   <button class="action-chip view" type="button" data-action="view" data-id="${row.id}" aria-label="View" title="View">
@@ -2255,12 +3300,7 @@
                       <circle cx="12" cy="12" r="2.8"/>
                     </svg>
                   </button>
-                  <button class="action-chip info" type="button" data-action="resync" data-id="${row.id}" aria-label="Resync" title="Resync">
-                    <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;">
-                      <path d="M4 4v6h6M20 20v-6h-6"/>
-                      <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3"/>
-                    </svg>
-                  </button>
+                  ${(isFailed || editable || !row.statusLog?.length) ? '<button class="action-chip info" type="button" data-action="resync" data-id="' + row.id + '" aria-label="Resync" title="Resync"><svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M4 4v6h6M20 20v-6h-6"/><path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3"/></svg></button>' : ""}
                   ${editable ? `
                     <button class="action-chip edit" type="button" data-action="edit" data-id="${row.id}" aria-label="Edit" title="Edit">
                       <svg class="icon svg-stroke" viewBox="0 0 24 24">
@@ -2288,6 +3328,7 @@
               <td>${row.newLocationCode}</td>
               <td>${row.newBinCode}</td>
               <td>${renderStatusCell(row)}</td>
+              <td>${renderNoteCell(row)}</td>
             </tr>
           `;
         }).join("");
@@ -2328,6 +3369,7 @@
       formBinCode.value = master.binCode;
       formNewLocationCode.value = master.newLocationCode;
       formNewBinCode.value = master.newBinCode;
+      fillLayerFromMaster();
     }
 
     function handleSave() {
@@ -2364,8 +3406,8 @@
         if (!row) return;
         Object.assign(row, payload);
         row.statusLog = [{
-          text: "Sync Otomatis Sukses",
-          note: "Data updated and saved from form page.",
+          text: "Sync Sukses",
+          note: "Sync Auto",
           at: now.toISOString()
         }];
         row.updatedAt = now.toISOString();
@@ -2376,8 +3418,8 @@
           ...payload,
           statusLog: [
             {
-              text: "Sync Otomatis Sukses",
-              note: "Initial sync from form submission.",
+              text: "Sync Sukses",
+              note: "Sync Auto",
               at: now.toISOString()
             }
           ]
@@ -2414,7 +3456,7 @@
         const stamp = new Date().toISOString();
         row.statusLog = [{
           text: "Sync Sukses",
-          note: "Manual resync triggered from action button.",
+          note: "Sync Manual",
           at: stamp
         }];
         row.updatedAt = stamp;
@@ -2484,7 +3526,7 @@
       applyFilters();
     });
 
-    [dateStartFilter, dateEndFilter, categoryFilter, binFilter].forEach((control) => {
+    [dateStartFilter, dateEndFilter, categoryFilter, binFilter, statusLogFilter].forEach((control) => {
       control.addEventListener("change", applyFilters);
     });
 
@@ -2498,6 +3540,59 @@
       if (event.key === "Escape") {
         closeBarcodeModal();
       }
+    });
+
+    formBarcodeCount.addEventListener("input", () => {
+      updateTotalLayer();
+    });
+
+    formLayerPerPalet.addEventListener("input", () => {
+      updateTotalLayer();
+    });
+
+    // Select/deselect all checkboxes
+    selectAllChk.addEventListener("change", () => {
+      const activeRows = filteredRows === null ? rows : filteredRows;
+      if (selectAllChk.checked) {
+        activeRows.forEach(row => selectedIds.add(row.id));
+      } else {
+        activeRows.forEach(row => selectedIds.delete(row.id));
+      }
+      renderTable();
+    });
+
+    // Handle individual row checkbox via event delegation
+    tableBody.addEventListener("change", (event) => {
+      const chk = event.target.closest(".row-select-chk");
+      if (!chk) return;
+      const id = chk.dataset.id;
+      if (chk.checked) {
+        selectedIds.add(id);
+      } else {
+        selectedIds.delete(id);
+        selectAllChk.checked = false;
+      }
+    });
+
+    // Sync All Selected
+    syncAllBtn.addEventListener("click", () => {
+      if (selectedIds.size === 0) {
+        alert("Tidak ada baris yang dipilih. Centang baris terlebih dahulu.");
+        return;
+      }
+      const stamp = new Date().toISOString();
+      let syncedCount = 0;
+      rows.forEach(row => {
+        if (selectedIds.has(row.id)) {
+          row.statusLog = [{ text: "Sync Sukses", note: "Sync Manual", at: stamp }];
+          row.updatedAt = stamp;
+          syncedCount++;
+        }
+      });
+      selectedIds.clear();
+      selectAllChk.checked = false;
+      persistAndRender();
+      showToast("Sync All", syncedCount + " data berhasil di-sync.");
     });
 
     setActiveView("list");
