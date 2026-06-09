@@ -1121,24 +1121,44 @@
     }
 
     .upload-zone {
-      min-height: 170px;
-      border: 2px dashed #aab7c2;
-      border-radius: 8px;
+      min-height: 160px;
+      border: 2px dashed #b5c3cc;
+      border-radius: 10px;
       background: #f8fafc;
-      display: grid;
-      place-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 18px;
-      gap: 10px;
+      padding: 28px 20px;
+      gap: 8px;
       color: #55616d;
       cursor: pointer;
       transition: border-color 0.2s ease, background-color 0.2s ease;
+      margin-top: 18px;
+    }
+
+    .upload-zone:hover {
+      border-color: #148d67;
+      background: #f2faf6;
     }
 
     .upload-zone.dragover {
       border-color: #148d67;
       background: #ecf8f0;
       color: #145c40;
+    }
+
+    .upload-zone-icon {
+      width: 40px;
+      height: 40px;
+      background: #e8f4ee;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #148d67;
+      margin-bottom: 4px;
+      flex: 0 0 auto;
     }
 
     .upload-zone p {
@@ -1150,46 +1170,63 @@
     .upload-zone strong {
       font-size: 14px;
       color: #243038;
+      display: block;
     }
 
     .upload-details {
       font-size: 12px;
-      color: #6b7680;
-      margin-top: 6px;
+      color: #8b96a0;
+      margin-top: 2px;
     }
 
     .import-file-name {
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 13px;
       color: #243038;
-      font-weight: 600;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: #f0f4f7;
+      border-radius: 6px;
+    }
+
+    .import-file-name.has-file {
+      background: #e7f4ef;
+      color: #145c40;
     }
 
     .download-template-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 14px;
+      padding: 10px 18px;
       border: 1px solid #148d67;
       background: linear-gradient(180deg, #f3fbf6, #e7f4ef);
       color: #145c40;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 13px;
       font-weight: 600;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
     }
 
     .download-template-btn:hover {
       background: linear-gradient(180deg, #e7f4ef, #d2efe2);
+      box-shadow: 0 2px 8px rgba(20, 141, 103, 0.14);
     }
 
     .modal-note {
       font-size: 12px;
-      color: #5f6b75;
-      margin-top: 12px;
-      line-height: 1.5;
+      color: #6b7680;
+      margin-top: 10px;
+      line-height: 1.6;
+      padding: 8px 12px;
+      background: #f7f9fb;
+      border-left: 3px solid #b5c3cc;
+      border-radius: 0 4px 4px 0;
     }
-
 
     .modal-grid {
       display: grid;
@@ -1202,9 +1239,9 @@
     }
 
     .modal-foot {
-      padding: 12px 14px 14px;
-      border-top: 1px solid #d8dee4;
-      background: #fafbfc;
+      padding: 14px 20px 16px;
+      border-top: 1px solid #e4eaef;
+      background: #f7f9fb;
       display: flex;
       justify-content: flex-end;
       gap: 8px;
@@ -1212,18 +1249,301 @@
     }
 
     .foot-btn {
-      height: 28px;
-      padding: 0 12px;
-      border: 1px solid #b9c3cb;
-      background: #fff;
+      height: 36px;
+      padding: 0 18px;
+      border: 1px solid #c5cfd7;
+      background: linear-gradient(180deg, #fff, #f4f7f9);
       color: #344049;
       cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    .foot-btn:hover {
+      background: linear-gradient(180deg, #f4f7f9, #e8edf1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
 
     .foot-btn.primary {
       background: linear-gradient(180deg, #15a06f, #0f8762);
       border-color: #0f8762;
       color: #fff;
+    }
+
+    .foot-btn.primary:hover {
+      background: linear-gradient(180deg, #17ad78, #138d67);
+      box-shadow: 0 3px 10px rgba(15, 135, 98, 0.28);
+    }
+
+    .foot-btn.danger {
+      background: linear-gradient(180deg, #ef4444, #dc2626);
+      border-color: #b91c1c;
+      color: #fff;
+    }
+
+    .foot-btn.danger:hover {
+      background: linear-gradient(180deg, #f35555, #e53030);
+      box-shadow: 0 3px 10px rgba(220, 38, 38, 0.28);
+    }
+
+    /* ── Master Data View ─────────────────────────── */
+    #masterView .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a2430;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    #masterView .page-subtitle {
+      font-size: 13px;
+      color: #6b7680;
+      margin-bottom: 22px;
+    }
+
+    /* ── Modal improvements ───────────────────────── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 32, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 24px 60px rgba(10, 20, 32, 0.22);
+      border: 1px solid #dde3e9;
+      overflow: hidden;
+      animation: modalIn 0.18s ease;
+    }
+
+    @keyframes modalIn {
+      from { transform: translateY(10px) scale(0.98); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .modal-head {
+      padding: 18px 20px 16px;
+      border-bottom: 1px solid #eaeff3;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 700;
+      color: #1a2430;
+      line-height: 1.2;
+    }
+
+    .modal-subtitle {
+      margin: 4px 0 0;
+      font-size: 12.5px;
+      color: #6b7680;
+      line-height: 1.4;
+    }
+
+    .modal-close {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #dde3e9;
+      background: #f4f7f9;
+      color: #5a6470;
+      cursor: pointer;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      transition: background 0.14s ease;
+    }
+
+    .modal-close:hover {
+      background: #e8edf1;
+      color: #243038;
+    }
+
+    .modal-body {
+      padding: 20px;
+      max-height: min(78vh, 760px);
+      overflow: auto;
+    }
+
+    /* ── Master Modal Form ────────────────────────── */
+    .master-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 20px;
+    }
+
+    .master-form-grid .mf-full {
+      grid-column: 1 / -1;
+    }
+
+    .mf-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mf-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #48545d;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .mf-label.required::after {
+      content: " *";
+      color: #d33a3a;
+    }
+
+    .mf-input,
+    .mf-select {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #c8d2da;
+      background: #fff;
+      color: #243038;
+      padding: 0 12px;
+      font-size: 14px;
+      border-radius: 5px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .mf-input:focus,
+    .mf-select:focus {
+      border-color: #148d67;
+      box-shadow: 0 0 0 3px rgba(20, 141, 103, 0.1);
+    }
+
+    .mf-input[readonly],
+    .mf-input.readonly-input {
+      background: #f0f4f7;
+      color: #6b7680;
+      cursor: default;
+    }
+
+    .mf-input::placeholder {
+      color: #a8b2bb;
+      font-size: 13px;
+    }
+
+    .mf-section-divider {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 4px 0;
+    }
+
+    .mf-section-divider span {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8b96a0;
+      white-space: nowrap;
+    }
+
+    .mf-section-divider::before,
+    .mf-section-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e4eaef;
+    }
+
+    /* ── Confirm Modal ────────────────────────────── */
+    .confirm-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 14px;
+      flex: 0 0 auto;
+    }
+
+    .confirm-icon-wrap.danger {
+      background: #fdeaea;
+      color: #da4f4f;
+    }
+
+    .confirm-icon-wrap.warn {
+      background: #fbf3df;
+      color: #d59d19;
+    }
+
+    .confirm-body-text {
+      text-align: center;
+      padding: 4px 8px 8px;
+    }
+
+    .confirm-body-text p {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a2430;
+      line-height: 1.3;
+    }
+
+    .confirm-body-text span {
+      display: block;
+      font-size: 13px;
+      color: #6b7680;
+      line-height: 1.5;
+    }
+
+    /* search-box styles for master data */
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #3d4953;
+    }
+
+    .search-input {
+      width: 260px;
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid #b9c3cb;
+      background: #fff;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: #148d67;
+      box-shadow: 0 0 0 2px rgba(20, 141, 103, 0.12);
+    }
+
+    /* data-table uses global th/td but need to inherit */
+    .data-table {
+      width: max-content;
+      min-width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
     }
 
     .detail-list {
@@ -1677,13 +1997,12 @@
 
         <!-- ═══════════ MASTER DATA VIEW ═══════════ -->
         <section id="masterView" class="hidden" style="padding:20px 24px 32px;">
-          <div class="page-header">
-            <div class="page-title">Master Data Reclass RMB</div>
-          </div>
+          <div class="page-title" style="margin-bottom:4px;">Master Data Reclass RMB</div>
+          <div style="font-size:13px;color:#6b7680;margin-bottom:22px;">Kelola referensi item material yang digunakan pada form Reclass RMB.</div>
 
           <div class="card">
-            <div class="card-head">
-              <div class="card-title">List Master Data</div>
+            <div class="card-head" style="padding:16px 18px 0;">
+              <div class="card-title" style="font-size:15px;">List Master Data</div>
               <div class="toolbar">
                 <button class="tool-btn" id="masterExportBtn" type="button" title="Export master data">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/><path d="M9 9l3-3 3 3"/><path d="M12 6v9"/></svg>
@@ -1695,12 +2014,12 @@
                 </button>
                 <button class="tool-btn primary" id="masterAddBtn" type="button" title="Tambah master data">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M12 5v14M5 12h14"/></svg>
-                  Add
+                  Add Item
                 </button>
               </div>
             </div>
 
-            <div class="table-tools">
+            <div class="table-tools" style="padding:12px 18px 14px;">
               <div class="show-entries">
                 Show
                 <select id="masterPageSizeSelect">
@@ -1712,32 +2031,34 @@
                 entries
               </div>
               <div class="search-box">
-                Search:
-                <input id="masterQuickSearch" class="search-input" type="text" placeholder="Cari item no, deskripsi..." />
+                <span style="color:#6b7680;">Search:</span>
+                <input id="masterQuickSearch" class="search-input" type="text" placeholder="Cari item no, deskripsi..." style="width:280px;border-radius:4px;" />
               </div>
             </div>
 
-            <div class="table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th style="width:90px;">Action</th>
-                    <th style="width:138px;">Item No.</th>
-                    <th style="width:220px;">Item Description</th>
-                    <th style="width:88px;">Base Qty</th>
-                    <th style="width:52px;">Layer</th>
-                    <th style="width:110px;">Location Code</th>
-                    <th style="width:120px;">Bin Code</th>
-                    <th style="width:110px;">New Location Code</th>
-                    <th style="width:108px;">New Bin Code</th>
-                  </tr>
-                </thead>
-                <tbody id="masterTableBody"></tbody>
-              </table>
+            <div class="table-shell">
+              <div class="table-scroll">
+                <table class="data-table" aria-label="Master data table">
+                  <thead>
+                    <tr>
+                      <th style="width:90px;">Action</th>
+                      <th style="width:150px;">Item No.</th>
+                      <th style="min-width:220px;">Item Description</th>
+                      <th style="width:90px;">Base Qty</th>
+                      <th style="width:56px;">Layer</th>
+                      <th style="width:114px;">Location Code</th>
+                      <th style="width:130px;">Bin Code</th>
+                      <th style="width:114px;">New Location Code</th>
+                      <th style="width:114px;">New Bin Code</th>
+                    </tr>
+                  </thead>
+                  <tbody id="masterTableBody"></tbody>
+                </table>
+              </div>
             </div>
 
-            <div class="table-footer">
-              <div id="masterEntrySummary">Showing 0 to 0 of 0 entries</div>
+            <div class="table-footer" style="padding:12px 18px 16px;">
+              <div id="masterEntrySummary" style="font-size:13px;color:#6b7680;">Showing 0 to 0 of 0 entries</div>
               <div class="pagination">
                 <button class="page-btn" id="masterPrevBtn" type="button">Previous</button>
                 <button class="page-btn" id="masterNextBtn" type="button">Next</button>
@@ -1751,85 +2072,157 @@
 
   <!-- ═══════════ MASTER DATA MODAL ═══════════ -->
   <div class="modal-backdrop hidden" id="masterModal">
-    <div class="modal" style="max-width:520px;width:100%;">
-      <div class="modal-header">
-        <div class="modal-title" id="masterModalTitle">Add Master Data</div>
+    <div class="modal" style="max-width:540px;width:100%;">
+      <div class="modal-head">
+        <div>
+          <h2 id="masterModalTitle">Add Master Data</h2>
+          <p class="modal-subtitle">Isi semua field dengan benar sebelum menyimpan data.</p>
+        </div>
         <button class="modal-close" id="masterModalClose" type="button" aria-label="Close">
           <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;padding:20px 24px;">
-          <div>
-            <div class="form-label required" style="margin-bottom:4px;">Item No.</div>
-            <input id="mfItemNo" class="form-input" type="text" placeholder="02KM-KAVSY025C" />
+      <div class="modal-body" style="padding:22px 24px;">
+        <div class="master-form-grid">
+
+          <!-- Identifikasi Item -->
+          <div class="mf-section-divider"><span>Identifikasi Item</span></div>
+
+          <div class="mf-field mf-full">
+            <label class="mf-label required" for="mfItemNo">Item No.</label>
+            <input id="mfItemNo" class="mf-input" type="text" placeholder="Contoh: 02KM-KAVSY025C" autocomplete="off" />
           </div>
-          <div>
-            <div class="form-label required" style="margin-bottom:4px;">Layer per Palet</div>
-            <input id="mfLayer" class="form-input" type="text" inputmode="decimal" placeholder="16" />
+          <div class="mf-field mf-full">
+            <label class="mf-label required" for="mfItemDesc">Item Description</label>
+            <input id="mfItemDesc" class="mf-input" type="text" placeholder="Contoh: KL AVIAN SYN 25 CC" autocomplete="off" />
           </div>
-          <div style="grid-column:1/-1;">
-            <div class="form-label required" style="margin-bottom:4px;">Item Description</div>
-            <input id="mfItemDesc" class="form-input" type="text" placeholder="Deskripsi item material" />
+          <div class="mf-field">
+            <label class="mf-label required" for="mfBaseQty">Base Quantity</label>
+            <input id="mfBaseQty" class="mf-input" type="text" inputmode="decimal" placeholder="Contoh: 41600" />
           </div>
-          <div>
-            <div class="form-label required" style="margin-bottom:4px;">Base Quantity</div>
-            <input id="mfBaseQty" class="form-input" type="text" inputmode="decimal" placeholder="41600" />
+          <div class="mf-field">
+            <label class="mf-label required" for="mfLayer">Layer per Palet</label>
+            <input id="mfLayer" class="mf-input" type="text" inputmode="decimal" placeholder="Contoh: 16" />
           </div>
-          <div>
-            <div class="form-label required" style="margin-bottom:4px;">New Bin Code</div>
-            <input id="mfNewBinCode" class="form-input" type="text" placeholder="KL-AAP-RMB" />
+
+          <!-- Lokasi Asal -->
+          <div class="mf-section-divider"><span>Lokasi Asal</span></div>
+
+          <div class="mf-field">
+            <label class="mf-label required" for="mfLocationCode">Location Code</label>
+            <input id="mfLocationCode" class="mf-input" type="text" placeholder="Contoh: AAP-RMK-PI" autocomplete="off" />
           </div>
-          <div>
-            <div class="form-label required" style="margin-bottom:4px;">Location Code</div>
-            <input id="mfLocationCode" class="form-input" type="text" placeholder="AAP-RMK-PI" />
+          <div class="mf-field">
+            <label class="mf-label required" for="mfBinCode">Bin Code</label>
+            <input id="mfBinCode" class="mf-input" type="text" placeholder="Contoh: KLG-AAP-RMK-PI" autocomplete="off" />
           </div>
-          <div>
-            <div class="form-label required" style="margin-bottom:4px;">Bin Code</div>
-            <input id="mfBinCode" class="form-input" type="text" placeholder="KLG-AAP-RMK-PI" />
+
+          <!-- Lokasi Tujuan -->
+          <div class="mf-section-divider"><span>Lokasi Tujuan (Reclass)</span></div>
+
+          <div class="mf-field">
+            <label class="mf-label" for="mfNewLocationCode">New Location Code</label>
+            <input id="mfNewLocationCode" class="mf-input" type="text" value="AAP-RMB" readonly />
           </div>
-          <div style="grid-column:1/-1;">
-            <div class="form-label" style="margin-bottom:4px;">New Location Code</div>
-            <input id="mfNewLocationCode" class="form-input readonly-input" type="text" value="AAP-RMB" readonly />
+          <div class="mf-field">
+            <label class="mf-label required" for="mfNewBinCode">New Bin Code</label>
+            <input id="mfNewBinCode" class="mf-input" type="text" placeholder="Contoh: KL-AAP-RMB" autocomplete="off" />
           </div>
+
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="foot-btn" id="masterModalCancelBtn" type="button">Close</button>
-        <button class="foot-btn primary" id="masterModalSaveBtn" type="button">Save</button>
+      <div class="modal-foot">
+        <button class="foot-btn" id="masterModalCancelBtn" type="button">Batal</button>
+        <button class="foot-btn primary" id="masterModalSaveBtn" type="button">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h8V4M8 20v-5h8v5"/></svg>
+          Simpan
+        </button>
       </div>
     </div>
   </div>
 
   <!-- ═══════════ MASTER DATA IMPORT MODAL ═══════════ -->
   <div class="modal-backdrop hidden" id="masterImportModal">
-    <div class="modal" style="max-width:560px;width:100%;">
+    <div class="modal" style="max-width:520px;width:100%;">
       <div class="modal-head">
-        <h2>Import Master Data</h2>
+        <div>
+          <h2>Import Master Data</h2>
+          <p class="modal-subtitle">Unduh template, isi data, lalu upload kembali ke sistem.</p>
+        </div>
         <button class="modal-close" id="masterImportClose" type="button" aria-label="Close">
           <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
-      <div class="modal-body">
-        <button class="download-template-btn" id="downloadTemplateBtn" type="button">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16"/></svg>
-          Download Template Excel
-        </button>
-        <p class="modal-note">Gunakan file template ini untuk mengisi data master sesuai format kolom yang ditentukan.</p>
+      <div class="modal-body" style="padding:20px 22px 22px;">
+
+        <div style="background:#f7f9fb;border:1px solid #e4eaef;border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#243038;margin-bottom:3px;">Template Excel</div>
+            <div style="font-size:12px;color:#6b7680;">Format kolom yang dibutuhkan sistem untuk import.</div>
+          </div>
+          <button class="download-template-btn" id="downloadTemplateBtn" type="button">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16"/></svg>
+            Download
+          </button>
+        </div>
 
         <label class="upload-zone" id="importDropzone" for="importFileInput">
-          <div>
-            <strong>Drag & drop file di sini</strong>
-            <p>atau klik untuk memilih file Excel</p>
-            <p class="upload-details">Dukungan: .xlsx, .csv (header tetap sesuai template)</p>
+          <div class="upload-zone-icon">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24" width="20" height="20">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <path d="m17 8-5-5-5 5"/>
+              <path d="M12 3v12"/>
+            </svg>
           </div>
+          <strong>Drag &amp; drop file di sini</strong>
+          <p>atau klik untuk memilih file</p>
+          <p class="upload-details">Mendukung: .xlsx, .csv • Header harus sesuai template</p>
         </label>
         <input id="importFileInput" type="file" accept=".xlsx,.csv" class="hidden" />
-        <div class="import-file-name" id="importFileName">Belum ada file yang dipilih.</div>
+
+        <div class="import-file-name" id="importFileName">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24" width="14" height="14" style="color:#8b96a0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          Belum ada file yang dipilih.
+        </div>
+
       </div>
       <div class="modal-foot">
-        <button class="foot-btn" id="masterImportCancelBtn" type="button">Cancel</button>
-        <button class="foot-btn primary" id="masterImportSubmitBtn" type="button">Upload</button>
+        <button class="foot-btn" id="masterImportCancelBtn" type="button">Batal</button>
+        <button class="foot-btn primary" id="masterImportSubmitBtn" type="button">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+          Upload File
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="confirmModal">
+    <div class="modal" style="max-width:400px;width:100%;">
+      <div class="modal-head" style="border-bottom:none;padding-bottom:0;">
+        <div style="width:100%;"></div>
+        <button class="modal-close" id="confirmCloseBtn" type="button" aria-label="Close" onclick="document.getElementById('confirmModal').classList.remove('active');document.getElementById('confirmModal').classList.add('hidden');">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:8px 24px 24px;text-align:center;">
+        <div class="confirm-icon-wrap danger" id="confirmIconWrap">
+          <svg id="confirmIconSvg" class="icon svg-stroke" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M4 7h16"/>
+            <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/>
+          </svg>
+        </div>
+        <div class="confirm-body-text">
+          <p id="confirmModalTitle">Hapus Data?</p>
+          <span id="confirmModalMessage">Apakah Anda yakin ingin menghapus data ini?</span>
+          <span id="confirmModalBody" style="display:block;margin-top:6px;font-size:12px;color:#a0aab3;"></span>
+        </div>
+      </div>
+      <div class="modal-foot" style="justify-content:center;gap:10px;">
+        <button class="foot-btn" id="confirmCancelBtn" type="button" style="min-width:100px;">Batal</button>
+        <button class="foot-btn danger" id="confirmOkBtn" type="button" style="min-width:100px;">
+          <svg id="confirmOkIcon" class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M4 7h16"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/></svg>
+          <span id="confirmOkLabel">Hapus</span>
+        </button>
       </div>
     </div>
   </div>
@@ -3972,6 +4365,29 @@
       }
 
       if (masterEditingItemNo) {
+        openConfirmModal(
+          "Konfirmasi Ubah Master Data",
+          `Simpan perubahan untuk item \"${itemNo}\"?`,
+          "Perubahan ini akan menggantikan nilai lama.",
+          persistMasterModal,
+          "confirm"
+        );
+      } else {
+        persistMasterModal();
+      }
+    }
+
+    function persistMasterModal() {
+      const itemNo = mfItemNo.value.trim();
+      const itemDesc = mfItemDesc.value.trim();
+      const baseQty = parseFloat(mfBaseQty.value) || 0;
+      const layer = parseFloat(mfLayer.value) || 0;
+      const locationCode = mfLocationCode.value.trim();
+      const binCode = mfBinCode.value.trim();
+      const newLocationCode = mfNewLocationCode.value.trim();
+      const newBinCode = mfNewBinCode.value.trim();
+
+      if (masterEditingItemNo) {
         const idx = masterRows.findIndex(r => r.itemNo === masterEditingItemNo);
         if (idx >= 0) masterRows[idx] = { ...masterRows[idx], itemDesc, baseQuantity: baseQty, layer, locationCode, binCode, newLocationCode, newBinCode };
       } else {
@@ -4011,6 +4427,12 @@
     const importFileInput = document.getElementById("importFileInput");
     const importDropzone = document.getElementById("importDropzone");
     const importFileName = document.getElementById("importFileName");
+    const confirmModal = document.getElementById("confirmModal");
+    const confirmModalTitle = document.getElementById("confirmModalTitle");
+    const confirmModalMessage = document.getElementById("confirmModalMessage");
+    const confirmModalBody = document.getElementById("confirmModalBody");
+    const confirmOkBtn = document.getElementById("confirmOkBtn");
+    const confirmCancelBtn = document.getElementById("confirmCancelBtn");
     const mfItemNo = document.getElementById("mfItemNo");
     const mfItemDesc = document.getElementById("mfItemDesc");
     const mfBaseQty = document.getElementById("mfBaseQty");
@@ -4122,6 +4544,51 @@
       importFileName.textContent = file.name;
     }
 
+    function openConfirmModal(title, message, body, callback, type = "delete") {
+      confirmModalTitle.textContent = title;
+      confirmModalMessage.textContent = message;
+      confirmModalBody.textContent = body;
+
+      const iconWrap = document.getElementById("confirmIconWrap");
+      const iconSvg = document.getElementById("confirmIconSvg");
+      const okBtn = confirmOkBtn;
+      const okLabel = document.getElementById("confirmOkLabel");
+      const okIcon = document.getElementById("confirmOkIcon");
+
+      if (type === "confirm") {
+        // Teal/save style
+        iconWrap.className = "confirm-icon-wrap";
+        iconWrap.style.background = "#e7f4ef";
+        iconWrap.style.color = "#148d67";
+        iconSvg.innerHTML = `<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h8V4M8 20v-5h8v5"/>`;
+        okBtn.className = "foot-btn primary";
+        okLabel.textContent = "Simpan";
+        okIcon.innerHTML = `<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h8V4M8 20v-5h8v5"/>`;
+      } else {
+        // Default: danger/delete style
+        iconWrap.className = "confirm-icon-wrap danger";
+        iconWrap.style.background = "";
+        iconWrap.style.color = "";
+        iconSvg.innerHTML = `<path d="M4 7h16"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/>`;
+        okBtn.className = "foot-btn danger";
+        okLabel.textContent = "Hapus";
+        okIcon.innerHTML = `<path d="M4 7h16"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/>`;
+      }
+
+      confirmOkBtn.onclick = () => {
+        callback();
+        closeConfirmModal();
+      };
+      confirmModal.classList.remove("hidden");
+      confirmModal.classList.add("active");
+    }
+
+    function closeConfirmModal() {
+      confirmModal.classList.add("hidden");
+      confirmModal.classList.remove("active");
+      confirmOkBtn.onclick = null;
+    }
+
     function submitMasterImport() {
       const file = importFileInput.files[0];
       if (!file) {
@@ -4137,6 +4604,7 @@
     }
 
     downloadTemplateBtn.addEventListener("click", downloadTemplateExcel);
+    confirmCancelBtn.addEventListener("click", closeConfirmModal);
 
     importDropzone.addEventListener("click", () => importFileInput.click());
 
@@ -4155,12 +4623,17 @@
       if (editBtn) { openMasterModal(editBtn.dataset.itemNo); }
       if (delBtn) {
         const itemNo = delBtn.dataset.itemNo;
-        if (confirm(`Hapus master data "${itemNo}"? Tindakan ini tidak dapat dibatalkan.`)) {
-          masterRows = masterRows.filter(r => r.itemNo !== itemNo);
-          saveMasterRows();
-          applyMasterFilter();
-          showToast("Master Data", "Data berhasil dihapus.");
-        }
+        openConfirmModal(
+          "Konfirmasi Hapus Master Data",
+          `Hapus master data \"${itemNo}\"?`,
+          "Tindakan ini tidak dapat dibatalkan.",
+          () => {
+            masterRows = masterRows.filter(r => r.itemNo !== itemNo);
+            saveMasterRows();
+            applyMasterFilter();
+            showToast("Master Data", "Data berhasil dihapus.");
+          }
+        );
       }
     });
 
