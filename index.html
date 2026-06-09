@@ -1120,6 +1120,77 @@
       overflow: auto;
     }
 
+    .upload-zone {
+      min-height: 170px;
+      border: 2px dashed #aab7c2;
+      border-radius: 8px;
+      background: #f8fafc;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18px;
+      gap: 10px;
+      color: #55616d;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .upload-zone.dragover {
+      border-color: #148d67;
+      background: #ecf8f0;
+      color: #145c40;
+    }
+
+    .upload-zone p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .upload-zone strong {
+      font-size: 14px;
+      color: #243038;
+    }
+
+    .upload-details {
+      font-size: 12px;
+      color: #6b7680;
+      margin-top: 6px;
+    }
+
+    .import-file-name {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #243038;
+      font-weight: 600;
+    }
+
+    .download-template-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border: 1px solid #148d67;
+      background: linear-gradient(180deg, #f3fbf6, #e7f4ef);
+      color: #145c40;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .download-template-btn:hover {
+      background: linear-gradient(180deg, #e7f4ef, #d2efe2);
+    }
+
+    .modal-note {
+      font-size: 12px;
+      color: #5f6b75;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+
     .modal-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1614,6 +1685,14 @@
             <div class="card-head">
               <div class="card-title">List Master Data</div>
               <div class="toolbar">
+                <button class="tool-btn" id="masterExportBtn" type="button" title="Export master data">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/><path d="M9 9l3-3 3 3"/><path d="M12 6v9"/></svg>
+                  Export
+                </button>
+                <button class="tool-btn" id="masterImportBtn" type="button" title="Import master data">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M12 5v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16"/></svg>
+                  Import
+                </button>
                 <button class="tool-btn primary" id="masterAddBtn" type="button" title="Tambah master data">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M12 5v14M5 12h14"/></svg>
                   Add
@@ -1718,6 +1797,39 @@
       <div class="modal-footer">
         <button class="foot-btn" id="masterModalCancelBtn" type="button">Close</button>
         <button class="foot-btn primary" id="masterModalSaveBtn" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ MASTER DATA IMPORT MODAL ═══════════ -->
+  <div class="modal-backdrop hidden" id="masterImportModal">
+    <div class="modal" style="max-width:560px;width:100%;">
+      <div class="modal-head">
+        <h2>Import Master Data</h2>
+        <button class="modal-close" id="masterImportClose" type="button" aria-label="Close">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button class="download-template-btn" id="downloadTemplateBtn" type="button">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16"/></svg>
+          Download Template Excel
+        </button>
+        <p class="modal-note">Gunakan file template ini untuk mengisi data master sesuai format kolom yang ditentukan.</p>
+
+        <label class="upload-zone" id="importDropzone" for="importFileInput">
+          <div>
+            <strong>Drag & drop file di sini</strong>
+            <p>atau klik untuk memilih file Excel</p>
+            <p class="upload-details">Dukungan: .xlsx, .csv (header tetap sesuai template)</p>
+          </div>
+        </label>
+        <input id="importFileInput" type="file" accept=".xlsx,.csv" class="hidden" />
+        <div class="import-file-name" id="importFileName">Belum ada file yang dipilih.</div>
+      </div>
+      <div class="modal-foot">
+        <button class="foot-btn" id="masterImportCancelBtn" type="button">Cancel</button>
+        <button class="foot-btn primary" id="masterImportSubmitBtn" type="button">Upload</button>
       </div>
     </div>
   </div>
@@ -3837,10 +3949,12 @@
         mfNewLocationCode.value = "AAP-RMB"; mfNewBinCode.value = "";
       }
       masterModal.classList.remove("hidden");
+      masterModal.classList.add("active");
     }
 
     function closeMasterModal() {
       masterModal.classList.add("hidden");
+      masterModal.classList.remove("active");
     }
 
     function saveMasterModal() {
@@ -3882,11 +3996,21 @@
     const masterPageSizeSelect = document.getElementById("masterPageSizeSelect");
     const masterQuickSearch = document.getElementById("masterQuickSearch");
     const masterAddBtn = document.getElementById("masterAddBtn");
+    const masterExportBtn = document.getElementById("masterExportBtn");
+    const masterImportBtn = document.getElementById("masterImportBtn");
     const masterModal = document.getElementById("masterModal");
     const masterModalTitle = document.getElementById("masterModalTitle");
     const masterModalClose = document.getElementById("masterModalClose");
     const masterModalCancelBtn = document.getElementById("masterModalCancelBtn");
     const masterModalSaveBtn = document.getElementById("masterModalSaveBtn");
+    const masterImportModal = document.getElementById("masterImportModal");
+    const masterImportClose = document.getElementById("masterImportClose");
+    const masterImportCancelBtn = document.getElementById("masterImportCancelBtn");
+    const masterImportSubmitBtn = document.getElementById("masterImportSubmitBtn");
+    const downloadTemplateBtn = document.getElementById("downloadTemplateBtn");
+    const importFileInput = document.getElementById("importFileInput");
+    const importDropzone = document.getElementById("importDropzone");
+    const importFileName = document.getElementById("importFileName");
     const mfItemNo = document.getElementById("mfItemNo");
     const mfItemDesc = document.getElementById("mfItemDesc");
     const mfBaseQty = document.getElementById("mfBaseQty");
@@ -3913,17 +4037,111 @@
     navMaster.addEventListener("click", () => { setActiveNav("master"); renderMasterTable(); });
 
     masterAddBtn.addEventListener("click", () => openMasterModal(null));
+    masterExportBtn.addEventListener("click", exportMasterRows);
+    masterImportBtn.addEventListener("click", openMasterImportModal);
     masterModalClose.addEventListener("click", closeMasterModal);
     masterModalCancelBtn.addEventListener("click", closeMasterModal);
     masterModalSaveBtn.addEventListener("click", saveMasterModal);
 
+    masterImportClose.addEventListener("click", closeMasterImportModal);
+    masterImportCancelBtn.addEventListener("click", closeMasterImportModal);
+    masterImportSubmitBtn.addEventListener("click", submitMasterImport);
+    importFileInput.addEventListener("change", handleImportSelection);
+
     masterQuickSearch.addEventListener("input", applyMasterFilter);
+
+    importDropzone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      importDropzone.classList.add("dragover");
+    });
+    importDropzone.addEventListener("dragleave", () => importDropzone.classList.remove("dragover"));
+    importDropzone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      importDropzone.classList.remove("dragover");
+      const file = event.dataTransfer.files[0];
+      if (file) {
+        importFileInput.files = event.dataTransfer.files;
+        handleImportSelection();
+      }
+    });
 
     masterPageSizeSelect.addEventListener("change", () => {
       masterPageSize = parseInt(masterPageSizeSelect.value);
       masterCurrentPage = 1;
       renderMasterTable();
     });
+
+    function formatCsvRow(values) {
+      return values.map(value => `"${String(value).replace(/"/g, '""')}"`).join(",");
+    }
+
+    function downloadFile(filename, content, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    }
+
+    function exportMasterRows() {
+      const header = ["item_no","item_description","base_quantity","layer","location_code","bin_code","new_location_code","new_bin_code"];
+      const rows = masterRows.map(row => [row.itemNo, row.itemDesc, row.baseQuantity, row.layer, row.locationCode, row.binCode, row.newLocationCode, row.newBinCode]);
+      const csv = [formatCsvRow(header), ...rows.map(formatCsvRow)].join("\r\n");
+      downloadFile("master-data-export.xlsx", csv, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;");
+      showToast("Export", "File master data berhasil diunduh.");
+    }
+
+    function downloadTemplateExcel() {
+      const header = ["item_no","item_description","base_quantity","layer","location_code","bin_code","new_location_code","new_bin_code"];
+      const csv = formatCsvRow(header) + "\r\n";
+      downloadFile("master-data-template.xlsx", csv, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;");
+      showToast("Template", "Template Excel berhasil diunduh.");
+    }
+
+    function openMasterImportModal() {
+      masterImportModal.classList.remove("hidden");
+      masterImportModal.classList.add("active");
+      importFileInput.value = "";
+      importFileName.textContent = "Belum ada file yang dipilih.";
+    }
+
+    function closeMasterImportModal() {
+      masterImportModal.classList.add("hidden");
+      masterImportModal.classList.remove("active");
+    }
+
+    function handleImportSelection() {
+      const file = importFileInput.files[0];
+      if (!file) {
+        importFileName.textContent = "Belum ada file yang dipilih.";
+        return;
+      }
+      importFileName.textContent = file.name;
+    }
+
+    function submitMasterImport() {
+      const file = importFileInput.files[0];
+      if (!file) {
+        alert("Pilih file template Excel terlebih dahulu.");
+        return;
+      }
+      if (!/\.(xlsx|csv)$/i.test(file.name)) {
+        alert("Format file tidak didukung. Gunakan .xlsx atau .csv.");
+        return;
+      }
+      closeMasterImportModal();
+      showToast("Import", `File ${file.name} berhasil diunggah. Proses parsing akan dilakukan oleh backend.`);
+    }
+
+    downloadTemplateBtn.addEventListener("click", downloadTemplateExcel);
+
+    importDropzone.addEventListener("click", () => importFileInput.click());
+
+    // End master data import/export controls
+
 
     masterPrevBtn.addEventListener("click", () => { if (masterCurrentPage > 1) { masterCurrentPage--; renderMasterTable(); } });
     masterNextBtn.addEventListener("click", () => {
