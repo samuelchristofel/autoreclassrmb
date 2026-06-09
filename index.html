@@ -1893,6 +1893,7 @@
                       <th style="width:108px;">Bin Code</th>
                       <th style="width:100px;">New Location Code</th>
                       <th style="width:96px;">New Bin Code</th>
+                      <th style="width:140px;">Nama Mesin</th>
                       <th style="width:110px;">Status</th>
                       <th style="width:80px;">Note</th>
                     </tr>
@@ -1989,6 +1990,29 @@
                     <div class="form-label required">New Bin Code</div>
                     <select id="formNewBinCode" class="form-select"><option value="">Pilih Bin Code...</option><option value="KL-AAP-RMB">KL-AAP-RMB</option><option value="GT-AAP-RMB">GT-AAP-RMB</option><option value="TD-AAP-RMB">TD-AAP-RMB</option></select>
                   </div>
+                  <div class="form-row">
+                    <div class="form-label required">Nama Mesin</div>
+                    <select id="formMachine" class="form-select">
+                      <option value="">Pilih Mesin...</option>
+                      <option value="Assembling Auto 1">Assembling Auto 1</option>
+<option value="Assembling Auto 2">Assembling Auto 2</option>
+<option value="Assembling Auto 3">Assembling Auto 3</option>
+<option value="Assembling Auto 4">Assembling Auto 4</option>
+<option value="Assembling Auto 5">Assembling Auto 5</option>
+<option value="Assembling Auto 6">Assembling Auto 6</option>
+<option value="Assembling Line 1 (Pail)">Assembling Line 1 (Pail)</option>
+<option value="Assembling Line 2 (2.5lt)">Assembling Line 2 (2.5lt)</option>
+<option value="Assembling Line 3 (1/2 lt)">Assembling Line 3 (1/2 lt)</option>
+<option value="Assembling Line 4 (50cc)">Assembling Line 4 (50cc)</option>
+<option value="Assembling Line 5 (25cc)">Assembling Line 5 (25cc)</option>
+<option value="Sheetpress 1">Sheetpress 1</option>
+<option value="Sheetpress 2">Sheetpress 2</option>
+<option value="Strepfeed">Strepfeed</option>
+<option value="Manual">Manual</option>
+<option value="Cutting">Cutting</option>
+<option value="Printing">Printing</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2050,6 +2074,7 @@
                       <th style="width:130px;">Bin Code</th>
                       <th style="width:114px;">New Location Code</th>
                       <th style="width:114px;">New Bin Code</th>
+                      <th style="width:140px;">Nama Mesin</th>
                     </tr>
                   </thead>
                   <tbody id="masterTableBody"></tbody>
@@ -2127,6 +2152,29 @@
           <div class="mf-field">
             <label class="mf-label required" for="mfNewBinCode">New Bin Code</label>
             <input id="mfNewBinCode" class="mf-input" type="text" placeholder="Contoh: KL-AAP-RMB" autocomplete="off" />
+          </div>
+          <div class="mf-field mf-field--full">
+            <label class="mf-label required" for="mfMachine">Nama Mesin</label>
+            <select id="mfMachine" class="mf-input">
+              <option value="">Pilih Mesin...</option>
+              <option value="Assembling Auto 1">Assembling Auto 1</option>
+              <option value="Assembling Auto 2">Assembling Auto 2</option>
+              <option value="Assembling Auto 3">Assembling Auto 3</option>
+              <option value="Assembling Auto 4">Assembling Auto 4</option>
+              <option value="Assembling Auto 5">Assembling Auto 5</option>
+              <option value="Assembling Auto 6">Assembling Auto 6</option>
+              <option value="Assembling Line 1 (Pail)">Assembling Line 1 (Pail)</option>
+              <option value="Assembling Line 2 (2.5lt)">Assembling Line 2 (2.5lt)</option>
+              <option value="Assembling Line 3 (1/2 lt)">Assembling Line 3 (1/2 lt)</option>
+              <option value="Assembling Line 4 (50cc)">Assembling Line 4 (50cc)</option>
+              <option value="Assembling Line 5 (25cc)">Assembling Line 5 (25cc)</option>
+              <option value="Sheetpress 1">Sheetpress 1</option>
+              <option value="Sheetpress 2">Sheetpress 2</option>
+              <option value="Strepfeed">Strepfeed</option>
+              <option value="Manual">Manual</option>
+              <option value="Cutting">Cutting</option>
+              <option value="Printing">Printing</option>
+            </select>
           </div>
 
         </div>
@@ -2308,7 +2356,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "GT-AAP-RMB"
+        newBinCode: "GT-AAP-RMB",
+        machine: "Assembling Line 5 (25cc)"
       },
       {
         itemNo: "02KM-KAVSY050CB2",
@@ -2319,7 +2368,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 4 (50cc)"
       },
       {
         itemNo: "02KM-KPOLO050C",
@@ -2330,7 +2380,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 4 (50cc)"
       },
       {
         itemNo: "02KM-KAVSY100CB6",
@@ -2341,7 +2392,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 4"
       },
       {
         itemNo: "02KM-KAVSY100CB2",
@@ -2352,7 +2404,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 4"
       },
       {
         itemNo: "02KM-KPOLO100C",
@@ -2363,7 +2416,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 4"
       },
       {
         itemNo: "02KM-KAVNOHEH170G",
@@ -2374,7 +2428,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVNOHER170G",
@@ -2385,7 +2440,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVNOH170G",
@@ -2396,7 +2452,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVNOR170G",
@@ -2407,7 +2464,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KACSY200C",
@@ -2418,7 +2476,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 6"
       },
       {
         itemNo: "02KM-KAVSY200CB5",
@@ -2429,7 +2488,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 6"
       },
       {
         itemNo: "02KM-KAVNOR400GB3",
@@ -2440,7 +2500,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVNOH400GB3",
@@ -2451,7 +2512,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVLE200CHEHAR",
@@ -2462,7 +2524,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KSULA200CB2",
@@ -2473,7 +2536,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 6"
       },
       {
         itemNo: "02KM-KAVNOHER400G",
@@ -2484,7 +2548,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVLE200CHEPOX",
@@ -2495,7 +2560,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVLE200CPOX",
@@ -2506,7 +2572,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVLE200CHAR",
@@ -2517,7 +2584,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KPOLO200CWC",
@@ -2528,7 +2596,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 6"
       },
       {
         itemNo: "02KM-KAVSY200CB6",
@@ -2539,7 +2608,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 6"
       },
       {
         itemNo: "02KM-KPLCC200C",
@@ -2550,7 +2620,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 6"
       },
       {
         itemNo: "02KM-KAVNOHEH400G",
@@ -2561,7 +2632,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KADWF400CA",
@@ -2572,7 +2644,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KADWF400CB",
@@ -2583,7 +2656,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KPLHA200C",
@@ -2594,7 +2668,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 6"
       },
       {
         itemNo: "02KM-KAVTH500C",
@@ -2605,7 +2680,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KAVSY003L",
@@ -2616,7 +2692,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 2 (2.5lt)"
       },
       {
         itemNo: "02KM-KYOPR004KB3",
@@ -2627,7 +2704,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KAVSY450CB3",
@@ -2638,7 +2716,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KYOPR001KB3",
@@ -2649,7 +2728,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KBEZI001KB4",
@@ -2660,7 +2740,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Cutting"
       },
       {
         itemNo: "02KM-KBOPO500CB3",
@@ -2671,7 +2752,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KAVSY450CB6",
@@ -2682,7 +2764,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KACSY001K",
@@ -2693,7 +2776,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KGLSY001K",
@@ -2704,7 +2788,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 2"
       },
       {
         itemNo: "02KM-KAVSY001LB4",
@@ -2715,7 +2800,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KYOSY001KB4",
@@ -2726,7 +2812,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 2"
       },
       {
         itemNo: "02KM-KAVLE001KHAR",
@@ -2737,7 +2824,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVLE001KPOX",
@@ -2748,7 +2836,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KACZI001K",
@@ -2759,7 +2848,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KAVLE001KHEPOX",
@@ -2770,7 +2860,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVLE001KHEHAR",
@@ -2781,7 +2872,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVSY001LB6",
@@ -2792,7 +2884,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KZISY001KB2",
@@ -2803,7 +2896,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KADCK001K",
@@ -2814,7 +2908,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 2"
       },
       {
         itemNo: "02KM-KAVKA001K",
@@ -2825,7 +2920,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KAVTH001K",
@@ -2836,7 +2932,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KARTH001LB2",
@@ -2847,7 +2944,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Cutting"
       },
       {
         itemNo: "02KM-KBOPO001LB3",
@@ -2858,7 +2956,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KAPSY001L3",
@@ -2869,7 +2968,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Cutting"
       },
       {
         itemNo: "02KM-KBOPM001K",
@@ -2880,7 +2980,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KSU41001K",
@@ -2891,7 +2992,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KNOLU001L",
@@ -2902,7 +3004,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KAVNOH1600GA3",
@@ -2913,7 +3016,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVNOR1600GA3",
@@ -2924,7 +3028,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVRL001K",
@@ -2935,7 +3040,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KINCO001KB3",
@@ -2946,7 +3052,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 1"
       },
       {
         itemNo: "02KM-KADFO001K",
@@ -2957,7 +3064,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Cutting"
       },
       {
         itemNo: "02KM-KAVFI001K",
@@ -2968,7 +3076,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVNOHEH1600G",
@@ -2979,7 +3088,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KAVNOHER1600G",
@@ -2990,7 +3100,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Manual"
       },
       {
         itemNo: "02KM-KSULA001KB2",
@@ -3001,7 +3112,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KPOLO001LWC",
@@ -3012,7 +3124,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 1"
       },
       {
         itemNo: "02KM-KWOWO001KA2",
@@ -3023,7 +3136,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KPLCC001L",
@@ -3034,7 +3148,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 2"
       },
       {
         itemNo: "02KM-KADTH001KSG",
@@ -3045,7 +3160,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KAVTH005K",
@@ -3056,7 +3172,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KBEZI005KB4",
@@ -3067,7 +3184,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KAVRL005K",
@@ -3078,7 +3196,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KADFO005K",
@@ -3089,7 +3208,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KAVPA005KS",
@@ -3100,7 +3220,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KABRO003L",
@@ -3111,7 +3232,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 2 (2.5lt)"
       },
       {
         itemNo: "02KM-KYOSY004LB2",
@@ -3122,7 +3244,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KZISY005KB1",
@@ -3133,7 +3256,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 1"
       },
       {
         itemNo: "02KM-KACSY005K",
@@ -3144,7 +3268,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KACZI005K",
@@ -3155,7 +3280,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KAVSY005KB3",
@@ -3166,7 +3292,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Cutting"
       },
       {
         itemNo: "02KM-KINCO005KB1",
@@ -3177,7 +3304,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 1"
       },
       {
         itemNo: "02KM-KASTH005LC4",
@@ -3188,7 +3316,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KSATH005LC3",
@@ -3199,7 +3328,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KSUTH005LC5",
@@ -3210,7 +3340,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KARTH005LC3",
@@ -3221,7 +3352,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "TD-AAP-RMB"
+        newBinCode: "TD-AAP-RMB",
+        machine: "Cutting"
       },
       {
         itemNo: "02KM-KPOLO005K",
@@ -3232,7 +3364,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Sheetpress 1"
       },
       {
         itemNo: "02KM-KPOPU025K",
@@ -3243,7 +3376,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 1 (Pail)"
       },
       {
         itemNo: "02KM-KACZI020K",
@@ -3254,7 +3388,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 1 (Pail)"
       },
       {
         itemNo: "02KM-KBEZI025KB3",
@@ -3265,7 +3400,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KZISY025K",
@@ -3276,7 +3412,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 3"
       },
       {
         itemNo: "02KM-KACSY020KP",
@@ -3287,7 +3424,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Auto 2"
       },
       {
         itemNo: "02KM-KAVSY020L",
@@ -3298,7 +3436,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 1 (Pail)"
       },
       {
         itemNo: "02KM-KSULA025K",
@@ -3309,7 +3448,8 @@
         locationCode: "AAP-RMK-PI",
         binCode: "KLG-AAP-RMK-PI",
         newLocationCode: "AAP-RMB",
-        newBinCode: "KL-AAP-RMB"
+        newBinCode: "KL-AAP-RMB",
+        machine: "Assembling Line 1 (Pail)"
       }
     ];
 
@@ -3643,6 +3783,7 @@
         binCode: row.binCode || master.binCode || "",
         newLocationCode: row.newLocationCode || master.newLocationCode || "",
         newBinCode: row.newBinCode || master.newBinCode || "",
+          machine: row.machine || master.machine || "",
         category: row.category || master.category || "Komponen",
         updatedAt: row.updatedAt || date,
         notes: row.notes || "",
@@ -3722,6 +3863,7 @@
       formQty.readOnly = isReadonly;
       formBarcodeCount.readOnly = isReadonly;
       formLayerPerPalet.readOnly = isReadonly;
+      formMachine.disabled = isReadonly;
       formLocationCode.readOnly = true;
       formBinCode.readOnly = true;
       formNewLocationCode.readOnly = true; // always readonly
@@ -3753,6 +3895,7 @@
       formBarcodeCount.value = "";
       formLayerPerPalet.value = "";
       formTotalLayer.value = "";
+      formMachine.value = "";
       formLocationCode.value = "";
       formBinCode.value = "";
       formNewLocationCode.value = "";
@@ -3785,6 +3928,7 @@
         formBinCode.value = "";
         formNewLocationCode.value = "";
         formNewBinCode.value = "";
+        formMachine.value = "";
         return;
       }
 
@@ -3795,6 +3939,7 @@
       formBinCode.value = master.binCode;
       formNewLocationCode.value = master.newLocationCode;
       formNewBinCode.value = master.newBinCode;
+      formMachine.value = master.machine || "";
       fillLayerFromMaster();
     }
 
@@ -3813,6 +3958,7 @@
         formQty.value = String(row.quantityPerBarcode ?? row.quantity ?? "");
         formBarcodeCount.value = String(row.barcodeCount ?? 1);
         updateTotalLayer();
+        formMachine.value = row.machine || "";
         formLocationCode.value = row.locationCode;
         formBinCode.value = row.binCode;
         formNewLocationCode.value = row.newLocationCode;
@@ -3962,6 +4108,7 @@
               <td>${row.binCode}</td>
               <td>${row.newLocationCode}</td>
               <td>${row.newBinCode}</td>
+              <td>${row.machine || "-"}</td>
               <td>${renderStatusCell(row)}</td>
               <td>${renderNoteCell(row)}</td>
             </tr>
@@ -4004,6 +4151,7 @@
       formBinCode.value = master.binCode;
       formNewLocationCode.value = master.newLocationCode;
       formNewBinCode.value = master.newBinCode;
+      formMachine.value = master.machine || "";
       fillLayerFromMaster();
     }
 
@@ -4028,6 +4176,7 @@
         binCode: formBinCode.value.trim(),
         newLocationCode: formNewLocationCode.value.trim(),
         newBinCode: formNewBinCode.value,
+        machine: formMachine.value,
         updatedAt: now.toISOString()
       };
 
@@ -4244,7 +4393,19 @@
         const raw = localStorage.getItem(masterStorageKey);
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // If cached data is missing machine field, merge from masterData
+            const needsMigration = parsed.some(r => !r.machine);
+            if (needsMigration) {
+              const migrated = parsed.map(r => {
+                const master = masterData.find(m => m.itemNo === r.itemNo);
+                return { ...r, machine: r.machine || (master && master.machine) || "" };
+              });
+              localStorage.setItem(masterStorageKey, JSON.stringify(migrated));
+              return migrated;
+            }
+            return parsed;
+          }
         }
       } catch (e) {}
       // Fall back to masterData from Excel
@@ -4268,7 +4429,7 @@
       const end = Math.min(start + masterPageSize, total);
 
       masterTableBody.innerHTML = pageRows.length === 0
-        ? '<tr><td colspan="9" style="text-align:center;color:#6b7680;font-size:14px;padding:24px 10px;">No data available in table</td></tr>'
+        ? '<tr><td colspan="10" style="text-align:center;color:#6b7680;font-size:14px;padding:24px 10px;">No data available in table</td></tr>'
         : pageRows.map(row => `
           <tr>
             <td class="action-cell">
@@ -4294,6 +4455,7 @@
             <td>${row.binCode}</td>
             <td>${row.newLocationCode}</td>
             <td>${row.newBinCode}</td>
+            <td>${row.machine || "-"}</td>
           </tr>`).join("");
 
       masterEntrySummary.textContent = total === 0
@@ -4334,6 +4496,7 @@
           mfBinCode.value = row.binCode;
           mfNewLocationCode.value = row.newLocationCode;
           mfNewBinCode.value = row.newBinCode;
+          document.getElementById('mfMachine').value = row.machine || '';
         }
       } else {
         mfItemNo.value = ""; mfItemNo.readOnly = false; mfItemNo.classList.remove("readonly-input");
@@ -4360,7 +4523,7 @@
       const newLocationCode = mfNewLocationCode.value.trim();
       const newBinCode = mfNewBinCode.value.trim();
 
-      if (!itemNo || !itemDesc || !baseQty || !layer || !locationCode || !binCode || !newBinCode) {
+      if (!itemNo || !itemDesc || !baseQty || !layer || !locationCode || !binCode || !newBinCode || !machine) {
         alert("Semua field wajib diisi."); return;
       }
 
@@ -4389,7 +4552,7 @@
 
       if (masterEditingItemNo) {
         const idx = masterRows.findIndex(r => r.itemNo === masterEditingItemNo);
-        if (idx >= 0) masterRows[idx] = { ...masterRows[idx], itemDesc, baseQuantity: baseQty, layer, locationCode, binCode, newLocationCode, newBinCode };
+        if (idx >= 0) masterRows[idx] = { ...masterRows[idx], itemDesc, baseQuantity: baseQty, layer, locationCode, binCode, newLocationCode, newBinCode, machine };
       } else {
         if (masterRows.find(r => r.itemNo === itemNo)) {
           alert("Item No. sudah ada di master data."); return;
