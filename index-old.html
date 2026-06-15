@@ -1,0 +1,4918 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avian OEE Kaleng - Reclass RMB</title>
+    <style>
+      :root {
+        --bg: #edf1f4;
+        --panel: #ffffff;
+        --panel-soft: #f7f9fb;
+        --text: #263238;
+        --muted: #6b7680;
+        --border: #d8dee4;
+        --green: #148d67;
+        --green-dark: #0f6d50;
+        --green-soft: #e7f4ef;
+        --blue: #2d76c9;
+        --blue-soft: #eaf2fb;
+        --red: #da4f4f;
+        --red-soft: #fdeaea;
+        --amber: #d59d19;
+        --amber-soft: #fbf3df;
+        --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 18px 42px rgba(20, 32, 40, 0.16);
+        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: auto;
+      }
+
+      body {
+        overflow-x: auto;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 232px minmax(0, 1fr);
+      }
+
+      .sidebar {
+        background: #33393f;
+        color: #dce2e8;
+        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-brand {
+        min-height: 52px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .brand-mark {
+        width: 22px;
+        height: 22px;
+        display: grid;
+        place-items: center;
+        color: #ffffff;
+        flex: 0 0 auto;
+      }
+
+      .brand-copy {
+        min-width: 0;
+        line-height: 1.05;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        color: #eef3f7;
+        letter-spacing: 0.01em;
+      }
+
+      .brand-copy span {
+        display: block;
+        font-size: 11px;
+        color: #a8b2bb;
+        margin-top: 1px;
+        letter-spacing: 0.04em;
+      }
+
+      .sidebar-nav {
+        padding: 16px 0 20px;
+        overflow: auto;
+      }
+
+      .nav-group {
+        padding: 0 8px;
+      }
+
+      .nav-group-title {
+        font-size: 13px;
+        color: #e5e9ee;
+        margin: 8px 14px 10px;
+        line-height: 1.2;
+      }
+
+      .nav-item,
+      .nav-subitem {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        width: 100%;
+        min-height: 48px;
+        padding: 10px 14px 10px 12px;
+        color: #d5dbe1;
+        text-decoration: none;
+        border-radius: 3px;
+        margin: 2px 0;
+        background: transparent;
+        border: 0;
+        text-align: left;
+        cursor: pointer;
+        position: relative;
+        transition:
+          background-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .nav-item:hover,
+      .nav-subitem:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .nav-item.active,
+      .nav-subitem.active {
+        background: linear-gradient(180deg, #1aa36c, #138d67);
+        color: #fff;
+      }
+
+      .nav-item.active::before,
+      .nav-subitem.active::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .nav-icon {
+        width: 18px;
+        height: 18px;
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        opacity: 0.95;
+      }
+
+      .nav-text {
+        min-width: 0;
+        font-size: 14px;
+        white-space: normal;
+        overflow: visible;
+        line-height: 1.25;
+        word-break: break-word;
+      }
+
+      .nav-indicator {
+        margin-left: auto;
+        opacity: 0.75;
+        line-height: 1;
+      }
+
+      .subnav {
+        padding-left: 10px;
+        margin-top: 4px;
+      }
+
+      .subnav .nav-subitem {
+        padding-left: 18px;
+        font-size: 13px;
+      }
+
+      .workspace {
+        min-width: 0;
+        display: grid;
+        grid-template-rows: 52px minmax(0, 1fr);
+      }
+
+      .topbar {
+        min-height: 52px;
+        background: linear-gradient(180deg, #16936a, #0f8762);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px 0 14px;
+        box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+        gap: 12px;
+      }
+
+      .hamburger-btn {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        background: transparent;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 4px;
+        flex: 0 0 auto;
+      }
+
+      .hamburger-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .topbar-tools {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+        flex: 0 0 auto;
+      }
+
+      .notif {
+        width: 22px;
+        height: 22px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.12);
+        display: grid;
+        place-items: center;
+        position: relative;
+        flex: 0 0 auto;
+      }
+
+      .notif::after {
+        content: "9+";
+        position: absolute;
+        top: -6px;
+        right: -8px;
+        min-width: 16px;
+        height: 14px;
+        padding: 0 3px;
+        border-radius: 999px;
+        background: #e45454;
+        color: #fff;
+        font-size: 9px;
+        line-height: 14px;
+        text-align: center;
+        box-shadow: 0 0 0 2px #16936a;
+      }
+
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        max-width: 100%;
+        padding-right: 2px;
+      }
+
+      .user span:first-child {
+        white-space: nowrap;
+      }
+
+      .avatar {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.82);
+        color: #4b5563;
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        font-weight: 700;
+        flex: 0 0 auto;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 24px 24px 30px;
+        overflow-x: hidden;
+      }
+
+      .page-title {
+        font-size: 32px;
+        line-height: 1;
+        color: #22292e;
+        margin: 8px 0 18px;
+        letter-spacing: -0.03em;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        min-width: 0;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .card-head {
+        padding: 14px 16px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .card-title {
+        font-size: 14px;
+        color: #27323a;
+        font-weight: 600;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .toolbar .tool-btn {
+        height: 32px;
+        padding: 0 14px;
+        border: 1px solid #aab7c2;
+        background: linear-gradient(180deg, #ffffff, #f2f5f7);
+        color: #48545d;
+        font-size: 13px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .toolbar .tool-btn:first-child {
+        border-radius: 3px 0 0 3px;
+        border-color: #8cc1ad;
+        background: linear-gradient(180deg, #ffffff, #f7fbf9);
+        color: #11694d;
+      }
+
+      .toolbar .tool-btn:last-child {
+        border-radius: 0 3px 3px 0;
+        background: linear-gradient(180deg, #fbfbfc, #eef2f6);
+      }
+
+      .toolbar .tool-btn + .tool-btn {
+        margin-left: -1px;
+      }
+
+      .toolbar .tool-btn.primary {
+        background: linear-gradient(180deg, #15a06f, #0f8762);
+        color: #fff;
+        border-color: #0f8762;
+      }
+
+      .toolbar .tool-btn:hover {
+        position: relative;
+        z-index: 1;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 16px rgba(16, 24, 32, 0.12);
+      }
+
+      .filters {
+        padding: 12px 16px 8px;
+        display: grid;
+        gap: 0;
+      }
+
+      .filter-row {
+        display: grid;
+        grid-template-columns: 170px 18px minmax(0, 1fr);
+        align-items: center;
+        gap: 0;
+        min-height: 36px;
+        margin-bottom: 10px;
+      }
+
+      .filter-row label {
+        font-size: 13px;
+        color: #2d3740;
+        line-height: 1.1;
+      }
+
+      .filter-colon {
+        text-align: center;
+        color: #2d3740;
+        font-size: 13px;
+        line-height: 1;
+      }
+
+      .filter-input {
+        width: 100%;
+        max-width: 250px;
+        height: 32px;
+        border: 1px solid #b9c3cb;
+        background: #fff;
+        color: #243038;
+        padding: 5px 10px;
+        outline: none;
+      }
+
+      .filter-input:focus {
+        border-color: #148d67;
+        box-shadow: 0 0 0 2px rgba(20, 141, 103, 0.12);
+      }
+
+      .date-range {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: nowrap;
+        min-width: 0;
+        width: 100%;
+      }
+
+      .date-range .filter-input {
+        width: 100%;
+        max-width: 200px;
+        flex: 1 1 200px;
+      }
+
+      .date-range span {
+        color: #27323a;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        min-height: 32px;
+        border: 1px solid #b9c3cb;
+        background: #fff;
+        color: #243038;
+        padding: 5px 10px;
+        border-radius: 0;
+        outline: none;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: #148d67;
+        box-shadow: 0 0 0 2px rgba(20, 141, 103, 0.12);
+      }
+
+      .field textarea {
+        resize: vertical;
+        min-height: 84px;
+        padding-top: 8px;
+      }
+
+      .table-tools {
+        padding: 6px 16px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .table-tools .show-entries {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: #3d4953;
+        flex-wrap: wrap;
+      }
+
+      .table-tools select {
+        height: 30px;
+        min-height: 30px;
+        width: 64px;
+        padding: 0 8px;
+        border: 1px solid #b9c3cb;
+        background: #fff;
+      }
+
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: #3d4953;
+      }
+
+      .search input {
+        width: 280px;
+        height: 30px;
+        min-height: 30px;
+        padding: 0 10px;
+        border: 1px solid #b9c3cb;
+        background: #fff;
+      }
+
+      .table-shell {
+        padding: 0 12px 2px;
+        overflow: hidden;
+        min-width: 0;
+      }
+
+      .table-scroll {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        min-width: 0;
+      }
+
+      table {
+        width: max-content;
+        min-width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        table-layout: auto;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccd4db;
+        padding: 5px 6px;
+        vertical-align: middle;
+        background: #fff;
+      }
+
+      th {
+        font-size: 11px;
+      }
+
+      td {
+        font-size: 11px;
+      }
+
+      th {
+        background: #f5f7f8;
+        font-weight: 700;
+        color: #27323a;
+        white-space: nowrap;
+      }
+
+      td {
+        color: #28333a;
+      }
+
+      tbody tr:hover td {
+        background: #fafcfd;
+      }
+
+      tbody tr.row-failed td {
+        background: #fff0f0 !important;
+      }
+
+      tbody tr.row-failed:hover td {
+        background: #ffe0e0 !important;
+      }
+
+      .action-cell {
+        min-width: 120px;
+        white-space: nowrap;
+      }
+
+      .select-cell {
+        width: 36px;
+        text-align: center;
+      }
+
+      .select-cell input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        accent-color: #148d67;
+      }
+
+      .toolbar .tool-btn.sync-all-btn {
+        border-radius: 0 3px 3px 0;
+        background: linear-gradient(180deg, #2d76c9, #245fa7);
+        border-color: #245fa7;
+        color: #fff;
+      }
+
+      .action-group {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 3px;
+        align-items: center;
+      }
+
+      .action-chip {
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        border: 1px solid #b8c2ca;
+        background: linear-gradient(180deg, #fff, #f3f5f7);
+        color: #35414a;
+        cursor: pointer;
+        font-size: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        white-space: nowrap;
+        border-radius: 4px;
+        transition:
+          transform 0.14s ease,
+          box-shadow 0.14s ease,
+          opacity 0.14s ease;
+        flex: 0 0 auto;
+      }
+
+      .action-chip:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 12px rgba(10, 20, 30, 0.12);
+      }
+
+      .action-chip:disabled {
+        opacity: 0.42;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .action-chip.primary {
+        background: linear-gradient(180deg, #16a06f, #138d67);
+        color: #fff;
+        border-color: #0f8762;
+      }
+
+      .action-chip.view {
+        background: linear-gradient(180deg, #16a34a, #13803b);
+        border-color: #117538;
+        color: #fff;
+      }
+
+      .action-chip.edit {
+        background: linear-gradient(180deg, #3b82f6, #2563eb);
+        border-color: #1d4ed8;
+        color: #fff;
+      }
+
+      .action-chip.info {
+        background: linear-gradient(180deg, #f59e0b, #d97706);
+        border-color: #b45309;
+        color: #fff;
+      }
+
+      .action-chip.danger {
+        background: linear-gradient(180deg, #ef4444, #dc2626);
+        border-color: #b91c1c;
+        color: #fff;
+      }
+
+      .status-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        max-width: max-content;
+        padding: 5px 10px;
+        border: 1px solid transparent;
+        font-size: 13px;
+        line-height: 1.15;
+        white-space: nowrap;
+        background: #f3f5f7;
+        color: #3d4953;
+      }
+
+      .status-pill.success {
+        background: var(--green-soft);
+        color: #15624a;
+        border-color: #cfe7dd;
+      }
+
+      .status-pill.fail {
+        background: var(--red-soft);
+        color: #ab3737;
+        border-color: #f0caca;
+      }
+
+      .status-pill.info {
+        background: var(--blue-soft);
+        color: #245fa7;
+        border-color: #cfe0f4;
+      }
+
+      .status-pill.warn {
+        background: var(--amber-soft);
+        color: #9b6b06;
+        border-color: #efdbad;
+      }
+
+      .status-meta {
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .table-footer {
+        padding: 10px 16px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        color: #3b4650;
+      }
+
+      .pagination {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .page-btn {
+        height: 28px;
+        min-width: 28px;
+        padding: 0 11px;
+        border: 1px solid #c6ced5;
+        background: #fff;
+        color: #3c4852;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .page-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .empty-row td {
+        text-align: center;
+        color: #6b7680;
+        font-size: 14px;
+        padding: 24px 10px;
+        background: #fbfcfd;
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 24, 32, 0.45);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        z-index: 40;
+      }
+
+      .modal-backdrop.active {
+        display: flex;
+      }
+
+      .barcode-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 24, 32, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        z-index: 60;
+      }
+
+      .barcode-modal-backdrop.active {
+        display: flex;
+      }
+
+      .barcode-modal {
+        width: min(1120px, 100%);
+        max-height: calc(100vh - 32px);
+        background: #fff;
+        border-radius: 3px;
+        border: 1px solid #d8dee4;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+
+      .barcode-modal-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid #d8dee4;
+        background: #f5f7f8;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .barcode-modal-head h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #243038;
+        line-height: 1.1;
+      }
+
+      .barcode-modal-head p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .barcode-modal-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .barcode-modal-body {
+        padding: 14px;
+        overflow: auto;
+        background: #eef2f5;
+      }
+
+      .barcode-sheet {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 14px;
+        align-items: start;
+      }
+
+      .barcode-label {
+        background: #fff;
+        border: 1px solid #111;
+        padding: 10px 10px 8px;
+        display: grid;
+        gap: 8px;
+        min-height: 310px;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+      }
+
+      .barcode-label h3 {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.1;
+        color: #111;
+        font-weight: 700;
+      }
+
+      .barcode-mark {
+        width: 100%;
+        height: 152px;
+        border: 1px solid #111;
+        display: grid;
+        place-items: center;
+        background: #fff;
+      }
+
+      .barcode-lines {
+        display: grid;
+        gap: 3px;
+        font-size: 13px;
+        color: #111;
+        line-height: 1.15;
+        text-align: center;
+      }
+
+      .barcode-lines strong {
+        font-size: 14px;
+      }
+
+      .barcode-footer-line {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: #111;
+        border-top: 1px solid #111;
+        padding-top: 6px;
+        margin-top: 2px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .page-panel {
+        display: grid;
+        gap: 14px;
+      }
+
+      .form-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .form-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid #d8dee4;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        background: #fff;
+      }
+
+      .form-head h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #243038;
+      }
+
+      .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .form-action-btn {
+        height: 38px;
+        min-width: 78px;
+        border: 1px solid #9da8b1;
+        background: linear-gradient(180deg, #ffffff, #f2f5f7);
+        color: #344049;
+        padding: 0 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      .form-action-btn.primary {
+        background: linear-gradient(180deg, #15a06f, #0f8762);
+        border-color: #0f8762;
+        color: #fff;
+      }
+
+      .form-action-btn.print {
+        display: none;
+        background: linear-gradient(180deg, #2d76c9, #245fa7);
+        border-color: #245fa7;
+        color: #fff;
+      }
+
+      .form-body {
+        padding: 22px 18px 26px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 40px;
+      }
+
+      .form-col {
+        display: grid;
+        gap: 20px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr);
+        align-items: start;
+        gap: 12px;
+      }
+
+      .form-label {
+        font-size: 18px;
+        line-height: 1.1;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .required::after {
+        content: " *";
+        color: #d33a3a;
+      }
+
+      .readonly-input,
+      .form-input,
+      .form-select {
+        width: 100%;
+        height: 46px;
+        border: 1px solid #cdd5dc;
+        padding: 0 12px;
+        font-size: 16px;
+        color: #334155;
+        background: #fff;
+        outline: none;
+      }
+
+      .readonly-input,
+      .readonly-input[readonly] {
+        background: #e9edf1;
+        color: #60707d;
+      }
+
+      .form-input:focus,
+      .form-select:focus {
+        border-color: #148d67;
+        box-shadow: 0 0 0 2px rgba(20, 141, 103, 0.12);
+      }
+
+      .form-input[readonly],
+      .form-select:disabled {
+        background: #e9edf1;
+        color: #60707d;
+        opacity: 1;
+      }
+
+      .mini-help {
+        font-size: 12px;
+        color: var(--muted);
+        margin-left: 192px;
+        margin-top: 10px;
+        line-height: 1.4;
+      }
+
+      .toast {
+        position: fixed;
+        top: 58px;
+        right: 16px;
+        z-index: 90;
+        min-width: 260px;
+        max-width: min(90vw, 420px);
+        background: #ffffff;
+        border: 1px solid #cce4d8;
+        box-shadow: 0 10px 28px rgba(20, 32, 40, 0.16);
+        border-left: 4px solid #148d67;
+        padding: 12px 14px;
+        display: none;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .toast.show {
+        display: flex;
+        animation: toastIn 0.2s ease;
+      }
+
+      .toast strong {
+        display: block;
+        font-size: 14px;
+        color: #1f2937;
+        margin-bottom: 2px;
+      }
+
+      .toast span {
+        font-size: 13px;
+        color: #5f6b75;
+      }
+
+      @keyframes toastIn {
+        from {
+          transform: translateY(-8px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .modal {
+        width: min(920px, 100%);
+        background: #fff;
+        border-radius: 3px;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid #d8dee4;
+        overflow: hidden;
+      }
+
+      .modal-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid #d8dee4;
+        background: #f5f7f8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .modal-head h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #243038;
+        line-height: 1.1;
+      }
+
+      .modal-body {
+        padding: 14px;
+        max-height: min(78vh, 760px);
+        overflow: auto;
+      }
+
+      .upload-zone {
+        min-height: 160px;
+        border: 2px dashed #b5c3cc;
+        border-radius: 10px;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 28px 20px;
+        gap: 8px;
+        color: #55616d;
+        cursor: pointer;
+        transition:
+          border-color 0.2s ease,
+          background-color 0.2s ease;
+        margin-top: 18px;
+      }
+
+      .upload-zone:hover {
+        border-color: #148d67;
+        background: #f2faf6;
+      }
+
+      .upload-zone.dragover {
+        border-color: #148d67;
+        background: #ecf8f0;
+        color: #145c40;
+      }
+
+      .upload-zone-icon {
+        width: 40px;
+        height: 40px;
+        background: #e8f4ee;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: #148d67;
+        margin-bottom: 4px;
+        flex: 0 0 auto;
+      }
+
+      .upload-zone p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .upload-zone strong {
+        font-size: 14px;
+        color: #243038;
+        display: block;
+      }
+
+      .upload-details {
+        font-size: 12px;
+        color: #8b96a0;
+        margin-top: 2px;
+      }
+
+      .import-file-name {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #243038;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: #f0f4f7;
+        border-radius: 6px;
+      }
+
+      .import-file-name.has-file {
+        background: #e7f4ef;
+        color: #145c40;
+      }
+
+      .download-template-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border: 1px solid #148d67;
+        background: linear-gradient(180deg, #f3fbf6, #e7f4ef);
+        color: #145c40;
+        cursor: pointer;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        transition:
+          background 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .download-template-btn:hover {
+        background: linear-gradient(180deg, #e7f4ef, #d2efe2);
+        box-shadow: 0 2px 8px rgba(20, 141, 103, 0.14);
+      }
+
+      .modal-note {
+        font-size: 12px;
+        color: #6b7680;
+        margin-top: 10px;
+        line-height: 1.6;
+        padding: 8px 12px;
+        background: #f7f9fb;
+        border-left: 3px solid #b5c3cc;
+        border-radius: 0 4px 4px 0;
+      }
+
+      .modal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .modal-grid .field.full {
+        grid-column: 1 / -1;
+      }
+
+      .modal-foot {
+        padding: 14px 20px 16px;
+        border-top: 1px solid #e4eaef;
+        background: #f7f9fb;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .foot-btn {
+        height: 36px;
+        padding: 0 18px;
+        border: 1px solid #c5cfd7;
+        background: linear-gradient(180deg, #fff, #f4f7f9);
+        color: #344049;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        border-radius: 5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition:
+          background 0.14s ease,
+          box-shadow 0.14s ease;
+      }
+
+      .foot-btn:hover {
+        background: linear-gradient(180deg, #f4f7f9, #e8edf1);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      }
+
+      .foot-btn.primary {
+        background: linear-gradient(180deg, #15a06f, #0f8762);
+        border-color: #0f8762;
+        color: #fff;
+      }
+
+      .foot-btn.primary:hover {
+        background: linear-gradient(180deg, #17ad78, #138d67);
+        box-shadow: 0 3px 10px rgba(15, 135, 98, 0.28);
+      }
+
+      .foot-btn.danger {
+        background: linear-gradient(180deg, #ef4444, #dc2626);
+        border-color: #b91c1c;
+        color: #fff;
+      }
+
+      .foot-btn.danger:hover {
+        background: linear-gradient(180deg, #f35555, #e53030);
+        box-shadow: 0 3px 10px rgba(220, 38, 38, 0.28);
+      }
+
+      /* ── Master Data View ─────────────────────────── */
+      #masterView .page-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1a2430;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+      }
+
+      #masterView .page-subtitle {
+        font-size: 13px;
+        color: #6b7680;
+        margin-bottom: 22px;
+      }
+
+      /* ── Modal improvements ───────────────────────── */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 20, 32, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        z-index: 50;
+        backdrop-filter: blur(2px);
+      }
+
+      .modal-backdrop.active {
+        display: flex;
+      }
+
+      .modal {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 24px 60px rgba(10, 20, 32, 0.22);
+        border: 1px solid #dde3e9;
+        overflow: hidden;
+        animation: modalIn 0.18s ease;
+      }
+
+      @keyframes modalIn {
+        from {
+          transform: translateY(10px) scale(0.98);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      .modal-head {
+        padding: 18px 20px 16px;
+        border-bottom: 1px solid #eaeff3;
+        background: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .modal-head h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: #1a2430;
+        line-height: 1.2;
+      }
+
+      .modal-subtitle {
+        margin: 4px 0 0;
+        font-size: 12.5px;
+        color: #6b7680;
+        line-height: 1.4;
+      }
+
+      .modal-close {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #dde3e9;
+        background: #f4f7f9;
+        color: #5a6470;
+        cursor: pointer;
+        border-radius: 6px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        transition: background 0.14s ease;
+      }
+
+      .modal-close:hover {
+        background: #e8edf1;
+        color: #243038;
+      }
+
+      .modal-body {
+        padding: 20px;
+        max-height: min(78vh, 760px);
+        overflow: auto;
+      }
+
+      /* ── Master Modal Form ────────────────────────── */
+      .master-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 20px;
+      }
+
+      .master-form-grid .mf-full {
+        grid-column: 1 / -1;
+      }
+
+      .mf-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .mf-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #48545d;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .mf-label.required::after {
+        content: " *";
+        color: #d33a3a;
+      }
+
+      .mf-input,
+      .mf-select {
+        width: 100%;
+        height: 38px;
+        border: 1px solid #c8d2da;
+        background: #fff;
+        color: #243038;
+        padding: 0 12px;
+        font-size: 14px;
+        border-radius: 5px;
+        outline: none;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .mf-input:focus,
+      .mf-select:focus {
+        border-color: #148d67;
+        box-shadow: 0 0 0 3px rgba(20, 141, 103, 0.1);
+      }
+
+      .mf-input[readonly],
+      .mf-input.readonly-input {
+        background: #f0f4f7;
+        color: #6b7680;
+        cursor: default;
+      }
+
+      .mf-input::placeholder {
+        color: #a8b2bb;
+        font-size: 13px;
+      }
+
+      .mf-section-divider {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 4px 0;
+      }
+
+      .mf-section-divider span {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #8b96a0;
+        white-space: nowrap;
+      }
+
+      .mf-section-divider::before,
+      .mf-section-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e4eaef;
+      }
+
+      /* ── Confirm Modal ────────────────────────────── */
+      .confirm-icon-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 14px;
+        flex: 0 0 auto;
+      }
+
+      .confirm-icon-wrap.danger {
+        background: #fdeaea;
+        color: #da4f4f;
+      }
+
+      .confirm-icon-wrap.warn {
+        background: #fbf3df;
+        color: #d59d19;
+      }
+
+      .confirm-body-text {
+        text-align: center;
+        padding: 4px 8px 8px;
+      }
+
+      .confirm-body-text p {
+        margin: 0 0 8px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a2430;
+        line-height: 1.3;
+      }
+
+      .confirm-body-text span {
+        display: block;
+        font-size: 13px;
+        color: #6b7680;
+        line-height: 1.5;
+      }
+
+      /* search-box styles for master data */
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: #3d4953;
+      }
+
+      .search-input {
+        width: 260px;
+        height: 30px;
+        padding: 0 10px;
+        border: 1px solid #b9c3cb;
+        background: #fff;
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: #148d67;
+        box-shadow: 0 0 0 2px rgba(20, 141, 103, 0.12);
+      }
+
+      /* data-table uses global th/td but need to inherit */
+      .data-table {
+        width: max-content;
+        min-width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .detail-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .detail-card {
+        border: 1px solid #d8dee4;
+        background: #fafcfd;
+        padding: 10px 12px;
+        min-height: 56px;
+      }
+
+      .detail-card span {
+        display: block;
+        font-size: 12px;
+        color: #6b7680;
+        margin-bottom: 4px;
+      }
+
+      .detail-card strong {
+        font-size: 14px;
+        color: #243038;
+        font-weight: 600;
+        word-break: break-word;
+      }
+
+      .history {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .history-item {
+        border-left: 3px solid var(--green);
+        background: #f8fbf9;
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-radius: 2px;
+      }
+
+      .history-item.fail {
+        border-left-color: var(--red);
+        background: #fff8f8;
+      }
+
+      .history-item.info {
+        border-left-color: var(--blue);
+        background: #f6f9fe;
+      }
+
+      .history-item .label {
+        font-weight: 600;
+        color: #263238;
+      }
+
+      .history-item .time {
+        font-size: 12px;
+        color: #6b7680;
+        white-space: nowrap;
+      }
+
+      .icon {
+        width: 14px;
+        height: 14px;
+        flex: 0 0 auto;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .svg-fill {
+        fill: currentColor;
+      }
+
+      .svg-stroke {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      @media (max-width: 1120px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          min-height: auto;
+        }
+
+        .workspace {
+          grid-template-rows: auto minmax(0, 1fr);
+        }
+
+        .topbar {
+          height: auto;
+          min-height: 50px;
+          padding: 10px 16px;
+          flex-wrap: wrap;
+        }
+
+        .topbar-brand {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .content {
+          padding: 18px 16px 22px;
+        }
+
+        .card-head,
+        .filters,
+        .table-tools,
+        .table-shell,
+        .table-footer {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+
+        .filters {
+          grid-template-columns: 1fr;
+        }
+
+        .filter-row,
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .filter-input {
+          width: 100%;
+        }
+
+        .date-range {
+          width: 100%;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .mini-help {
+          margin-left: 0;
+        }
+
+        .modal-grid,
+        .detail-list {
+          grid-template-columns: 1fr;
+        }
+
+        .table-tools {
+          align-items: stretch;
+        }
+
+        .search {
+          width: 100%;
+        }
+
+        .search input {
+          width: 100%;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M3.2 12.4c3.7-3.2 7.5-4.7 11.3-4.4 2.4.2 4.3 1.1 5.8 2.5-1.9.2-3.6.8-5 1.9-1.5 1.1-2.5 2.5-3 4.2-.8-1.1-1.9-1.9-3.5-2.4-1.8-.5-3.8-.6-5.6-.4z" fill="currentColor" opacity=".96" />
+              <path d="M6 8.1C8.6 5.4 11.3 4.1 14 4c2.2-.1 3.8.4 5 1.6-1.8.1-3.4.5-4.9 1.4-1.3.8-2.3 1.8-2.9 3.2-.8-.7-1.8-1.3-3-1.7-1.2-.4-2.4-.4-3.5-.4z" fill="#dff5ea" opacity=".95" />
+            </svg>
+          </div>
+          <div class="brand-copy">
+            <strong>Avian</strong>
+            <span>OEE kaleng</span>
+          </div>
+        </div>
+
+        <div class="sidebar-nav">
+          <div class="nav-group">
+            <div class="nav-group-title">Metal Admin</div>
+            <div class="subnav">
+              <button class="nav-subitem active" id="navReclass" type="button">
+                <span class="nav-icon">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M5 7h14M5 12h14M5 17h14" />
+                  </svg>
+                </span>
+                <span class="nav-text">Reclass RMB</span>
+              </button>
+              <button class="nav-subitem" id="navMaster" type="button">
+                <span class="nav-icon">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 10h16M4 14h8M4 18h8" />
+                    <circle cx="17" cy="17" r="3" />
+                    <path d="m21 21-1.5-1.5" />
+                  </svg>
+                </span>
+                <span class="nav-text">Master Data</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <button class="hamburger-btn" type="button" aria-label="Toggle menu" title="Menu">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: #fff">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          <div class="topbar-tools">
+            <div class="notif" title="Notifications">
+              <svg class="icon svg-fill" viewBox="0 0 24 24" width="13" height="13">
+                <path d="M12 3a5 5 0 0 0-5 5v2.5c0 .7-.2 1.4-.6 2l-1 1.5a1 1 0 0 0 .8 1.6h11.6a1 1 0 0 0 .8-1.6l-1-1.5a3.7 3.7 0 0 1-.6-2V8a5 5 0 0 0-5-5zm0 17a2.5 2.5 0 0 0 2.4-1.8H9.6A2.5 2.5 0 0 0 12 20z" />
+              </svg>
+            </div>
+            <div class="user">
+              <span>IT42 - YURICO SISWAHYUDA PUTRA (0122500)</span>
+              <div class="avatar">Y</div>
+              <span style="font-size: 11px; opacity: 0.92">▾</span>
+            </div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section id="listView" class="page-panel">
+            <div class="page-title">Reclass RMB</div>
+
+            <section class="card">
+              <div class="card-head">
+                <div class="card-title">List Reclass RMB</div>
+                <div class="toolbar">
+                  <button class="tool-btn" id="filterBtn" type="button" title="Apply filter">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                      <path d="M4 5h16l-6 7v5l-4 2v-7L4 5z" />
+                    </svg>
+                    Filter
+                  </button>
+                  <button class="tool-btn" id="reloadBtn" type="button" title="Reset filters">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                      <path d="M4 4v6h6M20 20v-6h-6" />
+                      <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3" />
+                    </svg>
+                    Reload
+                  </button>
+                  <button class="tool-btn primary" id="addBtn" type="button" title="Add new record">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color: #fff">
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              <div class="filters">
+                <div class="filter-row">
+                  <label for="dateStartFilter">Date</label>
+                  <div class="filter-colon">:</div>
+                  <div class="date-range">
+                    <input class="filter-input" id="dateStartFilter" type="date" />
+                    <span>s.d</span>
+                    <input class="filter-input" id="dateEndFilter" type="date" />
+                  </div>
+                </div>
+                <div class="filter-row">
+                  <label for="categoryFilter">Item Category</label>
+                  <div class="filter-colon">:</div>
+                  <select class="filter-input" id="categoryFilter">
+                    <option value="">All categories</option>
+                    <option value="Assembling">Assembling</option>
+                    <option value="Komponen">Komponen</option>
+                    <option value="Cutting">Cutting</option>
+                    <option value="Printing sheet">Printing sheet</option>
+                  </select>
+                </div>
+                <div class="filter-row">
+                  <label for="binFilter">New Bin Code</label>
+                  <div class="filter-colon">:</div>
+                  <select class="filter-input" id="binFilter">
+                    <option value="">All bin codes</option>
+                    <option value="KL-AAP-RMB">KL-AAP-RMB</option>
+                    <option value="GT-AAP-RMB">GT-AAP-RMB</option>
+                    <option value="TD-AAP-RMB">TD-AAP-RMB</option>
+                  </select>
+                </div>
+                <div class="filter-row" style="grid-template-columns: 170px 18px 250px auto 1fr">
+                  <label for="statusLogFilter">Status Log</label>
+                  <div class="filter-colon">:</div>
+                  <select class="filter-input" id="statusLogFilter" style="max-width: 250px">
+                    <option value="">All status</option>
+                    <option value="Sync Sukses">Sync Sukses</option>
+                    <option value="Sync Gagal">Sync Gagal</option>
+                  </select>
+                  <button
+                    id="syncAllBtn"
+                    type="button"
+                    title="Sync semua yang dipilih"
+                    style="
+                      width: 32px;
+                      height: 32px;
+                      border: 1px solid #245fa7;
+                      background: linear-gradient(180deg, #2d76c9, #245fa7);
+                      color: #fff;
+                      cursor: pointer;
+                      display: inline-flex;
+                      align-items: center;
+                      justify-content: center;
+                      border-radius: 3px;
+                      margin-left: 8px;
+                      flex-shrink: 0;
+                    "
+                  >
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24" width="14" height="14" style="color: #fff">
+                      <path d="M4 4v6h6M20 20v-6h-6" />
+                      <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-tools">
+                <div class="show-entries">
+                  Show
+                  <select id="pageSize">
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                  </select>
+                  entries
+                </div>
+                <div class="search">
+                  Search:
+                  <input id="searchInput" type="text" placeholder="Search document, item, status..." />
+                </div>
+              </div>
+
+              <div class="table-shell">
+                <div class="table-scroll">
+                  <table aria-label="Reclass RMB table">
+                    <thead>
+                      <tr>
+                        <th class="select-cell"><input type="checkbox" id="selectAllChk" title="Select all" /></th>
+                        <th style="width: 110px">Action</th>
+                        <th style="width: 128px">No. Dokumen</th>
+                        <th style="width: 88px">Tanggal</th>
+                        <th style="width: 124px">Item No.</th>
+                        <th style="width: 180px">Item Description</th>
+                        <th style="width: 72px">Quantity</th>
+                        <th style="width: 52px">Layer</th>
+                        <th style="width: 100px">Location Code</th>
+                        <th style="width: 108px">Bin Code</th>
+                        <th style="width: 100px">New Location Code</th>
+                        <th style="width: 96px">New Bin Code</th>
+                        <th style="width: 140px">Nama Mesin</th>
+                        <th style="width: 110px">Status</th>
+                        <th style="width: 80px">Note</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="table-footer">
+                <div id="entrySummary">Showing 0 to 0 of 0 entries</div>
+                <div class="pagination">
+                  <button class="page-btn" id="prevPage" type="button">Previous</button>
+                  <button class="page-btn" id="nextPage" type="button">Next</button>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section id="formView" class="page-panel hidden">
+            <div class="page-title">Reclass RMB</div>
+            <section class="form-card">
+              <div class="form-head">
+                <h2>Form Reclass RMB</h2>
+                <div class="form-actions">
+                  <button class="form-action-btn" id="backToListBtn" type="button">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                      <path d="M15 18 9 12l6-6" />
+                    </svg>
+                    Back
+                  </button>
+                  <button class="form-action-btn print" id="formPrintBtn" type="button">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color: #fff">
+                      <path d="M7 9V4h10v5M7 17h10v3H7z" />
+                      <path d="M6 9h12a2 2 0 0 1 2 2v5H18v-2H6v2H4v-5a2 2 0 0 1 2-2z" />
+                    </svg>
+                    Print
+                  </button>
+                  <button class="form-action-btn primary" id="formSaveBtn" type="button">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color: #fff">
+                      <path d="M5 4h11l3 3v13H5z" />
+                      <path d="M8 4v6h8V4M8 20v-6h8v6" />
+                    </svg>
+                    Save
+                  </button>
+                </div>
+              </div>
+              <div class="form-body">
+                <div class="form-grid">
+                  <div class="form-col">
+                    <div class="form-row">
+                      <div class="form-label required">Tanggal</div>
+                      <input id="formDate" class="readonly-input" type="text" readonly />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label required">Item No.</div>
+                      <select id="formItemNo" class="form-select"></select>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label">Item Description</div>
+                      <input id="formDescription" class="readonly-input" type="text" readonly />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label required">Quantity</div>
+                      <input id="formQty" class="form-input" type="text" inputmode="decimal" />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label required">Jumlah Cetak Barcode</div>
+                      <input id="formBarcodeCount" class="form-input" type="text" inputmode="decimal" />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label">Layer per Palet</div>
+                      <input id="formLayerPerPalet" class="form-input" type="text" inputmode="decimal" placeholder="-" />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label">Total Layer</div>
+                      <input id="formTotalLayer" class="form-input readonly-input" type="text" readonly placeholder="-" />
+                    </div>
+                  </div>
+                  <div class="form-col">
+                    <div class="form-row">
+                      <div class="form-label">Location Code</div>
+                      <input id="formLocationCode" class="readonly-input" type="text" readonly />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label">Bin Code</div>
+                      <input id="formBinCode" class="readonly-input" type="text" readonly />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label required">New Location Code</div>
+                      <input id="formNewLocationCode" class="form-input readonly-input" type="text" value="AAP-RMB" readonly />
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label required">New Bin Code</div>
+                      <select id="formNewBinCode" class="form-select">
+                        <option value="">Pilih Bin Code...</option>
+                        <option value="KL-AAP-RMB">KL-AAP-RMB</option>
+                        <option value="GT-AAP-RMB">GT-AAP-RMB</option>
+                        <option value="TD-AAP-RMB">TD-AAP-RMB</option>
+                      </select>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-label required">Nama Mesin</div>
+                      <select id="formMachine" class="form-select">
+                        <option value="">Pilih Mesin...</option>
+                        <option value="Assembling Auto 1">Assembling Auto 1</option>
+                        <option value="Assembling Auto 2">Assembling Auto 2</option>
+                        <option value="Assembling Auto 3">Assembling Auto 3</option>
+                        <option value="Assembling Auto 4">Assembling Auto 4</option>
+                        <option value="Assembling Auto 5">Assembling Auto 5</option>
+                        <option value="Assembling Auto 6">Assembling Auto 6</option>
+                        <option value="Assembling Line 1 (Pail)">Assembling Line 1 (Pail)</option>
+                        <option value="Assembling Line 2 (2.5lt)">Assembling Line 2 (2.5lt)</option>
+                        <option value="Assembling Line 3 (1/2 lt)">Assembling Line 3 (1/2 lt)</option>
+                        <option value="Assembling Line 4 (50cc)">Assembling Line 4 (50cc)</option>
+                        <option value="Assembling Line 5 (25cc)">Assembling Line 5 (25cc)</option>
+                        <option value="Sheetpress 1">Sheetpress 1</option>
+                        <option value="Sheetpress 2">Sheetpress 2</option>
+                        <option value="Strepfeed">Strepfeed</option>
+                        <option value="Manual">Manual</option>
+                        <option value="Cutting">Cutting</option>
+                        <option value="Printing">Printing</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- ═══════════ MASTER DATA VIEW ═══════════ -->
+          <section id="masterView" class="hidden" style="padding: 20px 24px 32px">
+            <div class="page-title" style="margin-bottom: 4px">Master Data Reclass RMB</div>
+            <div style="font-size: 13px; color: #6b7680; margin-bottom: 22px">Kelola referensi item material yang digunakan pada form Reclass RMB.</div>
+
+            <div class="card">
+              <div class="card-head" style="padding: 16px 18px 0">
+                <div class="card-title" style="font-size: 15px">List Master Data</div>
+                <div class="toolbar">
+                  <button class="tool-btn" id="masterExportBtn" type="button" title="Export master data">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                      <path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" />
+                      <path d="M9 9l3-3 3 3" />
+                      <path d="M12 6v9" />
+                    </svg>
+                    Export
+                  </button>
+                  <button class="tool-btn" id="masterImportBtn" type="button" title="Import master data">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                      <path d="M12 5v10" />
+                      <path d="m8 9 4 4 4-4" />
+                      <path d="M4 19h16" />
+                    </svg>
+                    Import
+                  </button>
+                  <button class="tool-btn primary" id="masterAddBtn" type="button" title="Tambah master data">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color: #fff"><path d="M12 5v14M5 12h14" /></svg>
+                    Add Item
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-tools" style="padding: 12px 18px 14px">
+                <div class="show-entries">
+                  Show
+                  <select id="masterPageSizeSelect">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  entries
+                </div>
+                <div class="search-box">
+                  <span style="color: #6b7680">Search:</span>
+                  <input id="masterQuickSearch" class="search-input" type="text" placeholder="Cari item no, deskripsi..." style="width: 280px; border-radius: 4px" />
+                </div>
+              </div>
+
+              <div class="table-shell">
+                <div class="table-scroll">
+                  <table class="data-table" aria-label="Master data table">
+                    <thead>
+                      <tr>
+                        <th style="width: 90px">Action</th>
+                        <th style="width: 150px">Item No.</th>
+                        <th style="min-width: 220px">Item Description</th>
+                        <th style="width: 90px">Base Qty</th>
+                        <th style="width: 56px">Layer</th>
+                        <th style="width: 114px">Location Code</th>
+                        <th style="width: 130px">Bin Code</th>
+                        <th style="width: 114px">New Location Code</th>
+                        <th style="width: 114px">New Bin Code</th>
+                        <th style="width: 140px">Nama Mesin</th>
+                      </tr>
+                    </thead>
+                    <tbody id="masterTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="table-footer" style="padding: 12px 18px 16px">
+                <div id="masterEntrySummary" style="font-size: 13px; color: #6b7680">Showing 0 to 0 of 0 entries</div>
+                <div class="pagination">
+                  <button class="page-btn" id="masterPrevBtn" type="button">Previous</button>
+                  <button class="page-btn" id="masterNextBtn" type="button">Next</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══════════ MASTER DATA MODAL ═══════════ -->
+    <div class="modal-backdrop hidden" id="masterModal">
+      <div class="modal" style="max-width: 540px; width: 100%">
+        <div class="modal-head">
+          <div>
+            <h2 id="masterModalTitle">Add Master Data</h2>
+            <p class="modal-subtitle">Isi semua field dengan benar sebelum menyimpan data.</p>
+          </div>
+          <button class="modal-close" id="masterModalClose" type="button" aria-label="Close">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 22px 24px">
+          <div class="master-form-grid">
+            <!-- Identifikasi Item -->
+            <div class="mf-section-divider"><span>Identifikasi Item</span></div>
+
+            <div class="mf-field mf-full">
+              <label class="mf-label required" for="mfItemNo">Item No.</label>
+              <input id="mfItemNo" class="mf-input" type="text" placeholder="Contoh: 02KM-KAVSY025C" autocomplete="off" />
+            </div>
+            <div class="mf-field mf-full">
+              <label class="mf-label required" for="mfItemDesc">Item Description</label>
+              <input id="mfItemDesc" class="mf-input" type="text" placeholder="Contoh: KL AVIAN SYN 25 CC" autocomplete="off" />
+            </div>
+            <div class="mf-field">
+              <label class="mf-label required" for="mfBaseQty">Base Quantity</label>
+              <input id="mfBaseQty" class="mf-input" type="text" inputmode="decimal" placeholder="Contoh: 41600" />
+            </div>
+            <div class="mf-field">
+              <label class="mf-label required" for="mfLayer">Layer per Palet</label>
+              <input id="mfLayer" class="mf-input" type="text" inputmode="decimal" placeholder="Contoh: 16" />
+            </div>
+
+            <!-- Lokasi Asal -->
+            <div class="mf-section-divider"><span>Lokasi Asal</span></div>
+
+            <div class="mf-field">
+              <label class="mf-label required" for="mfLocationCode">Location Code</label>
+              <input id="mfLocationCode" class="mf-input" type="text" placeholder="Contoh: AAP-RMK-PI" autocomplete="off" />
+            </div>
+            <div class="mf-field">
+              <label class="mf-label required" for="mfBinCode">Bin Code</label>
+              <input id="mfBinCode" class="mf-input" type="text" placeholder="Contoh: KLG-AAP-RMK-PI" autocomplete="off" />
+            </div>
+
+            <!-- Lokasi Tujuan -->
+            <div class="mf-section-divider"><span>Lokasi Tujuan (Reclass)</span></div>
+
+            <div class="mf-field">
+              <label class="mf-label" for="mfNewLocationCode">New Location Code</label>
+              <input id="mfNewLocationCode" class="mf-input" type="text" value="AAP-RMB" readonly />
+            </div>
+            <div class="mf-field">
+              <label class="mf-label required" for="mfNewBinCode">New Bin Code</label>
+              <input id="mfNewBinCode" class="mf-input" type="text" placeholder="Contoh: KL-AAP-RMB" autocomplete="off" />
+            </div>
+            <div class="mf-field mf-field--full">
+              <label class="mf-label required" for="mfMachine">Nama Mesin</label>
+              <select id="mfMachine" class="mf-input">
+                <option value="">Pilih Mesin...</option>
+                <option value="Assembling Auto 1">Assembling Auto 1</option>
+                <option value="Assembling Auto 2">Assembling Auto 2</option>
+                <option value="Assembling Auto 3">Assembling Auto 3</option>
+                <option value="Assembling Auto 4">Assembling Auto 4</option>
+                <option value="Assembling Auto 5">Assembling Auto 5</option>
+                <option value="Assembling Auto 6">Assembling Auto 6</option>
+                <option value="Assembling Line 1 (Pail)">Assembling Line 1 (Pail)</option>
+                <option value="Assembling Line 2 (2.5lt)">Assembling Line 2 (2.5lt)</option>
+                <option value="Assembling Line 3 (1/2 lt)">Assembling Line 3 (1/2 lt)</option>
+                <option value="Assembling Line 4 (50cc)">Assembling Line 4 (50cc)</option>
+                <option value="Assembling Line 5 (25cc)">Assembling Line 5 (25cc)</option>
+                <option value="Sheetpress 1">Sheetpress 1</option>
+                <option value="Sheetpress 2">Sheetpress 2</option>
+                <option value="Strepfeed">Strepfeed</option>
+                <option value="Manual">Manual</option>
+                <option value="Cutting">Cutting</option>
+                <option value="Printing">Printing</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="foot-btn" id="masterModalCancelBtn" type="button">Batal</button>
+          <button class="foot-btn primary" id="masterModalSaveBtn" type="button">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color: #fff">
+              <path d="M5 4h11l3 3v13H5z" />
+              <path d="M8 4v5h8V4M8 20v-5h8v5" />
+            </svg>
+            Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ MASTER DATA IMPORT MODAL ═══════════ -->
+    <div class="modal-backdrop hidden" id="masterImportModal">
+      <div class="modal" style="max-width: 520px; width: 100%">
+        <div class="modal-head">
+          <div>
+            <h2>Import Master Data</h2>
+            <p class="modal-subtitle">Unduh template, isi data, lalu upload kembali ke sistem.</p>
+          </div>
+          <button class="modal-close" id="masterImportClose" type="button" aria-label="Close">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 20px 22px 22px">
+          <div style="background: #f7f9fb; border: 1px solid #e4eaef; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px">
+            <div>
+              <div style="font-size: 13px; font-weight: 600; color: #243038; margin-bottom: 3px">Template Excel</div>
+              <div style="font-size: 12px; color: #6b7680">Format kolom yang dibutuhkan sistem untuk import.</div>
+            </div>
+            <button class="download-template-btn" id="downloadTemplateBtn" type="button">
+              <svg class="icon svg-stroke" viewBox="0 0 24 24" width="16" height="16">
+                <path d="M12 5v10" />
+                <path d="m8 9 4 4 4-4" />
+                <path d="M4 19h16" />
+              </svg>
+              Download
+            </button>
+          </div>
+
+          <label class="upload-zone" id="importDropzone" for="importFileInput">
+            <div class="upload-zone-icon">
+              <svg class="icon svg-stroke" viewBox="0 0 24 24" width="20" height="20">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <path d="m17 8-5-5-5 5" />
+                <path d="M12 3v12" />
+              </svg>
+            </div>
+            <strong>Drag &amp; drop file di sini</strong>
+            <p>atau klik untuk memilih file</p>
+            <p class="upload-details">Mendukung: .xlsx, .csv • Header harus sesuai template</p>
+          </label>
+          <input id="importFileInput" type="file" accept=".xlsx,.csv" class="hidden" />
+
+          <div class="import-file-name" id="importFileName">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24" width="14" height="14" style="color: #8b96a0">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+            </svg>
+            Belum ada file yang dipilih.
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="foot-btn" id="masterImportCancelBtn" type="button">Batal</button>
+          <button class="foot-btn primary" id="masterImportSubmitBtn" type="button">
+            <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color: #fff">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <path d="m17 8-5-5-5 5" />
+              <path d="M12 3v12" />
+            </svg>
+            Upload File
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="confirmModal">
+      <div class="modal" style="max-width: 400px; width: 100%">
+        <div class="modal-head" style="border-bottom: none; padding-bottom: 0">
+          <div style="width: 100%"></div>
+          <button
+            class="modal-close"
+            id="confirmCloseBtn"
+            type="button"
+            aria-label="Close"
+            onclick="
+              document.getElementById('confirmModal').classList.remove('active');
+              document.getElementById('confirmModal').classList.add('hidden');
+            "
+          >
+            <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 8px 24px 24px; text-align: center">
+          <div class="confirm-icon-wrap danger" id="confirmIconWrap">
+            <svg id="confirmIconSvg" class="icon svg-stroke" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M4 7h16" />
+              <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13" />
+            </svg>
+          </div>
+          <div class="confirm-body-text">
+            <p id="confirmModalTitle">Hapus Data?</p>
+            <span id="confirmModalMessage">Apakah Anda yakin ingin menghapus data ini?</span>
+            <span id="confirmModalBody" style="display: block; margin-top: 6px; font-size: 12px; color: #a0aab3"></span>
+          </div>
+        </div>
+        <div class="modal-foot" style="justify-content: center; gap: 10px">
+          <button class="foot-btn" id="confirmCancelBtn" type="button" style="min-width: 100px">Batal</button>
+          <button class="foot-btn danger" id="confirmOkBtn" type="button" style="min-width: 100px">
+            <svg id="confirmOkIcon" class="icon svg-stroke" viewBox="0 0 24 24" style="color: #fff">
+              <path d="M4 7h16" />
+              <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13" />
+            </svg>
+            <span id="confirmOkLabel">Hapus</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">
+      <div>
+        <strong id="toastTitle">Saved</strong>
+        <span id="toastMessage">Data berhasil disimpan.</span>
+      </div>
+    </div>
+
+    <div class="barcode-modal-backdrop" id="barcodeModalBackdrop" aria-hidden="true">
+      <div class="barcode-modal" role="dialog" aria-modal="true" aria-labelledby="barcodeModalTitle">
+        <div class="barcode-modal-head">
+          <div>
+            <h2 id="barcodeModalTitle">Barcode Preview</h2>
+            <p id="barcodeModalSubtitle">Preview label yang akan dicetak.</p>
+          </div>
+          <div class="barcode-modal-actions">
+            <button class="foot-btn primary" id="barcodeDownloadBtn" type="button">Print</button>
+            <button class="foot-btn" id="barcodeCloseBtn" type="button">Close</button>
+          </div>
+        </div>
+        <div class="barcode-modal-body">
+          <div class="barcode-sheet" id="barcodeSheet"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const storageKey = "avian-oee-reclass-rmb-rows";
+      const storageVersion = "v2";
+      const storageVersionKey = "avian-oee-reclass-rmb-version";
+      const today = new Date();
+      const tableBody = document.getElementById("tableBody");
+      const entrySummary = document.getElementById("entrySummary");
+      const prevPageBtn = document.getElementById("prevPage");
+      const nextPageBtn = document.getElementById("nextPage");
+
+      const listView = document.getElementById("listView");
+      const formView = document.getElementById("formView");
+
+      const dateStartFilter = document.getElementById("dateStartFilter");
+      const dateEndFilter = document.getElementById("dateEndFilter");
+      const categoryFilter = document.getElementById("categoryFilter");
+      const binFilter = document.getElementById("binFilter");
+      const statusLogFilter = document.getElementById("statusLogFilter");
+      const searchInput = document.getElementById("searchInput");
+      const pageSizeSelect = document.getElementById("pageSize");
+
+      const formDate = document.getElementById("formDate");
+      const formItemNo = document.getElementById("formItemNo");
+      const formDescription = document.getElementById("formDescription");
+      const formQty = document.getElementById("formQty");
+      const formBarcodeCount = document.getElementById("formBarcodeCount");
+      const formLocationCode = document.getElementById("formLocationCode");
+      const formBinCode = document.getElementById("formBinCode");
+      const formNewLocationCode = document.getElementById("formNewLocationCode");
+      const formNewBinCode = document.getElementById("formNewBinCode");
+      const backToListBtn = document.getElementById("backToListBtn");
+      const formSaveBtn = document.getElementById("formSaveBtn");
+      const formPrintBtn = document.getElementById("formPrintBtn");
+      const barcodeModalBackdrop = document.getElementById("barcodeModalBackdrop");
+      const barcodeModalTitle = document.getElementById("barcodeModalTitle");
+      const barcodeModalSubtitle = document.getElementById("barcodeModalSubtitle");
+      const barcodeSheet = document.getElementById("barcodeSheet");
+      const barcodeDownloadBtn = document.getElementById("barcodeDownloadBtn");
+      const barcodeCloseBtn = document.getElementById("barcodeCloseBtn");
+      const formHeaderTitle = document.querySelector(".form-head h2");
+
+      const toast = document.getElementById("toast");
+      const toastTitle = document.getElementById("toastTitle");
+      const toastMessage = document.getElementById("toastMessage");
+      let toastTimer = null;
+
+      const masterData = [
+        {
+          itemNo: "02KM-KAVSY025C",
+          itemDesc: "KL AVIAN SYN 25 CC",
+          baseQuantity: 41600,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "GT-AAP-RMB",
+          machine: "Assembling Line 5 (25cc)",
+        },
+        {
+          itemNo: "02KM-KAVSY050CB2",
+          itemDesc: "KL AVIAN 50 CC AW-02",
+          baseQuantity: 24000,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 4 (50cc)",
+        },
+        {
+          itemNo: "02KM-KPOLO050C",
+          itemDesc: "KL POLOS 50 CC WC U/HARD",
+          baseQuantity: 24000,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 4 (50cc)",
+        },
+        {
+          itemNo: "02KM-KAVSY100CB6",
+          itemDesc: "KL AVIAN - ALU SYN 100 CC AW-06",
+          baseQuantity: 14400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 4",
+        },
+        {
+          itemNo: "02KM-KAVSY100CB2",
+          itemDesc: "KL AVIAN 100 CC AW-02",
+          baseQuantity: 14400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 4",
+        },
+        {
+          itemNo: "02KM-KPOLO100C",
+          itemDesc: "KL POLOS 100 CC W.COATING",
+          baseQuantity: 14400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 4",
+        },
+        {
+          itemNo: "02KM-KAVNOHEH170G",
+          itemDesc: "KL NONSAG EPOXY HEMAT HARDENER 170G",
+          baseQuantity: 14400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVNOHER170G",
+          itemDesc: "KL NONSAG EPOXY HEMAT RESIN 170G",
+          baseQuantity: 14400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVNOH170G",
+          itemDesc: "KL NONSAG EPOXY SUPER HARDENER 170G",
+          baseQuantity: 14400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVNOR170G",
+          itemDesc: "KL NONSAG EPOXY SUPER RESIN 170G",
+          baseQuantity: 14400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KACSY200C",
+          itemDesc: "KL AVIAN Synthetic Cling 200cc",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 6",
+        },
+        {
+          itemNo: "02KM-KAVSY200CB5",
+          itemDesc: "KL AVIAN 200 CC AW-05",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 6",
+        },
+        {
+          itemNo: "02KM-KAVNOR400GB3",
+          itemDesc: "KL NONSAG EPOXY SUPER RESIN 400G AW-03",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVNOH400GB3",
+          itemDesc: "KL NONSAG EPOXY SUPER HARDENER 400G AW-03",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVLE200CHEHAR",
+          itemDesc: "KLG AVIAN Lem Epoxy Hemat Hardener 170g",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KSULA200CB2",
+          itemDesc: "KL SUZUKA DUCO OTOMOTIF  200 CC",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 6",
+        },
+        {
+          itemNo: "02KM-KAVNOHER400G",
+          itemDesc: "KL NONSAG EPOXY HEMAT RESIN 400G",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVLE200CHEPOX",
+          itemDesc: "KLG AVIAN Lem Epoxy Hemat Resin 170g",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVLE200CPOX",
+          itemDesc: "KLG AVIAN Lem Epoxy Super Resin 170g AW-04",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVLE200CHAR",
+          itemDesc: "KLG AVIAN Lem Epoxy Super Hardener 170g AW-04",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KPOLO200CWC",
+          itemDesc: "KL POLOS 200 CC W.COATING",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 6",
+        },
+        {
+          itemNo: "02KM-KAVSY200CB6",
+          itemDesc: "KL AVIAN - ALU SYN 200 CC AW-06",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 6",
+        },
+        {
+          itemNo: "02KM-KPLCC200C",
+          itemDesc: "KL PLATINUM CLEAR C 200CC",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 6",
+        },
+        {
+          itemNo: "02KM-KAVNOHEH400G",
+          itemDesc: "KL NONSAG EPOXY HEMAT HARDENER 400G",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KADWF400CA",
+          itemDesc: "KL ADMIRAL WOOD FILLER EPOXY A 200gr",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KADWF400CB",
+          itemDesc: "KL ADMIRAL WOOD FILLER EPOXY B 200gr",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KPLHA200C",
+          itemDesc: "KL PLATINUM HARD 200 CC",
+          baseQuantity: 3360,
+          category: "Komponen",
+          layer: 16,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 6",
+        },
+        {
+          itemNo: "02KM-KAVTH500C",
+          itemDesc: "KM AVIAN Thinner 0.5L",
+          baseQuantity: 8100,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KAVSY003L",
+          itemDesc: "KL AVIAN HGE 2.5 LT",
+          baseQuantity: 400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 2 (2.5lt)",
+        },
+        {
+          itemNo: "02KM-KYOPR004KB3",
+          itemDesc: "KL YOKO SP 3.5 KG AW-03",
+          baseQuantity: 400,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KAVSY450CB3",
+          itemDesc: "KL AVIAN 0.45 LT AW-03",
+          baseQuantity: 1995,
+          category: "Komponen",
+          layer: 20,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KYOPR001KB3",
+          itemDesc: "KL YOKO SP 0.7KG AW-03",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KBEZI001KB4",
+          itemDesc: "KL B.Z.CHROMATE 1KG AW-05",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Cutting",
+        },
+        {
+          itemNo: "02KM-KBOPO500CB3",
+          itemDesc: "KL BOYO POLITUR  0.5 LT AW-03",
+          baseQuantity: 1785,
+          category: "Komponen",
+          layer: 18,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KAVSY450CB6",
+          itemDesc: "KL AVIAN - ALU SYN 0.45 LT AW-06",
+          baseQuantity: 1995,
+          category: "Komponen",
+          layer: 20,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KACSY001K",
+          itemDesc: "KL AVIAN Synthetic Cling 0.85L",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KGLSY001K",
+          itemDesc: "KL GLOVIN 0.8 LT AW-01",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 2",
+        },
+        {
+          itemNo: "02KM-KAVSY001LB4",
+          itemDesc: "KL AVIAN H G E  0.9 LT AW-03",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KYOSY001KB4",
+          itemDesc: "KL YOKO BLUE 0.7LT AW-04",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 2",
+        },
+        {
+          itemNo: "02KM-KAVLE001KHAR",
+          itemDesc: "KLG AVIAN Lem Epoxy Super Hardener 800g AW-04",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVLE001KPOX",
+          itemDesc: "KLG AVIAN Lem Epoxy Super Resin 800g AW-04",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KACZI001K",
+          itemDesc: "KL AVIAN Cling Zinc Chromate 1Kg",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KAVLE001KHEPOX",
+          itemDesc: "KLG AVIAN Lem Epoxy Hemat Resin 800g",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVLE001KHEHAR",
+          itemDesc: "KLG AVIAN Lem Epoxy Hemat Hardener 800g",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVSY001LB6",
+          itemDesc: "KL AVIAN - ALU SYN  0.9 LT AW-06",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KZISY001KB2",
+          itemDesc: "KL AV.Z.CHROMATE 1KG AW-05",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KADCK001K",
+          itemDesc: "KL ADMIRAL CAT KAPAL 0.9L",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 2",
+        },
+        {
+          itemNo: "02KM-KAVKA001K",
+          itemDesc: "KLG AVIAN Anti Karat (Avian 3in1)",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KAVTH001K",
+          itemDesc: "KM AVIAN Thinner 1L",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KARTH001LB2",
+          itemDesc: "KL A ARIES TH A 0.8L AW02",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Cutting",
+        },
+        {
+          itemNo: "02KM-KBOPO001LB3",
+          itemDesc: "KL BOYO POLITUR VERNISH SOLVENT BASED 1L",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KAPSY001L3",
+          itemDesc: "KL AVIAN PLATINUM 0.9L AW-03",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Cutting",
+        },
+        {
+          itemNo: "02KM-KBOPM001K",
+          itemDesc: "KL BOYO Politur Melamine 1 L",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KSU41001K",
+          itemDesc: "KALENG SUZUKA EXPOXY FILLER 0.8L AW-00",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KNOLU001L",
+          itemDesc: "KL NO LUMUT SB 1 LT AW-00",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KAVNOH1600GA3",
+          itemDesc: "KL NONSAG EPOXY SUPER HARDENER 1.6KG AW-03",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVNOR1600GA3",
+          itemDesc: "KL NONSAG EPOXY SUPER RESIN 1.6KG AW-03",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVRL001K",
+          itemDesc: "KL AVIA Road Line Paint 1 KG AW-00",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KINCO001KB3",
+          itemDesc: "KL IND COATING 1KG AW-02",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 1",
+        },
+        {
+          itemNo: "02KM-KADFO001K",
+          itemDesc: "KL ADMIRAL ANTI FOULING 1KG",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Cutting",
+        },
+        {
+          itemNo: "02KM-KAVFI001K",
+          itemDesc: "KL Avian Epoxy Filler 0.8L",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVNOHEH1600G",
+          itemDesc: "KL NONSAG EPOXY HEMAT HARDENER 1.6KG",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KAVNOHER1600G",
+          itemDesc: "KL NONSAG EPOXY HEMAT RESIN 1.6KG",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Manual",
+        },
+        {
+          itemNo: "02KM-KSULA001KB2",
+          itemDesc: "KL SUZUKA DUCO OTOMOTIF 1 KG",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KPOLO001LWC",
+          itemDesc: "KL POLOS 1 LTR W.COATING",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 1",
+        },
+        {
+          itemNo: "02KM-KWOWO001KA2",
+          itemDesc: "KL WOOD-ECO Woodstain Solvent 0.9 LT  AW-02",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KPLCC001L",
+          itemDesc: "KL PLATINUM CLEAR C 0.8LT",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 2",
+        },
+        {
+          itemNo: "02KM-KADTH001KSG",
+          itemDesc: "KL ADMIRAL THINNER SERBAGUNA 1L",
+          baseQuantity: 1260,
+          category: "Komponen",
+          layer: 13,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KAVTH005K",
+          itemDesc: "KM AVIAN Thinner 5L",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KBEZI005KB4",
+          itemDesc: "KL B.Z.CHROMMATE5KG AW-04",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KAVRL005K",
+          itemDesc: "KL AVIA Road Line Paint 5 KG AW-00",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KADFO005K",
+          itemDesc: "KL ADMIRAL ANTI FOULING 5KG",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KAVPA005KS",
+          itemDesc: "KALENG AVIAN Paving Paint Solvent 5 KG",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KABRO003L",
+          itemDesc: "KL ABSOLUTE ROOF C.2.5 LT",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 2 (2.5lt)",
+        },
+        {
+          itemNo: "02KM-KYOSY004LB2",
+          itemDesc: "KL YOKO BLUE 3.5L AW-02",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KZISY005KB1",
+          itemDesc: "KL AV.Z.CHROMATE 3.6 KG",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 1",
+        },
+        {
+          itemNo: "02KM-KACSY005K",
+          itemDesc: "KL AVIAN Synthetic Cling 3.4L",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KACZI005K",
+          itemDesc: "KL AVIAN Cling Zinc Chromate 5Kg",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KAVSY005KB3",
+          itemDesc: "KL AVIAN HGE 3.6LT AW-03",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Cutting",
+        },
+        {
+          itemNo: "02KM-KINCO005KB1",
+          itemDesc: "KL IND COATING 5KG AW-02",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 1",
+        },
+        {
+          itemNo: "02KM-KASTH005LC4",
+          itemDesc: "KL AV.TH ASPECIAL 5L AW-04",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KSATH005LC3",
+          itemDesc: "KL TH SPEC.ARIES 4L AW-03",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KSUTH005LC5",
+          itemDesc: "KL AVIA TH SUPER 5L AW-05",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KARTH005LC3",
+          itemDesc: "KL TH.A ARIES 4LT AW-03",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "TD-AAP-RMB",
+          machine: "Cutting",
+        },
+        {
+          itemNo: "02KM-KPOLO005K",
+          itemDesc: "KL POLOS 5KG WC",
+          baseQuantity: 273,
+          category: "Komponen",
+          layer: 8,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Sheetpress 1",
+        },
+        {
+          itemNo: "02KM-KPOPU025K",
+          itemDesc: "PAIL POLOS 25 KG W.COAT",
+          baseQuantity: 240,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 1 (Pail)",
+        },
+        {
+          itemNo: "02KM-KACZI020K",
+          itemDesc: "PAIL AVIAN Cling Zinc Chromate 20Kg",
+          baseQuantity: 240,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 1 (Pail)",
+        },
+        {
+          itemNo: "02KM-KBEZI025KB3",
+          itemDesc: "P.B.Z.CHROMATE 20KG AW-03",
+          baseQuantity: 240,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KZISY025K",
+          itemDesc: "KL AVIAN ZINC CHROMATE 25 KG",
+          baseQuantity: 240,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 3",
+        },
+        {
+          itemNo: "02KM-KACSY020KP",
+          itemDesc: "KL AVIAN Synthetic Cling 17L",
+          baseQuantity: 240,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Auto 2",
+        },
+        {
+          itemNo: "02KM-KAVSY020L",
+          itemDesc: "PAIL AV.KY&BESI 18L AW-00",
+          baseQuantity: 240,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 1 (Pail)",
+        },
+        {
+          itemNo: "02KM-KSULA025K",
+          itemDesc: "PAIL SUZUKA LACQUER",
+          baseQuantity: 240,
+          category: "Komponen",
+          layer: 1,
+          locationCode: "AAP-RMK-PI",
+          binCode: "KLG-AAP-RMK-PI",
+          newLocationCode: "AAP-RMB",
+          newBinCode: "KL-AAP-RMB",
+          machine: "Assembling Line 1 (Pail)",
+        },
+      ];
+
+      const filterBtn = document.getElementById("filterBtn");
+      const reloadBtn = document.getElementById("reloadBtn");
+      const addBtn = document.getElementById("addBtn");
+      const syncAllBtn = document.getElementById("syncAllBtn");
+      const selectAllChk = document.getElementById("selectAllChk");
+      let selectedIds = new Set();
+
+      let rows = loadRows();
+      let filteredRows = null;
+      let currentPage = 1;
+      let editingId = null;
+      let formMode = "add";
+      let activeRowId = null;
+      let printReadyRowId = null;
+
+      function buildDocumentNo(dateValue, sequence = 1) {
+        const date = new Date(dateValue || new Date());
+        const year = date.getFullYear();
+        const number = String(sequence).padStart(5, "0");
+        return `DOC/RMB/${year}/${number}`;
+      }
+
+      function getMasterItem(itemNo) {
+        return masterData.find((item) => item.itemNo === itemNo) || null;
+      }
+
+      function toDateInputValue(value) {
+        const date = new Date(value);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      function formatFormDate(value) {
+        return new Intl.DateTimeFormat("id-ID", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }).format(new Date(value));
+      }
+
+      function normalizeNumber(value) {
+        return Number(String(value ?? "").replace(/[^0-9.-]/g, "")) || 0;
+      }
+
+      function formatQty(value) {
+        const numericValue = Number(value || 0);
+        return new Intl.NumberFormat("id-ID").format(numericValue);
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(
+          /[&<>"']/g,
+          (char) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[char],
+        );
+      }
+
+      function hashString(input) {
+        let hash = 0;
+        const text = String(input || "");
+        for (let i = 0; i < text.length; i += 1) {
+          hash = (hash << 5) - hash + text.charCodeAt(i);
+          hash |= 0;
+        }
+        return Math.abs(hash);
+      }
+
+      function createBarcodeInner(seed) {
+        const size = 21;
+        const cell = 6;
+        const padding = 2;
+        const hash = hashString(seed);
+        const cells = [];
+
+        const inFinderZone = (x, y) => (x <= 6 && y <= 6) || (x >= 14 && y <= 6) || (x <= 6 && y >= 14);
+
+        for (let y = 0; y < size; y += 1) {
+          for (let x = 0; x < size; x += 1) {
+            if (inFinderZone(x, y)) continue;
+            const bit = ((hash >> ((x + 3 * y) % 24)) ^ (x * 13 + y * 17 + hash)) & 1;
+            if (bit) {
+              cells.push(`<rect x="${padding + x * cell}" y="${padding + y * cell}" width="${cell}" height="${cell}" fill="#111"/>`);
+            }
+          }
+        }
+
+        const renderFinder = (x, y) => `
+        <rect x="${padding + x * cell}" y="${padding + y * cell}" width="${cell * 7}" height="${cell * 7}" fill="#111"/>
+        <rect x="${padding + (x + 1) * cell}" y="${padding + (y + 1) * cell}" width="${cell * 5}" height="${cell * 5}" fill="#fff"/>
+        <rect x="${padding + (x + 2) * cell}" y="${padding + (y + 2) * cell}" width="${cell * 3}" height="${cell * 3}" fill="#111"/>
+      `;
+
+        return `
+        ${cells.join("")}
+        ${renderFinder(0, 0)}
+        ${renderFinder(14, 0)}
+        ${renderFinder(0, 14)}
+      `;
+      }
+
+      function createBarcodeSvg(seed) {
+        return `
+        <svg viewBox="0 0 ${21 * 6 + 4} ${21 * 6 + 4}" width="100%" height="100%" role="img" aria-label="Barcode">
+          <rect width="100%" height="100%" fill="#fff"/>
+          ${createBarcodeInner(seed)}
+        </svg>
+      `;
+      }
+
+      function getBarcodeContextRow() {
+        return getRowById(editingId || printReadyRowId || activeRowId) || null;
+      }
+
+      function getPrintSourceRow() {
+        const row = getBarcodeContextRow();
+        if (row) return row;
+        const master = getMasterItem(formItemNo.value || "");
+        if (!master) return null;
+        return {
+          documentNo: buildDocumentNo(new Date(), 1),
+          date: new Date().toISOString(),
+          itemNo: formItemNo.value || master.itemNo,
+          description: formDescription.value || master.itemDesc,
+          quantityPerBarcode: normalizeNumber(formQty.value) || master.baseQuantity,
+          barcodeCount: Math.max(1, normalizeNumber(formBarcodeCount.value) || 1),
+          quantity: (normalizeNumber(formQty.value) || master.baseQuantity) * Math.max(1, normalizeNumber(formBarcodeCount.value) || 1),
+          layer: master.layer || 1,
+          locationCode: formLocationCode.value || master.locationCode,
+          binCode: formBinCode.value || master.binCode,
+          newLocationCode: formNewLocationCode.value || master.newLocationCode,
+          newBinCode: formNewBinCode.value || master.newBinCode,
+        };
+      }
+
+      function buildBarcodeSheetHtml(row) {
+        const total = Math.max(1, normalizeNumber(row.barcodeCount || 1));
+        const quantityLine = `${formatQty(row.quantityPerBarcode || row.quantity || 0)}/${row.layer || 1}`;
+        return Array.from({ length: total }, (_, index) => {
+          const seed = `${row.itemNo}|${row.documentNo || ""}|${row.newBinCode || ""}|${index}`;
+          return `
+          <article class="barcode-label">
+            <h3>Bentuk Barcode</h3>
+            <div class="barcode-mark">${createBarcodeSvg(seed)}</div>
+            <div class="barcode-lines">
+              <strong>${escapeHtml(formatDisplayDate(row.date))}</strong>
+              <div>${escapeHtml(row.itemNo || "-")}</div>
+              <div>${escapeHtml(row.description || "-")}</div>
+              <div>${escapeHtml(quantityLine)}</div>
+              <div>${escapeHtml(row.machine || "-")}</div>
+            </div>
+          </article>
+        `;
+        }).join("");
+      }
+
+      function buildBarcodeSheetSvg(row) {
+        const total = Math.max(1, normalizeNumber(row.barcodeCount || 1));
+        const labelWidth = 320;
+        const labelHeight = 460;
+        const gap = 18;
+        const cols = 3;
+        const rowsNeeded = Math.ceil(total / cols);
+        const width = cols * labelWidth + (cols - 1) * gap;
+        const height = rowsNeeded * labelHeight + Math.max(0, rowsNeeded - 1) * gap;
+        const quantityLine = `${formatQty(row.quantityPerBarcode || row.quantity || 0)}/${row.layer || 1}`;
+
+        const labelSvg = (col, rowIndex, index) => {
+          const x = col * (labelWidth + gap);
+          const y = rowIndex * (labelHeight + gap);
+          const seed = `${row.itemNo}|${row.documentNo || ""}|${row.newBinCode || ""}|${index}`;
+          const barcodeSvg = createBarcodeInner(seed);
+          return `
+          <g transform="translate(${x}, ${y})">
+            <rect x="0" y="0" width="${labelWidth}" height="${labelHeight}" fill="#fff" stroke="#111" stroke-width="2"/>
+            <text x="${labelWidth / 2}" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111">Bentuk Barcode</text>
+            <rect x="22" y="40" width="${labelWidth - 44}" height="160" fill="#fff" stroke="#111" stroke-width="2"/>
+            <g transform="translate(56, 60) scale(0.72)">
+              ${barcodeSvg}
+            </g>
+            <text x="${labelWidth / 2}" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#111">${escapeXml(formatDisplayDate(row.date))}</text>
+            <text x="${labelWidth / 2}" y="266" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#111">${escapeXml(row.itemNo || "-")}</text>
+            <text x="${labelWidth / 2}" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#111">${escapeXml(row.description || "-")}</text>
+            <text x="${labelWidth / 2}" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#111">${escapeXml(quantityLine)}</text>
+            <text x="${labelWidth / 2}" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#555">${escapeXml(row.machine || "-")}</text>
+          </g>
+        `;
+        };
+
+        const escapeXml = (value) =>
+          String(value ?? "").replace(
+            /[&<>"']/g,
+            (char) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&apos;",
+              })[char],
+          );
+
+        return `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+          <rect width="100%" height="100%" fill="#fff"/>
+          ${Array.from({ length: total }, (_, index) => {
+            const col = index % cols;
+            const rowIndex = Math.floor(index / cols);
+            return labelSvg(col, rowIndex, index);
+          }).join("")}
+        </svg>
+      `;
+      }
+
+      function openBarcodeModal() {
+        const row = getPrintSourceRow();
+        if (!row) {
+          alert("Pilih item terlebih dahulu sebelum print barcode.");
+          return;
+        }
+
+        barcodeModalTitle.textContent = `Barcode Preview - ${row.itemNo}`;
+        barcodeModalSubtitle.textContent = `${row.documentNo || "-"} • ${Math.max(1, normalizeNumber(row.barcodeCount || 1))} label`;
+        barcodeSheet.innerHTML = buildBarcodeSheetHtml(row);
+        barcodeModalBackdrop.classList.add("active");
+        barcodeModalBackdrop.setAttribute("aria-hidden", "false");
+
+        barcodeDownloadBtn.onclick = () => {
+          const svg = buildBarcodeSheetSvg(row);
+          const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const anchor = document.createElement("a");
+          anchor.href = url;
+          anchor.download = `${(row.documentNo || row.itemNo || "barcode").replace(/[^a-z0-9_-]+/gi, "_")}.svg`;
+          document.body.appendChild(anchor);
+          anchor.click();
+          anchor.remove();
+          URL.revokeObjectURL(url);
+        };
+      }
+
+      function closeBarcodeModal() {
+        barcodeModalBackdrop.classList.remove("active");
+        barcodeModalBackdrop.setAttribute("aria-hidden", "true");
+      }
+
+      function showToast(title, message) {
+        toastTitle.textContent = title;
+        toastMessage.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2200);
+      }
+
+      function defaultRows() {
+        const now = new Date();
+        const mockConfigs = [
+          // Row 1: Sync Gagal, lewat H+1 → merah, View + Sync saja (no edit/delete)
+          { daysAgo: 3, status: "Sync Gagal", note: "" },
+          // Row 2: Sync Gagal, masih H+1 → merah, View + Sync + Edit + Delete
+          { daysAgo: 1, status: "Sync Gagal", note: "" },
+          // Row 3: Sync Sukses, masih H+1 → View + Sync + Edit + Delete
+          { daysAgo: 0, status: "Sync Sukses", note: "Sync Auto" },
+          // Row 4: Sync Sukses, lewat H+1 → View only
+          { daysAgo: 4, status: "Sync Sukses", note: "Sync Auto" },
+          // Row 5: Belum sync, masih H+1 → View + Sync + Edit + Delete
+          { daysAgo: 0, status: "", note: "" },
+        ];
+        return masterData.slice(0, 5).map((item, index) => {
+          const cfg = mockConfigs[index];
+          const date = new Date(now);
+          date.setDate(now.getDate() - cfg.daysAgo);
+          const barcodeCount = index % 2 === 0 ? 1 : 2;
+          const quantityPerBarcode = item.baseQuantity;
+          const quantity = quantityPerBarcode * barcodeCount;
+          const statusLog = cfg.status ? [{ text: cfg.status, note: cfg.note, at: date.toISOString() }] : [];
+          return {
+            id: createId(),
+            documentNo: buildDocumentNo(date, index + 1),
+            date: date.toISOString(),
+            itemNo: item.itemNo,
+            description: item.itemDesc,
+            quantityPerBarcode,
+            barcodeCount,
+            quantity,
+            layer: item.layer,
+            locationCode: item.locationCode,
+            binCode: item.binCode,
+            newLocationCode: item.newLocationCode,
+            newBinCode: item.newBinCode,
+            category: item.category,
+            updatedAt: date.toISOString(),
+            notes: "",
+            statusLog,
+          };
+        });
+      }
+
+      function normalizeRow(row, index = 0) {
+        const master = getMasterItem(row.itemNo) || {};
+        const quantityPerBarcode = normalizeNumber(row.quantityPerBarcode ?? row.quantity ?? master.baseQuantity);
+        const barcodeCount = Math.max(1, normalizeNumber(row.barcodeCount ?? 1));
+        const date = row.date || row.updatedAt || new Date().toISOString();
+        const documentNo = row.documentNo || row.document || buildDocumentNo(date, index + 1);
+        const latestStatus =
+          Array.isArray(row.statusLog) && row.statusLog.length
+            ? row.statusLog[row.statusLog.length - 1]
+            : {
+                text: row.status || "Sync Sukses",
+                note: "Sync Auto",
+                at: row.updatedAt || new Date().toISOString(),
+              };
+
+        return {
+          id: row.id || createId(),
+          documentNo,
+          date,
+          itemNo: row.itemNo || master.itemNo || "",
+          description: row.description || master.itemDesc || "",
+          quantityPerBarcode,
+          barcodeCount,
+          quantity: normalizeNumber(row.quantity) || quantityPerBarcode * barcodeCount,
+          layer: row.layer ?? master.layer ?? 1,
+          locationCode: row.locationCode || master.locationCode || "",
+          binCode: row.binCode || master.binCode || "",
+          newLocationCode: row.newLocationCode || master.newLocationCode || "",
+          newBinCode: row.newBinCode || master.newBinCode || "",
+          machine: row.machine || master.machine || "",
+          category: row.category || master.category || "Komponen",
+          updatedAt: row.updatedAt || date,
+          notes: row.notes || "",
+          statusLog: [latestStatus],
+        };
+      }
+
+      function loadRows() {
+        try {
+          const savedVersion = localStorage.getItem(storageVersionKey);
+          if (savedVersion !== storageVersion) {
+            localStorage.removeItem(storageKey);
+            localStorage.setItem(storageVersionKey, storageVersion);
+            return defaultRows();
+          }
+          const raw = localStorage.getItem(storageKey);
+          if (raw === null) {
+            return defaultRows();
+          }
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed.map((row, index) => normalizeRow(row, index)) : [];
+        } catch (error) {
+          return defaultRows();
+        }
+      }
+
+      function saveRows() {
+        localStorage.setItem(storageKey, JSON.stringify(rows));
+      }
+
+      function formatDisplayDate(value) {
+        return new Intl.DateTimeFormat("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(new Date(value));
+      }
+
+      function formatDisplayDateTime(value) {
+        return new Intl.DateTimeFormat("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date(value));
+      }
+
+      function getStatusTone(status) {
+        const lowered = String(status || "").toLowerCase();
+        if (lowered.includes("gagal")) return "fail";
+        return "success";
+      }
+
+      function canEdit(row) {
+        const rowDate = new Date(row.date);
+        const midnightNow = new Date();
+        midnightNow.setHours(0, 0, 0, 0);
+        const midnightRow = new Date(rowDate);
+        midnightRow.setHours(0, 0, 0, 0);
+        const diffDays = Math.floor((midnightNow - midnightRow) / 86400000);
+        return diffDays <= 1;
+      }
+
+      function createId() {
+        return `row_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+      }
+
+      function setActiveView(viewName) {
+        const showForm = viewName === "form";
+        listView.classList.toggle("hidden", showForm);
+        formView.classList.toggle("hidden", !showForm);
+      }
+
+      function setFormReadonly(isReadonly) {
+        formItemNo.disabled = isReadonly;
+        formQty.readOnly = isReadonly;
+        formBarcodeCount.readOnly = isReadonly;
+        formLayerPerPalet.readOnly = isReadonly;
+        formMachine.disabled = isReadonly;
+        formLocationCode.readOnly = true;
+        formBinCode.readOnly = true;
+        formNewLocationCode.readOnly = true; // always readonly
+        formNewBinCode.disabled = isReadonly;
+        if (isReadonly) {
+          formQty.classList.add("readonly-input");
+          formBarcodeCount.classList.add("readonly-input");
+          formLayerPerPalet.classList.add("readonly-input");
+          formNewLocationCode.classList.add("readonly-input");
+          formNewBinCode.classList.add("readonly-input");
+        } else {
+          formQty.classList.remove("readonly-input");
+          formBarcodeCount.classList.remove("readonly-input");
+          formLayerPerPalet.classList.remove("readonly-input");
+          formNewLocationCode.classList.remove("readonly-input");
+          formNewBinCode.classList.remove("readonly-input");
+        }
+      }
+
+      function resetFormState() {
+        formDate.value = formatFormDate(new Date());
+        formItemNo.innerHTML = `
+        <option value="">Pilih Item No...</option>
+        ${masterData.map((item) => `<option value="${item.itemNo}">${item.itemNo}</option>`).join("")}
+      `;
+        formItemNo.value = "";
+        formDescription.value = "";
+        formQty.value = "";
+        formBarcodeCount.value = "";
+        formLayerPerPalet.value = "";
+        formTotalLayer.value = "";
+        formMachine.value = "";
+        formLocationCode.value = "";
+        formBinCode.value = "";
+        formNewLocationCode.value = "";
+        formNewBinCode.value = "";
+        formPrintBtn.style.display = "none";
+        printReadyRowId = null;
+      }
+
+      function updateTotalLayer() {
+        const layerPerPalet = parseFloat(formLayerPerPalet.value) || 0;
+        const barcodeCount = parseFloat(formBarcodeCount.value) || 0;
+        formTotalLayer.value = layerPerPalet && barcodeCount ? String(layerPerPalet * barcodeCount) : "-";
+      }
+
+      function fillLayerFromMaster() {
+        const master = getMasterItem(formItemNo.value);
+        formLayerPerPalet.value = master && master.layer ? String(master.layer) : "";
+        updateTotalLayer();
+      }
+
+      function fillFormFromMaster(itemNo) {
+        const master = getMasterItem(itemNo) || masterData[0];
+        if (!itemNo || !master) {
+          formDescription.value = "";
+          formQty.value = "";
+          formBarcodeCount.value = "";
+          formLayerPerPalet.value = "";
+          formTotalLayer.value = "";
+          formLocationCode.value = "";
+          formBinCode.value = "";
+          formNewLocationCode.value = "";
+          formNewBinCode.value = "";
+          formMachine.value = "";
+          return;
+        }
+
+        formDescription.value = master.itemDesc;
+        formQty.value = String(master.baseQuantity);
+        formBarcodeCount.value = "1";
+        formLocationCode.value = master.locationCode;
+        formBinCode.value = master.binCode;
+        formNewLocationCode.value = master.newLocationCode;
+        formNewBinCode.value = master.newBinCode;
+        formMachine.value = master.machine || "";
+        fillLayerFromMaster();
+      }
+
+      function openFormPage(mode, row = null) {
+        formMode = mode;
+        editingId = row ? row.id : null;
+        activeRowId = row ? row.id : null;
+        setActiveView("form");
+        resetFormState();
+        formHeaderTitle.textContent = mode === "view" ? "View Reclass RMB" : mode === "edit" ? "Edit Reclass RMB" : "Add Reclass RMB";
+
+        if (row) {
+          formDate.value = formatFormDate(row.date);
+          formItemNo.value = row.itemNo;
+          fillFormFromMaster(row.itemNo);
+          formQty.value = String(row.quantityPerBarcode ?? row.quantity ?? "");
+          formBarcodeCount.value = String(row.barcodeCount ?? 1);
+          updateTotalLayer();
+          formMachine.value = row.machine || "";
+          formLocationCode.value = row.locationCode;
+          formBinCode.value = row.binCode;
+          formNewLocationCode.value = row.newLocationCode;
+          formNewBinCode.value = row.newBinCode;
+          formDescription.value = row.description;
+        } else {
+          fillFormFromMaster(formItemNo.value);
+        }
+
+        setFormReadonly(mode === "view");
+        formSaveBtn.style.display = mode === "view" ? "none" : "inline-flex";
+        formPrintBtn.style.display = mode === "add" ? "none" : "inline-flex";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function applyFilters() {
+        const selectedStartDate = dateStartFilter.value;
+        const selectedEndDate = dateEndFilter.value;
+        const selectedCategory = categoryFilter.value;
+        const selectedBin = binFilter.value;
+        const selectedStatus = statusLogFilter.value;
+        const keyword = searchInput.value.trim().toLowerCase();
+
+        filteredRows = rows.filter((row) => {
+          const currentDate = toDateInputValue(row.date);
+          const dateMatch = (!selectedStartDate || currentDate >= selectedStartDate) && (!selectedEndDate || currentDate <= selectedEndDate);
+          const categoryMatch = !selectedCategory || row.category === selectedCategory;
+          const binMatch = !selectedBin || row.newBinCode === selectedBin;
+          const latestStatus = row.statusLog?.[row.statusLog.length - 1]?.text || "";
+          const statusMatch = !selectedStatus || latestStatus === selectedStatus;
+          const searchable = [
+            row.documentNo,
+            formatDisplayDate(row.date),
+            row.itemNo,
+            row.description,
+            row.category,
+            String(row.layer),
+            row.locationCode,
+            row.binCode,
+            row.newLocationCode,
+            row.newBinCode,
+            row.statusLog.map((item) => item.text).join(" "),
+          ]
+            .join(" ")
+            .toLowerCase();
+          const keywordMatch = !keyword || searchable.includes(keyword);
+          return dateMatch && categoryMatch && binMatch && statusMatch && keywordMatch;
+        });
+
+        currentPage = 1;
+        renderTable();
+      }
+
+      function resetFilters() {
+        dateStartFilter.value = "";
+        dateEndFilter.value = "";
+        categoryFilter.value = "";
+        binFilter.value = "";
+        statusLogFilter.value = "";
+        searchInput.value = "";
+        pageSizeSelect.value = "10";
+        currentPage = 1;
+        filteredRows = null;
+        renderTable();
+      }
+
+      function renderStatusCell(row) {
+        const latest = row.statusLog?.[row.statusLog.length - 1];
+        if (!latest?.text) return '<span style="color:#bbb;font-size:11px;">-</span>';
+        const tone = getStatusTone(latest.text);
+        return `<div class="status-stack"><span class="status-pill ${tone}">${latest.text}</span><div class="status-meta">${formatDisplayDateTime(latest.at || row.updatedAt)}</div></div>`;
+      }
+
+      function renderNoteCell(row) {
+        const latest = row.statusLog?.[row.statusLog.length - 1];
+        if (!latest || !latest.text || latest.text.toLowerCase().includes("gagal")) return '<span style="color:#bbb;font-size:11px;">-</span>';
+        const note = latest?.note || "-";
+        const isAuto = note.toLowerCase().includes("auto");
+        const isManual = note.toLowerCase().includes("manual");
+        const label = isAuto ? "Sync Auto" : isManual ? "Sync Manual" : note;
+        const color = isAuto ? "#6c757d" : "#245fa7";
+        return `<span style="font-size:11px;font-weight:600;color:${color};white-space:nowrap;">${label}</span>`;
+      }
+
+      function renderTable() {
+        let activeRows = filteredRows === null ? [...rows] : [...filteredRows];
+        // Sort failed rows to top (Change 7)
+        activeRows.sort((a, b) => {
+          const aFailed = (a.statusLog?.[a.statusLog.length - 1]?.text || "").toLowerCase().includes("gagal");
+          const bFailed = (b.statusLog?.[b.statusLog.length - 1]?.text || "").toLowerCase().includes("gagal");
+          if (aFailed && !bFailed) return -1;
+          if (!aFailed && bFailed) return 1;
+          return 0;
+        });
+        const pageSize = Number(pageSizeSelect.value || 10);
+        const totalRows = activeRows.length;
+        const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+        currentPage = Math.min(Math.max(currentPage, 1), totalPages);
+        const start = (currentPage - 1) * pageSize;
+        const pageRows = activeRows.slice(start, start + pageSize);
+
+        if (totalRows === 0) {
+          tableBody.innerHTML = `
+          <tr class="empty-row">
+            <td colspan="14">No data available in table</td>
+          </tr>
+        `;
+        } else {
+          tableBody.innerHTML = pageRows
+            .map((row, index) => {
+              const editable = canEdit(row);
+              const isFailed = (row.statusLog?.[row.statusLog.length - 1]?.text || "").toLowerCase().includes("gagal");
+              const rowClass = isFailed ? "row-failed" : "";
+              const isChecked = selectedIds.has(row.id) ? "checked" : "";
+              return `
+            <tr class="${rowClass}">
+              <td class="select-cell"><input type="checkbox" class="row-select-chk" data-id="${row.id}" ${isChecked} /></td>
+              <td class="action-cell">
+                <div class="action-group">
+                  <button class="action-chip view" type="button" data-action="view" data-id="${row.id}" aria-label="View" title="View">
+                    <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                      <path d="M2.5 12s3.6-6.5 9.5-6.5S21.5 12 21.5 12 17.9 18.5 12 18.5 2.5 12 2.5 12z"/>
+                      <circle cx="12" cy="12" r="2.8"/>
+                    </svg>
+                  </button>
+                  ${isFailed || editable || !row.statusLog?.length ? '<button class="action-chip info" type="button" data-action="resync" data-id="' + row.id + '" aria-label="Resync" title="Resync"><svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M4 4v6h6M20 20v-6h-6"/><path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3"/></svg></button>' : ""}
+                  ${
+                    editable
+                      ? `
+                    <button class="action-chip edit" type="button" data-action="edit" data-id="${row.id}" aria-label="Edit" title="Edit">
+                      <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                        <path d="M3 17.25V21h3.75L19 8.75l-3.75-3.75L3 17.25z"/>
+                        <path d="M14.25 5 19 9.75"/>
+                      </svg>
+                    </button>
+                    <button class="action-chip danger" type="button" data-action="delete" data-id="${row.id}" aria-label="Delete" title="Delete">
+                      <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                        <path d="M4 7h16"/>
+                        <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/>
+                      </svg>
+                    </button>
+                  `
+                      : ""
+                  }
+                </div>
+              </td>
+              <td>${row.documentNo || row.document || buildDocumentNo(row.date, start + index + 1)}</td>
+              <td>${formatDisplayDate(row.date)}</td>
+              <td>${row.itemNo}</td>
+              <td>${row.description}</td>
+              <td>${formatQty(row.quantity)}</td>
+              <td>${row.layer}</td>
+              <td>${row.locationCode}</td>
+              <td>${row.binCode}</td>
+              <td>${row.newLocationCode}</td>
+              <td>${row.newBinCode}</td>
+              <td>${row.machine || "-"}</td>
+              <td>${renderStatusCell(row)}</td>
+              <td>${renderNoteCell(row)}</td>
+            </tr>
+          `;
+            })
+            .join("");
+        }
+
+        const from = totalRows === 0 ? 0 : start + 1;
+        const to = Math.min(start + pageSize, totalRows);
+        entrySummary.textContent = `Showing ${from} to ${to} of ${totalRows} entries`;
+        prevPageBtn.disabled = currentPage <= 1;
+        nextPageBtn.disabled = currentPage >= totalPages;
+      }
+
+      function persistAndRender() {
+        saveRows();
+        applyFilters();
+      }
+
+      function getNextDocumentNumber(dateValue, excludeId = null) {
+        const year = new Date(dateValue || new Date()).getFullYear();
+        const sameYearCount =
+          rows.filter((row) => {
+            if (excludeId && row.id === excludeId) return false;
+            return new Date(row.date).getFullYear() === year;
+          }).length + 1;
+        return buildDocumentNo(dateValue, sameYearCount);
+      }
+
+      function syncFormWithItem(itemNo) {
+        if (!itemNo) {
+          fillFormFromMaster("");
+          return;
+        }
+
+        const master = getMasterItem(itemNo) || masterData[0];
+        formDescription.value = master.itemDesc;
+        formQty.value = String(master.baseQuantity);
+        formBarcodeCount.value = "1";
+        formLocationCode.value = master.locationCode;
+        formBinCode.value = master.binCode;
+        formNewLocationCode.value = master.newLocationCode;
+        formNewBinCode.value = master.newBinCode;
+        formMachine.value = master.machine || "";
+        fillLayerFromMaster();
+      }
+
+      function handleSave() {
+        const master = getMasterItem(formItemNo.value) || masterData[0];
+        const quantityPerBarcode = normalizeNumber(formQty.value);
+        const barcodeCount = Math.max(1, normalizeNumber(formBarcodeCount.value) || 1);
+        const totalQuantity = quantityPerBarcode * barcodeCount;
+        const now = new Date();
+        const existingRow = editingId ? rows.find((entry) => entry.id === editingId) : null;
+        const payload = {
+          documentNo: existingRow ? existingRow.documentNo : getNextDocumentNumber(now, null),
+          date: now.toISOString(),
+          category: master.category,
+          itemNo: formItemNo.value.trim(),
+          description: formDescription.value.trim() || master.itemDesc,
+          quantityPerBarcode,
+          barcodeCount,
+          quantity: totalQuantity,
+          layer: master.layer,
+          locationCode: formLocationCode.value.trim(),
+          binCode: formBinCode.value.trim(),
+          newLocationCode: formNewLocationCode.value.trim(),
+          newBinCode: formNewBinCode.value,
+          machine: formMachine.value,
+          updatedAt: now.toISOString(),
+        };
+
+        if (!payload.itemNo || !payload.description || !payload.locationCode || !payload.binCode || !payload.newLocationCode) {
+          alert("Please complete the required fields first.");
+          return;
+        }
+
+        if (formMode === "edit" && editingId) {
+          const row = rows.find((entry) => entry.id === editingId);
+          if (!row) return;
+          Object.assign(row, payload);
+          row.statusLog = [
+            {
+              text: "Sync Sukses",
+              note: "Sync Auto",
+              at: now.toISOString(),
+            },
+          ];
+          row.updatedAt = now.toISOString();
+          printReadyRowId = row.id;
+        } else {
+          const newRow = normalizeRow({
+            id: createId(),
+            ...payload,
+            statusLog: [
+              {
+                text: "Sync Sukses",
+                note: "Sync Auto",
+                at: now.toISOString(),
+              },
+            ],
+          });
+          rows.unshift(newRow);
+          editingId = newRow.id;
+          printReadyRowId = newRow.id;
+        }
+
+        formPrintBtn.style.display = "inline-flex";
+        formMode = "edit";
+        persistAndRender();
+        showToast("Saved", "Data berhasil disimpan ke tabel utama.");
+      }
+
+      function getRowById(id) {
+        return rows.find((row) => row.id === id);
+      }
+
+      function handleTableAction(event) {
+        const button = event.target.closest("[data-action]");
+        if (!button) return;
+
+        const action = button.dataset.action;
+        const row = getRowById(button.dataset.id);
+        if (!row) return;
+
+        if (action === "view") {
+          openFormPage("view", row);
+          return;
+        }
+
+        if (action === "resync") {
+          const stamp = new Date().toISOString();
+          row.statusLog = [
+            {
+              text: "Sync Sukses",
+              note: "Sync Manual",
+              at: stamp,
+            },
+          ];
+          row.updatedAt = stamp;
+          persistAndRender();
+          return;
+        }
+
+        if ((action === "edit" || action === "delete") && !canEdit(row)) {
+          alert("Edit/delete hanya tersedia sebelum H+1.");
+          return;
+        }
+
+        if (action === "edit") {
+          openFormPage("edit", row);
+          return;
+        }
+
+        if (action === "delete") {
+          const confirmed = confirm(`Delete ${row.itemNo}?`);
+          if (!confirmed) return;
+          rows = rows.filter((entry) => entry.id !== row.id);
+          persistAndRender();
+        }
+      }
+
+      document.querySelector(".table-shell").addEventListener("click", handleTableAction);
+
+      filterBtn.addEventListener("click", applyFilters);
+      reloadBtn.addEventListener("click", resetFilters);
+      addBtn.addEventListener("click", () => {
+        openFormPage("add");
+      });
+      backToListBtn.addEventListener("click", () => {
+        setActiveView("list");
+        if (printReadyRowId) {
+          const row = getRowById(printReadyRowId);
+          if (row) {
+            editingId = row.id;
+          }
+        }
+      });
+      formSaveBtn.addEventListener("click", handleSave);
+      formPrintBtn.addEventListener("click", openBarcodeModal);
+      formItemNo.addEventListener("change", (event) => {
+        syncFormWithItem(event.target.value);
+      });
+      formQty.addEventListener("input", () => {
+        // Keep the field editable after autofill.
+      });
+
+      prevPageBtn.addEventListener("click", () => {
+        currentPage = Math.max(1, currentPage - 1);
+        renderTable();
+      });
+
+      nextPageBtn.addEventListener("click", () => {
+        currentPage += 1;
+        renderTable();
+      });
+
+      pageSizeSelect.addEventListener("change", () => {
+        currentPage = 1;
+        renderTable();
+      });
+
+      searchInput.addEventListener("input", () => {
+        applyFilters();
+      });
+
+      [dateStartFilter, dateEndFilter, categoryFilter, binFilter, statusLogFilter].forEach((control) => {
+        control.addEventListener("change", applyFilters);
+      });
+
+      barcodeCloseBtn.addEventListener("click", closeBarcodeModal);
+      barcodeModalBackdrop.addEventListener("click", (event) => {
+        if (event.target === barcodeModalBackdrop) {
+          closeBarcodeModal();
+        }
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeBarcodeModal();
+        }
+      });
+
+      formBarcodeCount.addEventListener("input", () => {
+        updateTotalLayer();
+      });
+
+      formLayerPerPalet.addEventListener("input", () => {
+        updateTotalLayer();
+      });
+
+      // Select/deselect all checkboxes
+      selectAllChk.addEventListener("change", () => {
+        const activeRows = filteredRows === null ? rows : filteredRows;
+        if (selectAllChk.checked) {
+          activeRows.forEach((row) => selectedIds.add(row.id));
+        } else {
+          activeRows.forEach((row) => selectedIds.delete(row.id));
+        }
+        renderTable();
+      });
+
+      // Handle individual row checkbox via event delegation
+      tableBody.addEventListener("change", (event) => {
+        const chk = event.target.closest(".row-select-chk");
+        if (!chk) return;
+        const id = chk.dataset.id;
+        if (chk.checked) {
+          selectedIds.add(id);
+        } else {
+          selectedIds.delete(id);
+          selectAllChk.checked = false;
+        }
+      });
+
+      // Sync All Selected
+      syncAllBtn.addEventListener("click", () => {
+        if (selectedIds.size === 0) {
+          alert("Tidak ada baris yang dipilih. Centang baris terlebih dahulu.");
+          return;
+        }
+        const stamp = new Date().toISOString();
+        let syncedCount = 0;
+        rows.forEach((row) => {
+          if (selectedIds.has(row.id)) {
+            row.statusLog = [{ text: "Sync Sukses", note: "Sync Manual", at: stamp }];
+            row.updatedAt = stamp;
+            syncedCount++;
+          }
+        });
+        selectedIds.clear();
+        selectAllChk.checked = false;
+        persistAndRender();
+        showToast("Sync All", syncedCount + " data berhasil di-sync.");
+      });
+
+      // ═══════════ MASTER DATA LOGIC ═══════════
+
+      const masterStorageKey = "avian-oee-master-data-overrides";
+      let masterRows = loadMasterRows();
+      let masterFilteredRows = null;
+      let masterCurrentPage = 1;
+      let masterPageSize = 10;
+      let masterEditingItemNo = null; // null = add mode, string = edit mode
+
+      function loadMasterRows() {
+        try {
+          const raw = localStorage.getItem(masterStorageKey);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              // If cached data is missing machine field, merge from masterData
+              const needsMigration = parsed.some((r) => !r.machine);
+              if (needsMigration) {
+                const migrated = parsed.map((r) => {
+                  const master = masterData.find((m) => m.itemNo === r.itemNo);
+                  return { ...r, machine: r.machine || (master && master.machine) || "" };
+                });
+                localStorage.setItem(masterStorageKey, JSON.stringify(migrated));
+                return migrated;
+              }
+              return parsed;
+            }
+          }
+        } catch (e) {}
+        // Fall back to masterData from Excel
+        return masterData.map((m) => ({ ...m }));
+      }
+
+      function saveMasterRows() {
+        localStorage.setItem(masterStorageKey, JSON.stringify(masterRows));
+      }
+
+      function getMasterPageRows() {
+        const source = masterFilteredRows !== null ? masterFilteredRows : masterRows;
+        const start = (masterCurrentPage - 1) * masterPageSize;
+        return { pageRows: source.slice(start, start + masterPageSize), total: source.length };
+      }
+
+      function renderMasterTable() {
+        const { pageRows, total } = getMasterPageRows();
+        const source = masterFilteredRows !== null ? masterFilteredRows : masterRows;
+        const start = (masterCurrentPage - 1) * masterPageSize;
+        const end = Math.min(start + masterPageSize, total);
+
+        masterTableBody.innerHTML =
+          pageRows.length === 0
+            ? '<tr><td colspan="10" style="text-align:center;color:#6b7680;font-size:14px;padding:24px 10px;">No data available in table</td></tr>'
+            : pageRows
+                .map(
+                  (row) => `
+          <tr>
+            <td class="action-cell">
+              <div class="action-group">
+                <button class="action-chip edit" type="button" data-master-action="edit" data-item-no="${row.itemNo}" aria-label="Edit" title="Edit">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M3 17.25V21h3.75L19 8.75l-3.75-3.75L3 17.25z"/>
+                    <path d="M14.25 5 19 9.75"/>
+                  </svg>
+                </button>
+                <button class="action-chip danger" type="button" data-master-action="delete" data-item-no="${row.itemNo}" aria-label="Delete" title="Delete">
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+            <td>${row.itemNo}</td>
+            <td>${row.itemDesc}</td>
+            <td>${Number(row.baseQuantity).toLocaleString("id-ID")}</td>
+            <td>${row.layer}</td>
+            <td>${row.locationCode}</td>
+            <td>${row.binCode}</td>
+            <td>${row.newLocationCode}</td>
+            <td>${row.newBinCode}</td>
+            <td>${row.machine || "-"}</td>
+          </tr>`,
+                )
+                .join("");
+
+        masterEntrySummary.textContent = total === 0 ? "Showing 0 to 0 of 0 entries" : `Showing ${start + 1} to ${end} of ${total} entries`;
+
+        masterPrevBtn.disabled = masterCurrentPage <= 1;
+        masterNextBtn.disabled = end >= total;
+      }
+
+      function applyMasterFilter() {
+        const keyword = masterQuickSearch.value.trim().toLowerCase();
+        if (!keyword) {
+          masterFilteredRows = null;
+        } else {
+          masterFilteredRows = masterRows.filter((row) => [row.itemNo, row.itemDesc, row.binCode, row.newBinCode, row.locationCode].join(" ").toLowerCase().includes(keyword));
+        }
+        masterCurrentPage = 1;
+        renderMasterTable();
+      }
+
+      function openMasterModal(itemNo = null) {
+        masterEditingItemNo = itemNo;
+        masterModalTitle.textContent = itemNo ? "Edit Master Data" : "Add Master Data";
+        if (itemNo) {
+          const row = masterRows.find((r) => r.itemNo === itemNo);
+          if (row) {
+            mfItemNo.value = row.itemNo;
+            mfItemNo.readOnly = true;
+            mfItemNo.classList.add("readonly-input");
+            mfItemDesc.value = row.itemDesc;
+            mfBaseQty.value = row.baseQuantity;
+            mfLayer.value = row.layer;
+            mfLocationCode.value = row.locationCode;
+            mfBinCode.value = row.binCode;
+            mfNewLocationCode.value = row.newLocationCode;
+            mfNewBinCode.value = row.newBinCode;
+            document.getElementById("mfMachine").value = row.machine || "";
+          }
+        } else {
+          mfItemNo.value = "";
+          mfItemNo.readOnly = false;
+          mfItemNo.classList.remove("readonly-input");
+          mfItemDesc.value = "";
+          mfBaseQty.value = "";
+          mfLayer.value = "";
+          mfLocationCode.value = "";
+          mfBinCode.value = "";
+          mfNewLocationCode.value = "AAP-RMB";
+          mfNewBinCode.value = "";
+        }
+        masterModal.classList.remove("hidden");
+        masterModal.classList.add("active");
+      }
+
+      function closeMasterModal() {
+        masterModal.classList.add("hidden");
+        masterModal.classList.remove("active");
+      }
+
+      function saveMasterModal() {
+        const itemNo = mfItemNo.value.trim();
+        const itemDesc = mfItemDesc.value.trim();
+        const baseQty = parseFloat(mfBaseQty.value) || 0;
+        const layer = parseFloat(mfLayer.value) || 0;
+        const locationCode = mfLocationCode.value.trim();
+        const binCode = mfBinCode.value.trim();
+        const newLocationCode = mfNewLocationCode.value.trim();
+        const newBinCode = mfNewBinCode.value.trim();
+
+        if (!itemNo || !itemDesc || !baseQty || !layer || !locationCode || !binCode || !newBinCode || !machine) {
+          alert("Semua field wajib diisi.");
+          return;
+        }
+
+        if (masterEditingItemNo) {
+          openConfirmModal("Konfirmasi Ubah Master Data", `Simpan perubahan untuk item \"${itemNo}\"?`, "Perubahan ini akan menggantikan nilai lama.", persistMasterModal, "confirm");
+        } else {
+          persistMasterModal();
+        }
+      }
+
+      function persistMasterModal() {
+        const itemNo = mfItemNo.value.trim();
+        const itemDesc = mfItemDesc.value.trim();
+        const baseQty = parseFloat(mfBaseQty.value) || 0;
+        const layer = parseFloat(mfLayer.value) || 0;
+        const locationCode = mfLocationCode.value.trim();
+        const binCode = mfBinCode.value.trim();
+        const newLocationCode = mfNewLocationCode.value.trim();
+        const newBinCode = mfNewBinCode.value.trim();
+
+        if (masterEditingItemNo) {
+          const idx = masterRows.findIndex((r) => r.itemNo === masterEditingItemNo);
+          if (idx >= 0) masterRows[idx] = { ...masterRows[idx], itemDesc, baseQuantity: baseQty, layer, locationCode, binCode, newLocationCode, newBinCode, machine };
+        } else {
+          if (masterRows.find((r) => r.itemNo === itemNo)) {
+            alert("Item No. sudah ada di master data.");
+            return;
+          }
+          masterRows.push({ itemNo, itemDesc, baseQuantity: baseQty, category: "Komponen", layer, locationCode, binCode, newLocationCode, newBinCode });
+        }
+
+        saveMasterRows();
+        renderMasterTable();
+        closeMasterModal();
+        showToast("Master Data", masterEditingItemNo ? "Data berhasil diperbarui." : "Data baru berhasil ditambahkan.");
+      }
+
+      // Master data element refs
+      const masterView = document.getElementById("masterView");
+      const masterTableBody = document.getElementById("masterTableBody");
+      const masterEntrySummary = document.getElementById("masterEntrySummary");
+      const masterPrevBtn = document.getElementById("masterPrevBtn");
+      const masterNextBtn = document.getElementById("masterNextBtn");
+      const masterPageSizeSelect = document.getElementById("masterPageSizeSelect");
+      const masterQuickSearch = document.getElementById("masterQuickSearch");
+      const masterAddBtn = document.getElementById("masterAddBtn");
+      const masterExportBtn = document.getElementById("masterExportBtn");
+      const masterImportBtn = document.getElementById("masterImportBtn");
+      const masterModal = document.getElementById("masterModal");
+      const masterModalTitle = document.getElementById("masterModalTitle");
+      const masterModalClose = document.getElementById("masterModalClose");
+      const masterModalCancelBtn = document.getElementById("masterModalCancelBtn");
+      const masterModalSaveBtn = document.getElementById("masterModalSaveBtn");
+      const masterImportModal = document.getElementById("masterImportModal");
+      const masterImportClose = document.getElementById("masterImportClose");
+      const masterImportCancelBtn = document.getElementById("masterImportCancelBtn");
+      const masterImportSubmitBtn = document.getElementById("masterImportSubmitBtn");
+      const downloadTemplateBtn = document.getElementById("downloadTemplateBtn");
+      const importFileInput = document.getElementById("importFileInput");
+      const importDropzone = document.getElementById("importDropzone");
+      const importFileName = document.getElementById("importFileName");
+      const confirmModal = document.getElementById("confirmModal");
+      const confirmModalTitle = document.getElementById("confirmModalTitle");
+      const confirmModalMessage = document.getElementById("confirmModalMessage");
+      const confirmModalBody = document.getElementById("confirmModalBody");
+      const confirmOkBtn = document.getElementById("confirmOkBtn");
+      const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+      const mfItemNo = document.getElementById("mfItemNo");
+      const mfItemDesc = document.getElementById("mfItemDesc");
+      const mfBaseQty = document.getElementById("mfBaseQty");
+      const mfLayer = document.getElementById("mfLayer");
+      const mfLocationCode = document.getElementById("mfLocationCode");
+      const mfBinCode = document.getElementById("mfBinCode");
+      const mfNewLocationCode = document.getElementById("mfNewLocationCode");
+      const mfNewBinCode = document.getElementById("mfNewBinCode");
+
+      // Nav switching
+      const navReclass = document.getElementById("navReclass");
+      const navMaster = document.getElementById("navMaster");
+
+      function setActiveNav(view) {
+        navReclass.classList.toggle("active", view === "reclass");
+        navMaster.classList.toggle("active", view === "master");
+        listView.classList.toggle("hidden", view !== "reclass" || false);
+        formView.classList.toggle("hidden", true);
+        masterView.classList.toggle("hidden", view !== "master");
+        if (view === "reclass") {
+          setActiveView("list");
+        }
+      }
+
+      navReclass.addEventListener("click", () => setActiveNav("reclass"));
+      navMaster.addEventListener("click", () => {
+        setActiveNav("master");
+        renderMasterTable();
+      });
+
+      masterAddBtn.addEventListener("click", () => openMasterModal(null));
+      masterExportBtn.addEventListener("click", exportMasterRows);
+      masterImportBtn.addEventListener("click", openMasterImportModal);
+      masterModalClose.addEventListener("click", closeMasterModal);
+      masterModalCancelBtn.addEventListener("click", closeMasterModal);
+      masterModalSaveBtn.addEventListener("click", saveMasterModal);
+
+      masterImportClose.addEventListener("click", closeMasterImportModal);
+      masterImportCancelBtn.addEventListener("click", closeMasterImportModal);
+      masterImportSubmitBtn.addEventListener("click", submitMasterImport);
+      importFileInput.addEventListener("change", handleImportSelection);
+
+      masterQuickSearch.addEventListener("input", applyMasterFilter);
+
+      importDropzone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        importDropzone.classList.add("dragover");
+      });
+      importDropzone.addEventListener("dragleave", () => importDropzone.classList.remove("dragover"));
+      importDropzone.addEventListener("drop", (event) => {
+        event.preventDefault();
+        importDropzone.classList.remove("dragover");
+        const file = event.dataTransfer.files[0];
+        if (file) {
+          importFileInput.files = event.dataTransfer.files;
+          handleImportSelection();
+        }
+      });
+
+      masterPageSizeSelect.addEventListener("change", () => {
+        masterPageSize = parseInt(masterPageSizeSelect.value);
+        masterCurrentPage = 1;
+        renderMasterTable();
+      });
+
+      function formatCsvRow(values) {
+        return values.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",");
+      }
+
+      function downloadFile(filename, content, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      }
+
+      function exportMasterRows() {
+        const header = ["item_no", "item_description", "base_quantity", "layer", "location_code", "bin_code", "new_location_code", "new_bin_code"];
+        const rows = masterRows.map((row) => [row.itemNo, row.itemDesc, row.baseQuantity, row.layer, row.locationCode, row.binCode, row.newLocationCode, row.newBinCode]);
+        const csv = [formatCsvRow(header), ...rows.map(formatCsvRow)].join("\r\n");
+        downloadFile("master-data-export.xlsx", csv, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;");
+        showToast("Export", "File master data berhasil diunduh.");
+      }
+
+      function downloadTemplateExcel() {
+        const header = ["item_no", "item_description", "base_quantity", "layer", "location_code", "bin_code", "new_location_code", "new_bin_code"];
+        const csv = formatCsvRow(header) + "\r\n";
+        downloadFile("master-data-template.xlsx", csv, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;");
+        showToast("Template", "Template Excel berhasil diunduh.");
+      }
+
+      function openMasterImportModal() {
+        masterImportModal.classList.remove("hidden");
+        masterImportModal.classList.add("active");
+        importFileInput.value = "";
+        importFileName.textContent = "Belum ada file yang dipilih.";
+      }
+
+      function closeMasterImportModal() {
+        masterImportModal.classList.add("hidden");
+        masterImportModal.classList.remove("active");
+      }
+
+      function handleImportSelection() {
+        const file = importFileInput.files[0];
+        if (!file) {
+          importFileName.textContent = "Belum ada file yang dipilih.";
+          return;
+        }
+        importFileName.textContent = file.name;
+      }
+
+      function openConfirmModal(title, message, body, callback, type = "delete") {
+        confirmModalTitle.textContent = title;
+        confirmModalMessage.textContent = message;
+        confirmModalBody.textContent = body;
+
+        const iconWrap = document.getElementById("confirmIconWrap");
+        const iconSvg = document.getElementById("confirmIconSvg");
+        const okBtn = confirmOkBtn;
+        const okLabel = document.getElementById("confirmOkLabel");
+        const okIcon = document.getElementById("confirmOkIcon");
+
+        if (type === "confirm") {
+          // Teal/save style
+          iconWrap.className = "confirm-icon-wrap";
+          iconWrap.style.background = "#e7f4ef";
+          iconWrap.style.color = "#148d67";
+          iconSvg.innerHTML = `<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h8V4M8 20v-5h8v5"/>`;
+          okBtn.className = "foot-btn primary";
+          okLabel.textContent = "Simpan";
+          okIcon.innerHTML = `<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h8V4M8 20v-5h8v5"/>`;
+        } else {
+          // Default: danger/delete style
+          iconWrap.className = "confirm-icon-wrap danger";
+          iconWrap.style.background = "";
+          iconWrap.style.color = "";
+          iconSvg.innerHTML = `<path d="M4 7h16"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/>`;
+          okBtn.className = "foot-btn danger";
+          okLabel.textContent = "Hapus";
+          okIcon.innerHTML = `<path d="M4 7h16"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/>`;
+        }
+
+        confirmOkBtn.onclick = () => {
+          callback();
+          closeConfirmModal();
+        };
+        confirmModal.classList.remove("hidden");
+        confirmModal.classList.add("active");
+      }
+
+      function closeConfirmModal() {
+        confirmModal.classList.add("hidden");
+        confirmModal.classList.remove("active");
+        confirmOkBtn.onclick = null;
+      }
+
+      function submitMasterImport() {
+        const file = importFileInput.files[0];
+        if (!file) {
+          alert("Pilih file template Excel terlebih dahulu.");
+          return;
+        }
+        if (!/\.(xlsx|csv)$/i.test(file.name)) {
+          alert("Format file tidak didukung. Gunakan .xlsx atau .csv.");
+          return;
+        }
+        closeMasterImportModal();
+        showToast("Import", `File ${file.name} berhasil diunggah. Proses parsing akan dilakukan oleh backend.`);
+      }
+
+      downloadTemplateBtn.addEventListener("click", downloadTemplateExcel);
+      confirmCancelBtn.addEventListener("click", closeConfirmModal);
+
+      importDropzone.addEventListener("click", () => importFileInput.click());
+
+      // End master data import/export controls
+
+      masterPrevBtn.addEventListener("click", () => {
+        if (masterCurrentPage > 1) {
+          masterCurrentPage--;
+          renderMasterTable();
+        }
+      });
+      masterNextBtn.addEventListener("click", () => {
+        const total = masterFilteredRows !== null ? masterFilteredRows.length : masterRows.length;
+        if (masterCurrentPage * masterPageSize < total) {
+          masterCurrentPage++;
+          renderMasterTable();
+        }
+      });
+
+      masterTableBody.addEventListener("click", (e) => {
+        const editBtn = e.target.closest('[data-master-action="edit"]');
+        const delBtn = e.target.closest('[data-master-action="delete"]');
+        if (editBtn) {
+          openMasterModal(editBtn.dataset.itemNo);
+        }
+        if (delBtn) {
+          const itemNo = delBtn.dataset.itemNo;
+          openConfirmModal("Konfirmasi Hapus Master Data", `Hapus master data \"${itemNo}\"?`, "Tindakan ini tidak dapat dibatalkan.", () => {
+            masterRows = masterRows.filter((r) => r.itemNo !== itemNo);
+            saveMasterRows();
+            applyMasterFilter();
+            showToast("Master Data", "Data berhasil dihapus.");
+          });
+        }
+      });
+
+      // ═══════════ END MASTER DATA ═══════════
+
+      setActiveView("list");
+      filteredRows = null;
+      renderTable();
+    </script>
+  </body>
+</html>
