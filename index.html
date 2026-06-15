@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Avian OEE Kaleng - Reclass RMB</title>
+  <title>Avian OEE Kaleng - Cetak LPN</title>
   <style>
     :root {
       --bg: #edf1f4;
@@ -625,6 +625,77 @@
 
     tbody tr.row-failed:hover td {
       background: #ffe0e0 !important;
+    }
+
+    tbody tr.row-reclass td {
+      background: #f0e8f8 !important;
+    }
+
+    tbody tr.row-reclass:hover td {
+      background: #e8ddf4 !important;
+    }
+
+    tbody tr.row-failed.row-reclass td {
+      background: #fff0f0 !important;
+    }
+
+    tbody tr.row-failed.row-reclass:hover td {
+      background: #ffe0e0 !important;
+    }
+
+    .lpn-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 20px;
+      margin: -8px 0 16px;
+      padding: 10px 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+    }
+
+    .lpn-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .lpn-legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .lpn-legend-swatch.reclass {
+      background: #f0e8f8;
+    }
+
+    .lpn-legend-swatch.non-reclass {
+      background: #ffffff;
+    }
+
+    .lpn-type-info {
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #1e4d8c;
+      font-weight: 500;
+    }
+
+    .lpn-type-info.hidden {
+      display: none;
+    }
+
+    .form-lpn-type-block {
+      grid-column: 1 / -1;
+      margin-bottom: 4px;
     }
 
     .action-cell {
@@ -1881,7 +1952,7 @@
                   <path d="M5 7h14M5 12h14M5 17h14"/>
                 </svg>
               </span>
-              <span class="nav-text">Reclass RMB</span>
+              <span class="nav-text">Cetak LPN</span>
             </button>
             <button class="nav-subitem" id="navMaster" type="button">
               <span class="nav-icon">
@@ -1922,11 +1993,22 @@
 
       <main class="content">
         <section id="listView" class="page-panel">
-          <div class="page-title">Reclass RMB</div>
+          <div class="page-title">Cetak LPN</div>
+
+          <div class="lpn-legend" aria-label="Petunjuk warna jenis LPN">
+            <span class="lpn-legend-item">
+              <span class="lpn-legend-swatch reclass" aria-hidden="true"></span>
+              Reclass RMB (Auto-reclass H+1 Jam 13:00)
+            </span>
+            <span class="lpn-legend-item">
+              <span class="lpn-legend-swatch non-reclass" aria-hidden="true"></span>
+              Non-Reclass (Komponen / Cutting / Sheet)
+            </span>
+          </div>
 
           <section class="card">
             <div class="card-head">
-              <div class="card-title">List Reclass RMB</div>
+              <div class="card-title">List Cetak LPN</div>
               <div class="toolbar">
                 <button class="tool-btn" id="filterBtn" type="button" title="Apply filter">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24">
@@ -2018,7 +2100,7 @@
 
             <div class="table-shell">
               <div class="table-scroll">
-                <table aria-label="Reclass RMB table">
+                <table aria-label="Cetak LPN table">
                   <thead>
                   <tr>
                       <th class="select-cell"><input type="checkbox" id="selectAllChk" title="Select all" /></th>
@@ -2034,6 +2116,7 @@
                       <th style="width:100px;">New Location Code</th>
                       <th style="width:96px;">New Bin Code</th>
                       <th style="width:140px;">Nama Mesin</th>
+                      <th style="width:130px;">Operator QC</th>
                       <th style="width:110px;">Status</th>
                       <th style="width:80px;">Note</th>
                     </tr>
@@ -2054,10 +2137,10 @@
         </section>
 
         <section id="formView" class="page-panel hidden">
-          <div class="page-title">Reclass RMB</div>
+          <div class="page-title">Cetak LPN</div>
           <section class="form-card">
             <div class="form-head">
-              <h2>Form Reclass RMB</h2>
+              <h2>Form Cetak LPN</h2>
               <div class="form-actions">
                 <button class="form-action-btn" id="backToListBtn" type="button">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24">
@@ -2083,6 +2166,16 @@
             </div>
             <div class="form-body">
               <div class="form-grid">
+                <div class="form-row form-lpn-type-block">
+                  <div class="form-label required">Jenis LPN</div>
+                  <div>
+                    <select id="formLpnType" class="form-select">
+                      <option value="reclass">Reclass RMB</option>
+                      <option value="non-reclass">Non-Reclass</option>
+                    </select>
+                    <div id="formLpnTypeInfo" class="lpn-type-info">Data akan auto-reclass otomatis pada H+1 jam 13.00</div>
+                  </div>
+                </div>
                 <div class="form-col">
                   <div class="form-row">
                     <div class="form-label required">Tanggal</div>
@@ -2163,7 +2256,7 @@
                     </select>
                   </div>
                   <div class="form-row">
-                    <div class="form-label required">Nama Operator</div>
+                    <div class="form-label required">Nama Operator QC</div>
                     <select id="formOperator" class="form-select">
                       <option value="">Pilih Operator...</option>
                       <option value="13260341">Endrik Saputra (13260341)</option>
@@ -2488,7 +2581,7 @@
 
   <script>
     const storageKey = "avian-oee-reclass-rmb-rows";
-    const storageVersion = "v2";
+    const storageVersion = "v3";
     const storageVersionKey = "avian-oee-reclass-rmb-version";
     const today = new Date();
     const tableBody = document.getElementById("tableBody");
@@ -2516,6 +2609,10 @@
     const formBinCode = document.getElementById("formBinCode");
     const formNewLocationCode = document.getElementById("formNewLocationCode");
     const formNewBinCode = document.getElementById("formNewBinCode");
+    const formLpnType = document.getElementById("formLpnType");
+    const formLpnTypeInfo = document.getElementById("formLpnTypeInfo");
+    const formNewLocationRow = document.getElementById("formNewLocationCode")?.closest(".form-row");
+    const formNewBinRow = document.getElementById("formNewBinCode")?.closest(".form-row");
     const backToListBtn = document.getElementById("backToListBtn");
     const formSaveBtn = document.getElementById("formSaveBtn");
     const formPrintBtn = document.getElementById("formPrintBtn");
@@ -2532,6 +2629,90 @@
     const toastMessage = document.getElementById("toastMessage");
     let toastTimer = null;
     const formCard = document.querySelector("#formView .form-card");
+
+    function isReclassRow(row) {
+      return (row?.lpnType || "reclass") === "reclass";
+    }
+
+    function isNonReclassRow(row) {
+      return row?.lpnType === "non-reclass";
+    }
+
+    function formatOperatorQc(row) {
+      const shift = row.shift ? `Shift ${row.shift}` : "";
+      const name = operatorName(row.operator);
+      if (shift && name !== "-") return `[${shift}] ${name}`;
+      if (shift) return `[${shift}]`;
+      return name;
+    }
+
+    function updateLpnTypeFields() {
+      const isNonReclass = formLpnType.value === "non-reclass";
+      const isReadonlyView = formCard.classList.contains("is-view");
+
+      formLpnTypeInfo.classList.toggle("hidden", isNonReclass);
+      formNewLocationRow?.querySelector(".form-label")?.classList.toggle("required", !isNonReclass);
+      formNewBinRow?.querySelector(".form-label")?.classList.toggle("required", !isNonReclass);
+
+      if (isNonReclass) {
+        formNewLocationCode.value = "";
+        formNewBinCode.value = "";
+        formNewLocationCode.disabled = true;
+        formNewBinCode.disabled = true;
+        formNewLocationCode.classList.add("readonly-input");
+        formNewBinCode.classList.add("readonly-input");
+      } else {
+        formNewLocationCode.disabled = true;
+        formNewBinCode.disabled = isReadonlyView;
+        if (!formNewLocationCode.value) {
+          const master = getMasterItem(formItemNo.value);
+          if (master) formNewLocationCode.value = master.newLocationCode || "AAP-RMB";
+        }
+        if (!formNewBinCode.value && formItemNo.value) {
+          const master = getMasterItem(formItemNo.value);
+          if (master) formNewBinCode.value = master.newBinCode || "";
+        }
+        formNewLocationCode.classList.add("readonly-input");
+        formNewBinCode.classList.toggle("readonly-input", isReadonlyView);
+      }
+    }
+
+    function runAutoReclassScheduler() {
+      const now = new Date();
+      const todayMidnight = new Date(now);
+      todayMidnight.setHours(0, 0, 0, 0);
+      let changed = false;
+
+      rows.forEach((row) => {
+        if (!isReclassRow(row)) return;
+        if (row.statusLog?.length) return;
+
+        const rowDate = new Date(row.date || row.createdAt || now);
+        const rowMidnight = new Date(rowDate);
+        rowMidnight.setHours(0, 0, 0, 0);
+        const diffDays = Math.floor((todayMidnight - rowMidnight) / 86400000);
+        if (diffDays < 1) return;
+
+        const scheduledAt = new Date(rowMidnight);
+        scheduledAt.setDate(scheduledAt.getDate() + 1);
+        scheduledAt.setHours(13, 0, 0, 0);
+        if (now < scheduledAt) return;
+
+        row.statusLog = [{
+          text: "Sync Sukses",
+          note: "Sync Auto",
+          at: now.toISOString()
+        }];
+        row.updatedAt = now.toISOString();
+        changed = true;
+      });
+
+      if (changed) {
+        saveRows();
+        if (filteredRows !== null) applyFilters();
+        else renderTable();
+      }
+    }
 
     const masterData = [
       {
@@ -3851,16 +4032,17 @@
 
       // 4 baris gagal (2 lama + 2 baru tambahan)
       const failedConfigs = [
-        { itemIdx: 6,  daysAgo: 5, status: "Sync Gagal", shift: "2", operator: "13260350", errorType: "stock" },
-        { itemIdx: 7,  daysAgo: 3, status: "Sync Gagal", shift: "3", operator: "13260341", errorType: "connection" },
-        { itemIdx: 8,  daysAgo: 6, status: "Sync Gagal", shift: "1", operator: "13260660", errorType: null },
-        { itemIdx: 9,  daysAgo: 2, status: "Sync Gagal", shift: "2", operator: "13260348", errorType: null },
+        { itemIdx: 6,  daysAgo: 5, status: "Sync Gagal", shift: "2", operator: "13260350", errorType: "stock", lpnType: "reclass" },
+        { itemIdx: 7,  daysAgo: 3, status: "Sync Gagal", shift: "3", operator: "13260341", errorType: "connection", lpnType: "reclass" },
+        { itemIdx: 8,  daysAgo: 6, status: "Sync Gagal", shift: "1", operator: "13260660", errorType: null, lpnType: "reclass" },
+        { itemIdx: 9,  daysAgo: 2, status: "Sync Gagal", shift: "2", operator: "13260348", errorType: null, lpnType: "reclass" },
       ];
-      // 3 baris normal
       const normalConfigs = [
-        { itemIdx: 2, daysAgo: 0, status: "Sync Sukses", note: "Sync Auto", shift: "1", operator: "13260660", errorType: null },
-        { itemIdx: 3, daysAgo: 4, status: "Sync Sukses", note: "Sync Auto", shift: "3", operator: "13260340", errorType: null },
-        { itemIdx: 4, daysAgo: 0, status: "",             note: "",          shift: "2", operator: "13260348", errorType: null },
+        { itemIdx: 2, daysAgo: 0, status: "Sync Sukses", note: "Sync Auto", shift: "1", operator: "13260660", errorType: null, lpnType: "reclass" },
+        { itemIdx: 3, daysAgo: 4, status: "Sync Sukses", note: "Sync Auto", shift: "3", operator: "13260340", errorType: null, lpnType: "reclass" },
+        { itemIdx: 4, daysAgo: 0, status: "",             note: "",          shift: "2", operator: "13260348", errorType: null, lpnType: "reclass" },
+        { itemIdx: 0, daysAgo: 0, status: "",             note: "",          shift: "1", operator: "13260340", errorType: null, lpnType: "non-reclass" },
+        { itemIdx: 1, daysAgo: 1, status: "",             note: "",          shift: "2", operator: "13260350", errorType: null, lpnType: "non-reclass" },
       ];
 
       const allConfigs = [...failedConfigs, ...normalConfigs];
@@ -3874,12 +4056,14 @@
         const statusLog = cfg.status
           ? [{ text: cfg.status, note: cfg.note || "", at: date.toISOString() }]
           : [];
+        const isNonReclass = cfg.lpnType === "non-reclass";
         return {
           id: createId(),
           documentNo: buildDocumentNo(date, seqIdx + 1),
           date: date.toISOString(),
           createdAt: date.toISOString(),
           sequenceOrder: seqIdx + 1,
+          lpnType: cfg.lpnType || "reclass",
           itemNo: item.itemNo,
           description: item.itemDesc,
           quantityPerBarcode,
@@ -3888,8 +4072,8 @@
           layer: item.layer,
           locationCode: item.locationCode,
           binCode: item.binCode,
-          newLocationCode: item.newLocationCode,
-          newBinCode: item.newBinCode,
+          newLocationCode: isNonReclass ? "" : item.newLocationCode,
+          newBinCode: isNonReclass ? "" : item.newBinCode,
           machine: item.machineName || item.machine || "",
           category: item.category,
           shift: cfg.shift || "1",
@@ -3921,6 +4105,7 @@
         id: row.id || createId(),
         documentNo,
         date,
+        lpnType: row.lpnType || "reclass",
         itemNo: row.itemNo || master.itemNo || "",
         description: row.description || master.itemDesc || "",
         quantityPerBarcode,
@@ -3929,8 +4114,8 @@
         layer: row.layer ?? master.layer ?? 1,
         locationCode: row.locationCode || master.locationCode || "",
         binCode: row.binCode || master.binCode || "",
-        newLocationCode: row.newLocationCode || master.newLocationCode || "",
-        newBinCode: row.newBinCode || master.newBinCode || "",
+        newLocationCode: row.lpnType === "non-reclass" ? "" : (row.newLocationCode || master.newLocationCode || ""),
+        newBinCode: row.lpnType === "non-reclass" ? "" : (row.newBinCode || master.newBinCode || ""),
           machine: row.machine || master.machine || "",
           shift: row.shift || "",
           operator: row.operator || "",
@@ -3939,7 +4124,10 @@
         sequenceOrder: row.sequenceOrder ?? null,
         updatedAt: row.updatedAt || date,
         notes: row.notes || "",
-        statusLog: [latestStatus]
+        errorType: row.errorType || null,
+        statusLog: isReclassRow({ lpnType: row.lpnType || "reclass", statusLog: row.statusLog })
+          ? (Array.isArray(row.statusLog) ? row.statusLog : [latestStatus])
+          : []
       };
     }
 
@@ -4022,6 +4210,7 @@
 
     function setFormReadonly(isReadonly) {
       formCard.classList.toggle("is-view", isReadonly);
+      formLpnType.disabled = isReadonly;
       formItemNo.disabled = isReadonly;
       formQty.readOnly = isReadonly;
       formBarcodeCount.readOnly = isReadonly;
@@ -4031,8 +4220,7 @@
       formMachine.disabled = isReadonly;
       formLocationCode.readOnly = true;
       formBinCode.readOnly = true;
-      formNewLocationCode.readOnly = true; // always readonly
-      formNewBinCode.disabled = isReadonly;
+      formNewLocationCode.readOnly = true;
       if (isReadonly) {
         formQty.classList.add("readonly-input");
         formBarcodeCount.classList.add("readonly-input");
@@ -4050,10 +4238,12 @@
         formShift.classList.remove("readonly-input");
         formOperator.classList.remove("readonly-input");
       }
+      updateLpnTypeFields();
     }
 
     function resetFormState() {
       formDate.value = formatFormDate(new Date());
+      formLpnType.value = "reclass";
       formItemNo.innerHTML = `
         <option value="">Pilih Item No...</option>
         ${masterData.map((item) => `<option value="${item.itemNo}">${item.itemNo}</option>`).join("")}
@@ -4073,6 +4263,7 @@
       formNewBinCode.value = "";
       formPrintBtn.style.display = "none";
       printReadyRowId = null;
+      updateLpnTypeFields();
     }
 
     function updateTotalLayer() {
@@ -4100,6 +4291,7 @@
         formNewLocationCode.value = "";
         formNewBinCode.value = "";
         formMachine.value = "";
+        updateLpnTypeFields();
         return;
       }
 
@@ -4108,10 +4300,16 @@
       formBarcodeCount.value = "1";
       formLocationCode.value = master.locationCode;
       formBinCode.value = master.binCode;
-      formNewLocationCode.value = master.newLocationCode;
-      formNewBinCode.value = master.newBinCode;
+      if (formLpnType.value === "non-reclass") {
+        formNewLocationCode.value = "";
+        formNewBinCode.value = "";
+      } else {
+        formNewLocationCode.value = master.newLocationCode;
+        formNewBinCode.value = master.newBinCode;
+      }
       formMachine.value = master.machine || "";
       fillLayerFromMaster();
+      updateLpnTypeFields();
     }
 
     function openFormPage(mode, row = null) {
@@ -4120,10 +4318,11 @@
       activeRowId = row ? row.id : null;
       setActiveView("form");
       resetFormState();
-      formHeaderTitle.textContent = mode === "view" ? "View Reclass RMB" : mode === "edit" ? "Edit Reclass RMB" : "Add Reclass RMB";
+      formHeaderTitle.textContent = mode === "view" ? "View Cetak LPN" : mode === "edit" ? "Edit Cetak LPN" : "Add Cetak LPN";
 
       if (row) {
         formDate.value = formatFormDate(row.date);
+        formLpnType.value = row.lpnType || "reclass";
         formItemNo.value = row.itemNo;
         fillFormFromMaster(row.itemNo);
         formQty.value = String(row.quantityPerBarcode ?? row.quantity ?? "");
@@ -4134,13 +4333,19 @@
         formOperator.value = row.operator || "";
         formLocationCode.value = row.locationCode;
         formBinCode.value = row.binCode;
-        formNewLocationCode.value = row.newLocationCode;
-        formNewBinCode.value = row.newBinCode;
+        if (isNonReclassRow(row)) {
+          formNewLocationCode.value = "";
+          formNewBinCode.value = "";
+        } else {
+          formNewLocationCode.value = row.newLocationCode;
+          formNewBinCode.value = row.newBinCode;
+        }
         formDescription.value = row.description;
       } else {
         fillFormFromMaster(formItemNo.value);
       }
 
+      updateLpnTypeFields();
       setFormReadonly(mode === "view");
       formSaveBtn.style.display = mode === "view" ? "none" : "inline-flex";
       formPrintBtn.style.display = mode === "add" ? "none" : "inline-flex";
@@ -4173,6 +4378,8 @@
           row.binCode,
           row.newLocationCode,
           row.newBinCode,
+          row.machine,
+          formatOperatorQc(row),
           row.statusLog.map((item) => item.text).join(" ")
         ].join(" ").toLowerCase();
         const keywordMatch = !keyword || searchable.includes(keyword);
@@ -4197,6 +4404,9 @@
     }
 
     function renderStatusCell(row) {
+      if (isNonReclassRow(row)) {
+        return '<span style="color:#bbb;font-size:11px;">-</span>';
+      }
       const latest = row.statusLog?.[row.statusLog.length - 1];
       if (!latest?.text) return '<span style="color:#bbb;font-size:11px;">-</span>';
       const tone = getStatusTone(latest.text);
@@ -4204,6 +4414,9 @@
     }
 
     function renderNoteCell(row) {
+      if (isNonReclassRow(row)) {
+        return '<span style="color:#bbb;font-size:11px;">-</span>';
+      }
       const latest = row.statusLog?.[row.statusLog.length - 1];
       if (!latest || !latest.text || latest.text.toLowerCase().includes("gagal")) return '<span style="color:#bbb;font-size:11px;">-</span>';
       const note = latest?.note || "-";
@@ -4276,22 +4489,22 @@
       if (totalRows === 0) {
         tableBody.innerHTML = `
           <tr class="empty-row">
-            <td colspan="14">No data available in table</td>
+            <td colspan="16">No data available in table</td>
           </tr>
         `;
       } else {
         tableBody.innerHTML = pageRows.map((row, index) => {
           const editable = canEdit(row);
           const latestStatus = (row.statusLog?.[row.statusLog.length - 1]?.text || "").toLowerCase();
-          const isFailed = latestStatus.includes("gagal");
-          const isSynced = latestStatus.includes("sukses");
-          const neverSynced = !row.statusLog?.length;
-          const rowClass = isFailed ? "row-failed" : "";
+          const isFailed = isReclassRow(row) && latestStatus.includes("gagal");
+          const neverSynced = isReclassRow(row) && !row.statusLog?.length;
+          const rowClass = [
+            isFailed ? "row-failed" : "",
+            isReclassRow(row) ? "row-reclass" : ""
+          ].filter(Boolean).join(" ");
           const isChecked = selectedIds.has(row.id) ? "checked" : "";
-          // Resync: show only if never synced or failed (NOT after success)
-          const showResync = isFailed || neverSynced;
-          // Edit+Delete: only if editable (today/H+1) OR failed
-          const showEditDelete = editable || isFailed;
+          const showResync = isReclassRow(row) && (isFailed || neverSynced);
+          const showEditDelete = isNonReclassRow(row) || editable || isFailed;
           return `
             <tr class="${rowClass}">
               <td class="select-cell"><input type="checkbox" class="row-select-chk" data-id="${row.id}" ${isChecked} /></td>
@@ -4328,9 +4541,10 @@
               <td>${row.layer}</td>
               <td>${row.locationCode}</td>
               <td>${row.binCode}</td>
-              <td>${row.newLocationCode}</td>
-              <td>${row.newBinCode}</td>
+              <td>${row.newLocationCode || "-"}</td>
+              <td>${row.newBinCode || "-"}</td>
               <td>${row.machine || "-"}</td>
+              <td>${formatOperatorQc(row)}</td>
               <td>${renderStatusCell(row)}</td>
               <td>${renderNoteCell(row)}</td>
             </tr>
@@ -4371,10 +4585,16 @@
       formBarcodeCount.value = "1";
       formLocationCode.value = master.locationCode;
       formBinCode.value = master.binCode;
-      formNewLocationCode.value = master.newLocationCode;
-      formNewBinCode.value = master.newBinCode;
+      if (formLpnType.value === "non-reclass") {
+        formNewLocationCode.value = "";
+        formNewBinCode.value = "";
+      } else {
+        formNewLocationCode.value = master.newLocationCode;
+        formNewBinCode.value = master.newBinCode;
+      }
       formMachine.value = master.machine || "";
       fillLayerFromMaster();
+      updateLpnTypeFields();
     }
 
     function handleSave() {
@@ -4384,10 +4604,12 @@
       const totalQuantity = quantityPerBarcode * barcodeCount;
       const now = new Date();
       const existingRow = editingId ? rows.find((entry) => entry.id === editingId) : null;
+      const isNonReclass = formLpnType.value === "non-reclass";
       const payload = {
         documentNo: existingRow ? existingRow.documentNo : getNextDocumentNumber(now, null),
         date: now.toISOString(),
         createdAt: existingRow?.createdAt || now.toISOString(),
+        lpnType: formLpnType.value,
         category: master.category,
         itemNo: formItemNo.value.trim(),
         description: formDescription.value.trim() || master.itemDesc,
@@ -4397,16 +4619,20 @@
         layer: master.layer,
         locationCode: formLocationCode.value.trim(),
         binCode: formBinCode.value.trim(),
-        newLocationCode: formNewLocationCode.value.trim(),
-        newBinCode: formNewBinCode.value,
+        newLocationCode: isNonReclass ? "" : formNewLocationCode.value.trim(),
+        newBinCode: isNonReclass ? "" : formNewBinCode.value,
         machine: formMachine.value,
         shift: formShift.value,
         operator: formOperator.value,
         updatedAt: now.toISOString()
       };
 
-      if (!payload.itemNo || !payload.description || !payload.locationCode || !payload.binCode || !payload.newLocationCode) {
+      if (!payload.itemNo || !payload.description || !payload.locationCode || !payload.binCode) {
         alert("Harap lengkapi semua field yang wajib diisi.");
+        return;
+      }
+      if (!isNonReclass && (!payload.newLocationCode || !payload.newBinCode)) {
+        alert("Harap lengkapi New Location Code dan New Bin Code untuk Reclass RMB.");
         return;
       }
       if (!payload.shift) {
@@ -4414,7 +4640,7 @@
         return;
       }
       if (!payload.operator) {
-        alert("Harap pilih Nama Operator terlebih dahulu.");
+        alert("Harap pilih Nama Operator QC terlebih dahulu.");
         return;
       }
 
@@ -4422,24 +4648,15 @@
         const row = rows.find((entry) => entry.id === editingId);
         if (!row) return;
         Object.assign(row, payload);
-        row.statusLog = [{
-          text: "Sync Sukses",
-          note: "Sync Auto",
-          at: now.toISOString()
-        }];
+        row.errorType = null;
+        row.statusLog = isNonReclass ? [] : [];
         row.updatedAt = now.toISOString();
         printReadyRowId = row.id;
       } else {
         const newRow = normalizeRow({
           id: createId(),
           ...payload,
-          statusLog: [
-            {
-              text: "Sync Sukses",
-              note: "Sync Auto",
-              at: now.toISOString()
-            }
-          ]
+          statusLog: []
         });
         rows.unshift(newRow);
         editingId = newRow.id;
@@ -4450,6 +4667,9 @@
       formMode = "edit";
       persistAndRender();
       showToast("Saved", "Data berhasil disimpan...");
+      if (isNonReclass) {
+        openBarcodeModal();
+      }
     }
 
     function getRowById(id) {
@@ -4470,6 +4690,7 @@
       }
 
       if (action === "resync") {
+        if (!isReclassRow(row)) return;
         if (row.errorType === "stock") {
           showErrorModal(
             "Stok / Quantity Tidak Mencukupi",
@@ -4547,6 +4768,15 @@
     formPrintBtn.addEventListener("click", openBarcodeModal);
     formItemNo.addEventListener("change", (event) => {
       syncFormWithItem(event.target.value);
+    });
+    formLpnType.addEventListener("change", () => {
+      if (formLpnType.value === "non-reclass") {
+        formNewLocationCode.value = "";
+        formNewBinCode.value = "";
+      } else if (formItemNo.value) {
+        syncFormWithItem(formItemNo.value);
+      }
+      updateLpnTypeFields();
     });
     formQty.addEventListener("input", () => {
       // Keep the field editable after autofill.
@@ -4628,7 +4858,7 @@
       const stamp = new Date().toISOString();
       let syncedCount = 0;
       rows.forEach(row => {
-        if (selectedIds.has(row.id)) {
+        if (selectedIds.has(row.id) && isReclassRow(row)) {
           row.statusLog = [{ text: "Sync Sukses", note: "Sync Manual", at: stamp }];
           row.updatedAt = stamp;
           syncedCount++;
@@ -5094,6 +5324,8 @@
 
     setActiveView("list");
     filteredRows = null;
+    runAutoReclassScheduler();
+    setInterval(runAutoReclassScheduler, 60000);
     renderTable();
   </script>
 </body>
