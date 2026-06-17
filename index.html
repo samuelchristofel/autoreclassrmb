@@ -603,6 +603,7 @@
       padding: 5px 6px;
       vertical-align: middle;
       background: #fff;
+      min-height: 36px;
     }
 
     th {
@@ -2187,6 +2188,15 @@
                   <option value="TD-AAP-RMB">TD-AAP-RMB</option>
                 </select>
               </div>
+              <div class="filter-row">
+                <label for="jenisLpnFilter">Jenis LPN</label>
+                <div class="filter-colon">:</div>
+                <select class="filter-input" id="jenisLpnFilter">
+                  <option value="">All Status / Semua</option>
+                  <option value="reclass">Reclass RMB</option>
+                  <option value="non-reclass">Non-Reclass</option>
+                </select>
+              </div>
               <div class="filter-row" style="grid-template-columns: 170px 18px 250px auto 1fr;">
                 <label for="statusLogFilter">Status Log</label>
                 <div class="filter-colon">:</div>
@@ -2742,6 +2752,7 @@
     const dateEndFilter = document.getElementById("dateEndFilter");
     const categoryFilter = document.getElementById("categoryFilter");
     const binFilter = document.getElementById("binFilter");
+    const jenisLpnFilter = document.getElementById("jenisLpnFilter");
     const statusLogFilter = document.getElementById("statusLogFilter");
     const searchInput = document.getElementById("searchInput");
     const pageSizeSelect = document.getElementById("pageSize");
@@ -4639,6 +4650,7 @@
       const selectedEndDate = dateEndFilter.value;
       const selectedCategory = categoryFilter.value;
       const selectedBin = binFilter.value;
+      const selectedJenisLpn = jenisLpnFilter.value;
       const selectedStatus = statusLogFilter.value;
       const keyword = searchInput.value.trim().toLowerCase();
 
@@ -4647,6 +4659,7 @@
         const dateMatch = (!selectedStartDate || currentDate >= selectedStartDate) && (!selectedEndDate || currentDate <= selectedEndDate);
         const categoryMatch = !selectedCategory || row.category === selectedCategory;
         const binMatch = !selectedBin || row.newBinCode === selectedBin;
+        const jenisLpnMatch = !selectedJenisLpn || row.lpnType === selectedJenisLpn;
         const latestStatus = row.statusLog?.[row.statusLog.length - 1]?.text || "";
         const statusMatch = !selectedStatus || latestStatus === selectedStatus;
         const searchable = [
@@ -4665,7 +4678,7 @@
           row.statusLog.map((item) => item.text).join(" ")
         ].join(" ").toLowerCase();
         const keywordMatch = !keyword || searchable.includes(keyword);
-        return dateMatch && categoryMatch && binMatch && statusMatch && keywordMatch;
+        return dateMatch && categoryMatch && binMatch && jenisLpnMatch && statusMatch && keywordMatch;
       });
 
       currentPage = 1;
@@ -4677,6 +4690,7 @@
       dateEndFilter.value = "";
       categoryFilter.value = "";
       binFilter.value = "";
+      jenisLpnFilter.value = "";
       statusLogFilter.value = "";
       searchInput.value = "";
       pageSizeSelect.value = "10";
@@ -5082,7 +5096,7 @@
       applyFilters();
     });
 
-    [dateStartFilter, dateEndFilter, categoryFilter, binFilter, statusLogFilter].forEach((control) => {
+    [dateStartFilter, dateEndFilter, categoryFilter, binFilter, jenisLpnFilter, statusLogFilter].forEach((control) => {
       control.addEventListener("change", applyFilters);
     });
 
