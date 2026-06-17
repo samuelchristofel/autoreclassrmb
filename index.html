@@ -525,10 +525,19 @@
     .table-tools {
       padding: 6px 16px 14px;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
+    }
+
+    .table-tools-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      margin-left: auto;
+      min-width: 0;
     }
 
     .table-tools .show-entries {
@@ -645,40 +654,165 @@
 
     .lpn-legend {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: center;
-      gap: 10px 20px;
-      margin: -8px 0 16px;
-      padding: 10px 14px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      box-shadow: var(--shadow);
+      justify-content: flex-end;
+      gap: 8px 14px;
+      padding: 5px 10px;
+      background: #f8fafb;
+      border: 1px solid #c8d0d8;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(20, 32, 40, 0.06);
+      max-width: 100%;
     }
 
     .lpn-legend-item {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.3;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #3d4953;
+      line-height: 1.25;
+      white-space: nowrap;
     }
 
     .lpn-legend-swatch {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
       flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
     }
 
     .lpn-legend-swatch.reclass {
-      background: #f0e8f8;
+      background: #dcc8f0;
+      border: 1.5px solid #9b6fd4;
     }
 
     .lpn-legend-swatch.non-reclass {
       background: #ffffff;
+      border: 1.5px solid #8a939b;
+    }
+
+    .lpn-legend-swatch.failed {
+      background: #ffd6d6;
+      border: 1.5px solid #e57373;
+    }
+
+    @media (max-width: 1100px) {
+      .lpn-legend {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .lpn-legend-item {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .table-tools-right {
+        align-items: stretch;
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .lpn-legend {
+        justify-content: flex-start;
+      }
+
+      .search {
+        width: 100%;
+      }
+
+      .search input {
+        flex: 1;
+        width: auto;
+        min-width: 0;
+      }
+    }
+
+    .searchable-select {
+      position: relative;
+      min-width: 0;
+    }
+
+    .searchable-select .ss-control {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .searchable-select .ss-search {
+      width: 100%;
+      padding-right: 32px;
+      cursor: text;
+    }
+
+    .searchable-select .ss-chevron {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7680;
+      font-size: 12px;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .searchable-select .ss-list {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 4px);
+      z-index: 120;
+      max-height: 220px;
+      overflow-y: auto;
+      margin: 0;
+      padding: 4px 0;
+      list-style: none;
+      background: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      box-shadow: 0 8px 22px rgba(20, 32, 40, 0.14);
+    }
+
+    .searchable-select .ss-list.hidden {
+      display: none;
+    }
+
+    .searchable-select .ss-option {
+      padding: 8px 12px;
+      font-size: 13px;
+      color: #243038;
+      cursor: pointer;
+      line-height: 1.3;
+    }
+
+    .searchable-select .ss-option:hover,
+    .searchable-select .ss-option.active {
+      background: #eaf2fb;
+      color: #1e4d8c;
+    }
+
+    .searchable-select .ss-empty {
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #6b7680;
+      font-style: italic;
+    }
+
+    .searchable-select.is-disabled .ss-search {
+      background-color: #e9ecef;
+      border-color: #d5dbe1;
+      color: #6b7680;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .searchable-select.is-disabled .ss-chevron {
+      opacity: 0.5;
     }
 
     .lpn-type-info {
@@ -1995,17 +2129,6 @@
         <section id="listView" class="page-panel">
           <div class="page-title">Cetak LPN</div>
 
-          <div class="lpn-legend" aria-label="Petunjuk warna jenis LPN">
-            <span class="lpn-legend-item">
-              <span class="lpn-legend-swatch reclass" aria-hidden="true"></span>
-              Reclass RMB (Auto-reclass H+1 Jam 13:00)
-            </span>
-            <span class="lpn-legend-item">
-              <span class="lpn-legend-swatch non-reclass" aria-hidden="true"></span>
-              Non-Reclass (Komponen / Cutting / Sheet)
-            </span>
-          </div>
-
           <section class="card">
             <div class="card-head">
               <div class="card-title">List Cetak LPN</div>
@@ -2092,9 +2215,25 @@
                 </select>
                 entries
               </div>
-              <div class="search">
-                Search:
-                <input id="searchInput" type="text" placeholder="Search document, item, status..." />
+              <div class="table-tools-right">
+                <div class="lpn-legend" aria-label="Petunjuk warna jenis LPN">
+                  <span class="lpn-legend-item">
+                    <span class="lpn-legend-swatch reclass" aria-hidden="true"></span>
+                    Reclass RMB (Auto-reclass H+1 Jam 13:00)
+                  </span>
+                  <span class="lpn-legend-item">
+                    <span class="lpn-legend-swatch non-reclass" aria-hidden="true"></span>
+                    Non-Reclass (Komponen / Cutting / Sheet)
+                  </span>
+                  <span class="lpn-legend-item">
+                    <span class="lpn-legend-swatch failed" aria-hidden="true"></span>
+                    Gagal Sync ERP
+                  </span>
+                </div>
+                <div class="search">
+                  Search:
+                  <input id="searchInput" type="text" placeholder="Search document, item, status..." />
+                </div>
               </div>
             </div>
 
@@ -2179,11 +2318,18 @@
                 <div class="form-col">
                   <div class="form-row">
                     <div class="form-label required">Tanggal</div>
-                    <input id="formDate" class="readonly-input" type="text" readonly />
+                    <input id="formDate" class="form-input" type="date" />
                   </div>
                   <div class="form-row">
                     <div class="form-label required">Item No.</div>
-                    <select id="formItemNo" class="form-select"></select>
+                    <div class="searchable-select" id="formItemNoSelect">
+                      <input type="hidden" id="formItemNo" value="" />
+                      <div class="ss-control">
+                        <input id="formItemNoSearch" class="form-input ss-search" type="text" placeholder="Pilih atau cari Item No..." autocomplete="off" />
+                        <span class="ss-chevron" aria-hidden="true">▾</span>
+                      </div>
+                      <ul class="ss-list hidden" id="formItemNoList" role="listbox" aria-label="Daftar Item No."></ul>
+                    </div>
                   </div>
                   <div class="form-row">
                     <div class="form-label">Item Description</div>
@@ -2602,6 +2748,9 @@
 
     const formDate = document.getElementById("formDate");
     const formItemNo = document.getElementById("formItemNo");
+    const formItemNoSelect = document.getElementById("formItemNoSelect");
+    const formItemNoSearch = document.getElementById("formItemNoSearch");
+    const formItemNoList = document.getElementById("formItemNoList");
     const formDescription = document.getElementById("formDescription");
     const formQty = document.getElementById("formQty");
     const formBarcodeCount = document.getElementById("formBarcodeCount");
@@ -3863,6 +4012,135 @@
       }).format(new Date(value));
     }
 
+    function parseFormDateInput(dateStr) {
+      if (!dateStr) return new Date();
+      const parts = String(dateStr).split("-").map(Number);
+      if (parts.length !== 3 || parts.some((part) => Number.isNaN(part))) {
+        return new Date();
+      }
+      const [year, month, day] = parts;
+      const now = new Date();
+      return new Date(year, month - 1, day, now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+    }
+
+    function getItemNoOptions(keyword = "") {
+      const query = keyword.trim().toLowerCase();
+      return masterData.filter((item) => {
+        if (!query) return true;
+        return (
+          item.itemNo.toLowerCase().includes(query) ||
+          String(item.itemDesc || "").toLowerCase().includes(query)
+        );
+      });
+    }
+
+    function renderItemNoOptions(keyword = "") {
+      const options = getItemNoOptions(keyword);
+      if (options.length === 0) {
+        formItemNoList.innerHTML = '<li class="ss-empty">Item tidak ditemukan</li>';
+        return;
+      }
+      formItemNoList.innerHTML = options.map((item) => `
+        <li class="ss-option${formItemNo.value === item.itemNo ? " active" : ""}" role="option" data-value="${escapeHtml(item.itemNo)}">
+          <strong>${escapeHtml(item.itemNo)}</strong>
+          <span style="display:block;font-size:11px;color:#6b7680;margin-top:2px;">${escapeHtml(item.itemDesc || "")}</span>
+        </li>
+      `).join("");
+    }
+
+    function openItemNoDropdown() {
+      if (formItemNoSelect.classList.contains("is-disabled")) return;
+      renderItemNoOptions(formItemNoSearch.value);
+      formItemNoList.classList.remove("hidden");
+    }
+
+    function closeItemNoDropdown() {
+      formItemNoList.classList.add("hidden");
+    }
+
+    function setFormItemNoValue(itemNo, options = {}) {
+      const { triggerChange = false, keepSearchText = false } = options;
+      const previousValue = formItemNo.value;
+      formItemNo.value = itemNo || "";
+      if (!keepSearchText) {
+        formItemNoSearch.value = itemNo || "";
+      }
+      if (triggerChange && previousValue !== formItemNo.value) {
+        syncFormWithItem(formItemNo.value);
+      }
+    }
+
+    function initItemNoSelect() {
+      renderItemNoOptions("");
+      closeItemNoDropdown();
+
+      formItemNoSearch.addEventListener("focus", () => {
+        openItemNoDropdown();
+      });
+
+      formItemNoSearch.addEventListener("input", () => {
+        openItemNoDropdown();
+        if (!formItemNoSearch.value.trim()) {
+          setFormItemNoValue("", { triggerChange: true });
+        }
+      });
+
+      formItemNoSearch.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeItemNoDropdown();
+          formItemNoSearch.blur();
+        }
+        if (event.key === "Enter") {
+          event.preventDefault();
+          const firstOption = formItemNoList.querySelector(".ss-option");
+          if (firstOption) {
+            setFormItemNoValue(firstOption.dataset.value, { triggerChange: true });
+            closeItemNoDropdown();
+          }
+        }
+      });
+
+      formItemNoSearch.addEventListener("blur", () => {
+        window.setTimeout(() => {
+          if (formItemNoSelect.contains(document.activeElement)) return;
+          const query = formItemNoSearch.value.trim();
+          if (!query) {
+            setFormItemNoValue("", { triggerChange: true });
+            return;
+          }
+          const exact = masterData.find((item) => item.itemNo.toLowerCase() === query.toLowerCase());
+          if (exact) {
+            setFormItemNoValue(exact.itemNo, { triggerChange: true });
+          } else if (formItemNo.value) {
+            formItemNoSearch.value = formItemNo.value;
+          } else {
+            formItemNoSearch.value = "";
+          }
+          closeItemNoDropdown();
+        }, 120);
+      });
+
+      formItemNoList.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+      });
+
+      formItemNoList.addEventListener("click", (event) => {
+        const option = event.target.closest(".ss-option");
+        if (!option) return;
+        setFormItemNoValue(option.dataset.value, { triggerChange: true });
+        closeItemNoDropdown();
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!formItemNoSelect.contains(event.target)) {
+          closeItemNoDropdown();
+          if (formItemNo.value && formItemNoSearch.value !== formItemNo.value) {
+            formItemNoSearch.value = formItemNo.value;
+          }
+        }
+      });
+    }
+
     function normalizeNumber(value) {
       return Number(String(value ?? "").replace(/[^0-9.-]/g, "")) || 0;
     }
@@ -4211,7 +4489,9 @@
     function setFormReadonly(isReadonly) {
       formCard.classList.toggle("is-view", isReadonly);
       formLpnType.disabled = isReadonly;
-      formItemNo.disabled = isReadonly;
+      formItemNoSelect.classList.toggle("is-disabled", isReadonly);
+      formItemNoSearch.readOnly = isReadonly;
+      formDate.disabled = isReadonly;
       formQty.readOnly = isReadonly;
       formBarcodeCount.readOnly = isReadonly;
       formLayerPerPalet.readOnly = isReadonly;
@@ -4229,6 +4509,8 @@
         formNewBinCode.classList.add("readonly-input");
         formShift.classList.add("readonly-input");
         formOperator.classList.add("readonly-input");
+        formDate.classList.add("readonly-input");
+        closeItemNoDropdown();
       } else {
         formQty.classList.remove("readonly-input");
         formBarcodeCount.classList.remove("readonly-input");
@@ -4237,18 +4519,18 @@
         formNewBinCode.classList.remove("readonly-input");
         formShift.classList.remove("readonly-input");
         formOperator.classList.remove("readonly-input");
+        formDate.classList.remove("readonly-input");
       }
       updateLpnTypeFields();
     }
 
     function resetFormState() {
-      formDate.value = formatFormDate(new Date());
+      formDate.value = toDateInputValue(new Date());
       formLpnType.value = "reclass";
-      formItemNo.innerHTML = `
-        <option value="">Pilih Item No...</option>
-        ${masterData.map((item) => `<option value="${item.itemNo}">${item.itemNo}</option>`).join("")}
-      `;
-      formItemNo.value = "";
+      setFormItemNoValue("", { triggerChange: false });
+      formItemNoSearch.value = "";
+      renderItemNoOptions("");
+      closeItemNoDropdown();
       formDescription.value = "";
       formQty.value = "";
       formBarcodeCount.value = "";
@@ -4321,9 +4603,9 @@
       formHeaderTitle.textContent = mode === "view" ? "View Cetak LPN" : mode === "edit" ? "Edit Cetak LPN" : "Add Cetak LPN";
 
       if (row) {
-        formDate.value = formatFormDate(row.date);
+        formDate.value = toDateInputValue(row.date);
         formLpnType.value = row.lpnType || "reclass";
-        formItemNo.value = row.itemNo;
+        setFormItemNoValue(row.itemNo, { triggerChange: false });
         fillFormFromMaster(row.itemNo);
         formQty.value = String(row.quantityPerBarcode ?? row.quantity ?? "");
         formBarcodeCount.value = String(row.barcodeCount ?? 1);
@@ -4602,12 +4884,13 @@
       const quantityPerBarcode = normalizeNumber(formQty.value);
       const barcodeCount = Math.max(1, normalizeNumber(formBarcodeCount.value) || 1);
       const totalQuantity = quantityPerBarcode * barcodeCount;
+      const selectedDate = parseFormDateInput(formDate.value);
       const now = new Date();
       const existingRow = editingId ? rows.find((entry) => entry.id === editingId) : null;
       const isNonReclass = formLpnType.value === "non-reclass";
       const payload = {
-        documentNo: existingRow ? existingRow.documentNo : getNextDocumentNumber(now, null),
-        date: now.toISOString(),
+        documentNo: existingRow ? existingRow.documentNo : getNextDocumentNumber(selectedDate, null),
+        date: selectedDate.toISOString(),
         createdAt: existingRow?.createdAt || now.toISOString(),
         lpnType: formLpnType.value,
         category: master.category,
@@ -4766,9 +5049,7 @@
     });
     formSaveBtn.addEventListener("click", handleSave);
     formPrintBtn.addEventListener("click", openBarcodeModal);
-    formItemNo.addEventListener("change", (event) => {
-      syncFormWithItem(event.target.value);
-    });
+    initItemNoSelect();
     formLpnType.addEventListener("change", () => {
       if (formLpnType.value === "non-reclass") {
         formNewLocationCode.value = "";
