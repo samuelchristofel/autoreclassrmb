@@ -4478,13 +4478,10 @@
     }
 
     function canEdit(row) {
-      const rowDate = new Date(row.date);
-      const midnightNow = new Date();
-      midnightNow.setHours(0, 0, 0, 0);
-      const midnightRow = new Date(rowDate);
-      midnightRow.setHours(0, 0, 0, 0);
-      const diffDays = Math.floor((midnightNow - midnightRow) / 86400000);
-      return diffDays <= 1;
+      const latestStatus = row.statusLog && row.statusLog.length > 0 
+        ? row.statusLog[row.statusLog.length - 1].text 
+        : "";
+      return latestStatus !== "Sync Sukses";
     }
 
     function createId() {
@@ -4800,7 +4797,7 @@
           ].filter(Boolean).join(" ");
           const isChecked = selectedIds.has(row.id) ? "checked" : "";
           const showResync = isReclassRow(row) && (isFailed || neverSynced);
-          const showEditDelete = isNonReclassRow(row) || editable || isFailed;
+          const showEditDelete = isNonReclassRow(row) || editable;
           return `
             <tr class="${rowClass}">
               <td class="select-cell"><input type="checkbox" class="row-select-chk" data-id="${row.id}" ${isChecked} /></td>
