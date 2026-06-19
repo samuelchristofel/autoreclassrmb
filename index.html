@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -409,7 +410,7 @@
       background: linear-gradient(180deg, #fbfbfc, #eef2f6);
     }
 
-    .toolbar .tool-btn + .tool-btn {
+    .toolbar .tool-btn+.tool-btn {
       margin-left: -1px;
     }
 
@@ -1041,7 +1042,10 @@
       padding: 16px;
       z-index: 60;
     }
-    .barcode-modal-backdrop.active { display: flex; }
+
+    .barcode-modal-backdrop.active {
+      display: flex;
+    }
 
     .barcode-modal {
       width: min(1280px, calc(100vw - 24px));
@@ -1054,6 +1058,7 @@
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
     }
+
     .barcode-modal-head {
       padding: 12px 14px;
       border-bottom: 1px solid #d8dee4;
@@ -1064,10 +1069,32 @@
       gap: 12px;
       flex-wrap: wrap;
     }
-    .barcode-modal-head h2 { margin: 0; font-size: 18px; color: #243038; line-height: 1.1; }
-    .barcode-modal-head p  { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
-    .barcode-modal-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .barcode-modal-body { padding: 16px 18px 18px; overflow: auto; background: #eef2f5; }
+
+    .barcode-modal-head h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #243038;
+      line-height: 1.1;
+    }
+
+    .barcode-modal-head p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .barcode-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .barcode-modal-body {
+      padding: 16px 18px 18px;
+      overflow: auto;
+      background: #eef2f5;
+    }
 
     /* ─── Barcode Sheet Grid — "Lego brick" fixed 4-per-row ─── */
     .barcode-sheet {
@@ -1102,7 +1129,7 @@
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      background: #148d67;
+      background: #000;
       color: #fff;
       font-weight: 700;
       font-size: 12px;
@@ -1133,6 +1160,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .barcode-mark svg {
       width: 170px;
       max-width: 170px;
@@ -1150,6 +1178,7 @@
       text-align: center;
       width: 100%;
     }
+
     .barcode-line {
       display: flex;
       align-items: flex-start;
@@ -1157,16 +1186,26 @@
       gap: 4px;
       color: #111;
     }
-    .bl-key  { font-weight: 700; color: #111; }
-    .bl-value { color: #111; font-weight: 400; }
+
+    .bl-key {
+      font-weight: 700;
+      color: #111;
+    }
+
+    .bl-value {
+      color: #111;
+      font-weight: 400;
+    }
+
     .barcode-status {
       margin-top: 2px;
       font-weight: 700;
-      color: #148d67;
+      color: #000;
       letter-spacing: 0;
     }
+
     .barcode-status .bl-value {
-      color: #148d67;
+      color: #000;
       font-weight: 700;
     }
 
@@ -1183,7 +1222,8 @@
         margin: 0 !important;
       }
 
-      html, body {
+      html,
+      body {
         margin: 0 !important;
         padding: 0 !important;
         width: 100mm !important;
@@ -1195,7 +1235,10 @@
       }
 
       /* Hide everything except the barcode modal */
-      body > *:not(.barcode-modal-backdrop) { display: none !important; }
+      body>*:not(.barcode-modal-backdrop) {
+        display: none !important;
+      }
+
       .barcode-modal-backdrop {
         display: block !important;
         position: static !important;
@@ -1207,6 +1250,7 @@
         box-sizing: border-box !important;
         overflow: hidden !important;
       }
+
       .barcode-modal {
         all: unset !important;
         display: block !important;
@@ -1214,7 +1258,11 @@
         height: 100mm !important;
         max-width: none !important;
       }
-      .barcode-modal-head { display: none !important; }
+
+      .barcode-modal-head {
+        display: none !important;
+      }
+
       .barcode-modal-body {
         padding: 3.5mm !important;
         margin: 0 !important;
@@ -1288,7 +1336,9 @@
         flex-shrink: 0 !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        border: none !important;
       }
+
       .barcode-mark svg {
         width: 40mm !important;
         height: 40mm !important;
@@ -1297,19 +1347,24 @@
       }
 
       .barcode-lines {
-        font-size: 6.5pt !important;
-        line-height: 1.2 !important;
+        font-size: 8pt !important;
+        line-height: 1.35 !important;
         width: 100% !important;
         flex: 1 !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
-        gap: 0.15mm !important;
+        gap: 0.4mm !important;
         text-align: center !important;
       }
 
-      .barcode-status { font-size: 6.8pt !important; }
-      .barcode-status .bl-value { font-size: 6.8pt !important; }
+      .barcode-status {
+        font-size: 8.5pt !important;
+      }
+
+      .barcode-status .bl-value {
+        font-size: 8.5pt !important;
+      }
     }
 
 
@@ -1339,8 +1394,15 @@
     }
 
     @keyframes modalIn {
-      from { transform: translateY(10px) scale(0.98); opacity: 0; }
-      to   { transform: translateY(0) scale(1); opacity: 1; }
+      from {
+        transform: translateY(10px) scale(0.98);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
     }
 
     .modal-head {
@@ -1440,7 +1502,7 @@
     .mf-input:focus,
     .mf-select:focus {
       border-color: #80bdff;
-      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
     }
 
     .mf-input[readonly],
@@ -1703,6 +1765,7 @@
       .form-grid {
         grid-template-columns: 1fr;
       }
+
       .form-col,
       .form-col:last-child {
         padding: 0;
@@ -1731,10 +1794,19 @@
         max-width: none;
       }
     }
+
     /* ─── Core routing/visibility utilities ─── */
-    .hidden { display: none !important; }
-    .page-panel { display: block; }
-    .page-panel.hidden { display: none !important; }
+    .hidden {
+      display: none !important;
+    }
+
+    .page-panel {
+      display: block;
+    }
+
+    .page-panel.hidden {
+      display: none !important;
+    }
 
     /* ─── Form fields ─── */
     .form-two-col {
@@ -1743,27 +1815,41 @@
       gap: 0;
       align-items: start;
     }
+
     .form-col {
       padding: 0 16px 0 0;
       display: flex;
       flex-direction: column;
       gap: 0;
     }
-    .form-col:last-child { padding-right: 0; border-left: 1px solid var(--border); padding-left: 16px; }
+
+    .form-col:last-child {
+      padding-right: 0;
+      border-left: 1px solid var(--border);
+      padding-left: 16px;
+    }
+
     .form-row {
       display: flex;
       flex-direction: column;
       gap: 4px;
       margin-bottom: 14px;
     }
+
     .form-label {
       font-size: 14px;
       font-weight: 600;
       color: #48545d;
       letter-spacing: 0;
     }
-    .form-label.required::after { content: " *"; color: #d33a3a; }
-    .form-input, .form-select {
+
+    .form-label.required::after {
+      content: " *";
+      color: #d33a3a;
+    }
+
+    .form-input,
+    .form-select {
       width: 100%;
       height: 38px;
       border: 1px solid #ced4da;
@@ -1776,11 +1862,15 @@
       box-sizing: border-box;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .form-input:focus, .form-select:focus {
+
+    .form-input:focus,
+    .form-select:focus {
       border-color: #80bdff;
-      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
     }
-    .form-input[readonly], .readonly-input {
+
+    .form-input[readonly],
+    .readonly-input {
       background: #e9ecef;
       color: #6b7680;
       cursor: default;
@@ -1791,23 +1881,31 @@
       -webkit-appearance: none;
       -moz-appearance: none;
     }
-    .form-input::placeholder { color: #a8b2bb; font-size: 14px; }
+
+    .form-input::placeholder {
+      color: #a8b2bb;
+      font-size: 14px;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 0 22px;
       align-items: start;
     }
+
     .form-col {
       min-width: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
     }
+
     .form-col:last-child {
       padding-left: 0;
       border-left: 0;
     }
+
     .form-row {
       display: grid;
       grid-template-columns: 180px minmax(0, 1fr);
@@ -1815,7 +1913,11 @@
       align-items: start;
       margin-bottom: 14px;
     }
-    .form-row:last-child { margin-bottom: 0; }
+
+    .form-row:last-child {
+      margin-bottom: 0;
+    }
+
     .form-row .form-label {
       margin: 0;
       white-space: normal;
@@ -1824,10 +1926,12 @@
       display: flex;
       align-items: center;
     }
+
     .form-row .form-input,
     .form-row .form-select {
       min-width: 0;
     }
+
     .form-card.is-view .form-input[readonly],
     .form-card.is-view .readonly-input,
     .form-card.is-view .form-select:disabled {
@@ -1843,10 +1947,12 @@
       -webkit-appearance: none;
       -moz-appearance: none;
     }
+
     .form-card.is-view .form-input[readonly]::-ms-clear,
     .form-card.is-view .readonly-input::-ms-clear {
       display: none;
     }
+
     .form-card.is-view .form-select:disabled {
       appearance: none;
       -webkit-appearance: none;
@@ -1854,9 +1960,11 @@
       background-image: none !important;
       padding-right: 10px;
     }
+
     .form-card.is-view .form-select:disabled::-ms-expand {
       display: none;
     }
+
     .form-card.is-view .form-input[readonly]:focus,
     .form-card.is-view .readonly-input:focus,
     .form-card.is-view .form-select:disabled:focus {
@@ -1869,6 +1977,7 @@
     #formView .form-card :is(input, select, textarea)::placeholder {
       font-size: 14px;
     }
+
     #formView .form-card :is(input, select, textarea) {
       width: 100%;
       height: 38px;
@@ -1882,10 +1991,12 @@
       box-shadow: none;
       transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
     }
+
     #formView .form-card :is(input, select, textarea):focus:not(:disabled):not([readonly]) {
       border-color: #80bdff;
-      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
     }
+
     #formView .form-card :is(input, select, textarea)[readonly],
     #formView .form-card :is(input, select, textarea):disabled {
       background-color: #e9ecef;
@@ -1897,19 +2008,22 @@
       -moz-appearance: none;
       appearance: none;
     }
+
     #formView .form-card select:disabled::-ms-expand {
       display: none;
     }
+
     #formView .form-card input::-webkit-outer-spin-button,
     #formView .form-card input::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
+
     .form-action-btn {
       height: 34px;
       padding: 0 16px;
       border: 1px solid #b9c3cb;
-      background: linear-gradient(180deg,#fff,#f4f7f9);
+      background: linear-gradient(180deg, #fff, #f4f7f9);
       color: #344049;
       cursor: pointer;
       font-size: 13px;
@@ -1920,32 +2034,38 @@
       gap: 6px;
       transition: background 0.14s, box-shadow 0.14s;
     }
+
     .form-action-btn.primary {
-      background: linear-gradient(180deg,#15a06f,#0f8762);
+      background: linear-gradient(180deg, #15a06f, #0f8762);
       border-color: #0f8762;
       color: #fff;
     }
+
     .form-action-btn.primary:hover {
-      background: linear-gradient(180deg,#17ad78,#138d67);
-      box-shadow: 0 3px 10px rgba(15,135,98,0.28);
+      background: linear-gradient(180deg, #17ad78, #138d67);
+      box-shadow: 0 3px 10px rgba(15, 135, 98, 0.28);
     }
+
     .form-action-btn.print {
-      background: linear-gradient(180deg,#1f8cff,#0d6efd);
+      background: linear-gradient(180deg, #1f8cff, #0d6efd);
       border-color: #0d6efd;
       color: #fff;
     }
+
     .form-action-btn.print:hover {
-      background: linear-gradient(180deg,#3197ff,#0b5ed7);
-      box-shadow: 0 3px 10px rgba(13,110,253,0.28);
+      background: linear-gradient(180deg, #3197ff, #0b5ed7);
+      box-shadow: 0 3px 10px rgba(13, 110, 253, 0.28);
     }
+
     .form-action-btn.print .print-icon {
       width: 14px;
       height: 14px;
       flex: 0 0 14px;
       display: block;
     }
+
     .form-action-btn:hover {
-      background: linear-gradient(180deg,#f4f7f9,#e8edf1);
+      background: linear-gradient(180deg, #f4f7f9, #e8edf1);
     }
 
     /* ─── Modal foot & foot-btn ─── */
@@ -1958,11 +2078,12 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+
     .foot-btn {
       height: 36px;
       padding: 0 18px;
       border: 1px solid #c5cfd7;
-      background: linear-gradient(180deg,#fff,#f4f7f9);
+      background: linear-gradient(180deg, #fff, #f4f7f9);
       color: #344049;
       cursor: pointer;
       font-size: 13px;
@@ -1973,11 +2094,33 @@
       gap: 6px;
       transition: background 0.14s, box-shadow 0.14s;
     }
-    .foot-btn:hover { background: linear-gradient(180deg,#f4f7f9,#e8edf1); box-shadow: 0 2px 6px rgba(0,0,0,.08); }
-    .foot-btn.primary { background: linear-gradient(180deg,#15a06f,#0f8762); border-color: #0f8762; color: #fff; }
-    .foot-btn.primary:hover { background: linear-gradient(180deg,#17ad78,#138d67); box-shadow: 0 3px 10px rgba(15,135,98,.28); }
-    .foot-btn.danger { background: linear-gradient(180deg,#ef4444,#dc2626); border-color: #b91c1c; color: #fff; }
-    .foot-btn.danger:hover { background: linear-gradient(180deg,#f35555,#e53030); box-shadow: 0 3px 10px rgba(220,38,38,.28); }
+
+    .foot-btn:hover {
+      background: linear-gradient(180deg, #f4f7f9, #e8edf1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+    }
+
+    .foot-btn.primary {
+      background: linear-gradient(180deg, #15a06f, #0f8762);
+      border-color: #0f8762;
+      color: #fff;
+    }
+
+    .foot-btn.primary:hover {
+      background: linear-gradient(180deg, #17ad78, #138d67);
+      box-shadow: 0 3px 10px rgba(15, 135, 98, .28);
+    }
+
+    .foot-btn.danger {
+      background: linear-gradient(180deg, #ef4444, #dc2626);
+      border-color: #b91c1c;
+      color: #fff;
+    }
+
+    .foot-btn.danger:hover {
+      background: linear-gradient(180deg, #f35555, #e53030);
+      box-shadow: 0 3px 10px rgba(220, 38, 38, .28);
+    }
 
     /* ─── Toast / notification ─── */
     .toast {
@@ -1993,82 +2136,292 @@
       display: flex;
       flex-direction: column;
       gap: 3px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
       z-index: 9999;
       transform: translateY(20px);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
+
     .toast.show {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
     }
-    .toast strong { font-size: 13px; font-weight: 700; color: #7ef5c4; }
-    .toast span { font-size: 12.5px; color: #c8d5dd; }
+
+    .toast strong {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7ef5c4;
+    }
+
+    .toast span {
+      font-size: 12.5px;
+      color: #c8d5dd;
+    }
 
     /* ─── Master-form modal grid ─── */
-    .master-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
-    .master-form-grid .mf-full { grid-column: 1 / -1; }
-    .mf-field { display: flex; flex-direction: column; gap: 6px; }
-    .mf-label { font-size: 14px; font-weight: 600; color: #48545d; letter-spacing: 0; text-transform: none; }
-    .mf-label.required::after { content: " *"; color: #d33a3a; }
-    .mf-input, .mf-select {
-      width: 100%; height: 38px; border: 1px solid #ced4da; background: #fff;
-      color: #243038; padding: 6px 12px; font-size: 14px; border-radius: 4px;
-      outline: none; transition: border-color 0.15s, box-shadow 0.15s; box-sizing: border-box;
+    .master-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 20px;
     }
-    .mf-input:focus, .mf-select:focus { border-color: #80bdff; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); }
-    .mf-input[readonly], .mf-input.readonly-input, .mf-select:disabled {
-      background-color: #e9ecef; color: #6b7680; cursor: default; border-color: #e9ecef;
-      box-shadow: none !important; outline: none !important; appearance: none; -webkit-appearance: none; -moz-appearance: none;
+
+    .master-form-grid .mf-full {
+      grid-column: 1 / -1;
     }
-    .mf-input::placeholder { color: #a8b2bb; font-size: 14px; }
-    .mf-section-divider { grid-column:1/-1; display:flex; align-items:center; gap:12px; margin:4px 0; }
-    .mf-section-divider span { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#8b96a0; white-space:nowrap; }
-    .mf-section-divider::before,.mf-section-divider::after { content:""; flex:1; height:1px; background:#e4eaef; }
+
+    .mf-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mf-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #48545d;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .mf-label.required::after {
+      content: " *";
+      color: #d33a3a;
+    }
+
+    .mf-input,
+    .mf-select {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #ced4da;
+      background: #fff;
+      color: #243038;
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      box-sizing: border-box;
+    }
+
+    .mf-input:focus,
+    .mf-select:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+    }
+
+    .mf-input[readonly],
+    .mf-input.readonly-input,
+    .mf-select:disabled {
+      background-color: #e9ecef;
+      color: #6b7680;
+      cursor: default;
+      border-color: #e9ecef;
+      box-shadow: none !important;
+      outline: none !important;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    .mf-input::placeholder {
+      color: #a8b2bb;
+      font-size: 14px;
+    }
+
+    .mf-section-divider {
+      grid-column: 1/-1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 4px 0;
+    }
+
+    .mf-section-divider span {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #8b96a0;
+      white-space: nowrap;
+    }
+
+    .mf-section-divider::before,
+    .mf-section-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e4eaef;
+    }
 
     /* ─── Upload zone (import modal) ─── */
     .upload-zone {
-      min-height: 140px; border: 2px dashed #b5c3cc; border-radius: 10px;
-      background: #f8fafc; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      padding: 24px 20px; gap: 8px; color: #55616d; cursor: pointer;
-      transition: border-color 0.2s, background 0.2s; margin-top: 16px;
+      min-height: 140px;
+      border: 2px dashed #b5c3cc;
+      border-radius: 10px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px 20px;
+      gap: 8px;
+      color: #55616d;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-top: 16px;
     }
-    .upload-zone:hover { border-color: #148d67; background: #f2faf6; }
-    .upload-zone strong { font-size: 14px; color: #243038; display: block; }
-    .upload-zone p { margin: 0; font-size: 13px; line-height: 1.5; }
-    .upload-details { font-size: 12px; color: #8b96a0; }
-    .upload-zone-icon { width:40px; height:40px; background:#e8f4ee; border-radius:50%; display:grid; place-items:center; color:#148d67; }
-    .import-file-name { margin-top:12px; font-size:13px; color:#243038; font-weight:500; display:flex; align-items:center; gap:6px; padding:8px 12px; background:#f0f4f7; border-radius:6px; }
-    .import-file-name.has-file { background:#e7f4ef; color:#145c40; }
-    .download-template-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border:1px solid #148d67; background:linear-gradient(180deg,#f3fbf6,#e7f4ef); color:#145c40; cursor:pointer; border-radius:6px; font-size:13px; font-weight:600; transition:background 0.15s,box-shadow 0.15s; }
-    .download-template-btn:hover { background:linear-gradient(180deg,#e7f4ef,#d2efe2); box-shadow:0 2px 8px rgba(20,141,103,.14); }
-    .modal-note { font-size:12px; color:#6b7680; margin-top:10px; line-height:1.6; padding:8px 12px; background:#f7f9fb; border-left:3px solid #b5c3cc; border-radius:0 4px 4px 0; }
+
+    .upload-zone:hover {
+      border-color: #148d67;
+      background: #f2faf6;
+    }
+
+    .upload-zone strong {
+      font-size: 14px;
+      color: #243038;
+      display: block;
+    }
+
+    .upload-zone p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .upload-details {
+      font-size: 12px;
+      color: #8b96a0;
+    }
+
+    .upload-zone-icon {
+      width: 40px;
+      height: 40px;
+      background: #e8f4ee;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #148d67;
+    }
+
+    .import-file-name {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #243038;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: #f0f4f7;
+      border-radius: 6px;
+    }
+
+    .import-file-name.has-file {
+      background: #e7f4ef;
+      color: #145c40;
+    }
+
+    .download-template-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid #148d67;
+      background: linear-gradient(180deg, #f3fbf6, #e7f4ef);
+      color: #145c40;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+
+    .download-template-btn:hover {
+      background: linear-gradient(180deg, #e7f4ef, #d2efe2);
+      box-shadow: 0 2px 8px rgba(20, 141, 103, .14);
+    }
+
+    .modal-note {
+      font-size: 12px;
+      color: #6b7680;
+      margin-top: 10px;
+      line-height: 1.6;
+      padding: 8px 12px;
+      background: #f7f9fb;
+      border-left: 3px solid #b5c3cc;
+      border-radius: 0 4px 4px 0;
+    }
 
     /* ─── Confirm modal icon ─── */
-    .confirm-icon-wrap { width:52px; height:52px; border-radius:50%; display:grid; place-items:center; margin:0 auto 14px; }
-    .confirm-icon-wrap.danger { background:#fdeaea; color:#da4f4f; }
-    .confirm-body-text { text-align:center; padding:4px 8px 8px; }
-    .confirm-body-text p { margin:0 0 8px; font-size:15px; font-weight:600; color:#1a2430; line-height:1.3; }
-    .confirm-body-text span { display:block; font-size:13px; color:#6b7680; line-height:1.5; }
+    .confirm-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 14px;
+    }
+
+    .confirm-icon-wrap.danger {
+      background: #fdeaea;
+      color: #da4f4f;
+    }
+
+    .confirm-body-text {
+      text-align: center;
+      padding: 4px 8px 8px;
+    }
+
+    .confirm-body-text p {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a2430;
+      line-height: 1.3;
+    }
+
+    .confirm-body-text span {
+      display: block;
+      font-size: 13px;
+      color: #6b7680;
+      line-height: 1.5;
+    }
 
     /* ─── Modal animation ─── */
-    @keyframes modalIn { from { transform:translateY(10px) scale(0.98); opacity:0; } to { transform:translateY(0) scale(1); opacity:1; } }
-    .modal { animation: modalIn 0.18s ease; }
+    @keyframes modalIn {
+      from {
+        transform: translateY(10px) scale(0.98);
+        opacity: 0;
+      }
 
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal {
+      animation: modalIn 0.18s ease;
+    }
   </style>
 </head>
+
 <body>
   <div class="shell">
     <aside class="sidebar">
       <div class="sidebar-brand">
         <div class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="22" height="22">
-            <path d="M3.2 12.4c3.7-3.2 7.5-4.7 11.3-4.4 2.4.2 4.3 1.1 5.8 2.5-1.9.2-3.6.8-5 1.9-1.5 1.1-2.5 2.5-3 4.2-.8-1.1-1.9-1.9-3.5-2.4-1.8-.5-3.8-.6-5.6-.4z" fill="currentColor" opacity=".96"/>
-            <path d="M6 8.1C8.6 5.4 11.3 4.1 14 4c2.2-.1 3.8.4 5 1.6-1.8.1-3.4.5-4.9 1.4-1.3.8-2.3 1.8-2.9 3.2-.8-.7-1.8-1.3-3-1.7-1.2-.4-2.4-.4-3.5-.4z" fill="#dff5ea" opacity=".95"/>
+            <path
+              d="M3.2 12.4c3.7-3.2 7.5-4.7 11.3-4.4 2.4.2 4.3 1.1 5.8 2.5-1.9.2-3.6.8-5 1.9-1.5 1.1-2.5 2.5-3 4.2-.8-1.1-1.9-1.9-3.5-2.4-1.8-.5-3.8-.6-5.6-.4z"
+              fill="currentColor" opacity=".96" />
+            <path
+              d="M6 8.1C8.6 5.4 11.3 4.1 14 4c2.2-.1 3.8.4 5 1.6-1.8.1-3.4.5-4.9 1.4-1.3.8-2.3 1.8-2.9 3.2-.8-.7-1.8-1.3-3-1.7-1.2-.4-2.4-.4-3.5-.4z"
+              fill="#dff5ea" opacity=".95" />
           </svg>
         </div>
         <div class="brand-copy">
@@ -2084,7 +2437,7 @@
             <button class="nav-subitem active" id="navReclass" type="button">
               <span class="nav-icon">
                 <svg class="icon svg-stroke" viewBox="0 0 24 24">
-                  <path d="M5 7h14M5 12h14M5 17h14"/>
+                  <path d="M5 7h14M5 12h14M5 17h14" />
                 </svg>
               </span>
               <span class="nav-text">Cetak LPN</span>
@@ -2092,9 +2445,9 @@
             <button class="nav-subitem" id="navMaster" type="button">
               <span class="nav-icon">
                 <svg class="icon svg-stroke" viewBox="0 0 24 24">
-                  <path d="M4 6h16M4 10h16M4 14h8M4 18h8"/>
-                  <circle cx="17" cy="17" r="3"/>
-                  <path d="m21 21-1.5-1.5"/>
+                  <path d="M4 6h16M4 10h16M4 14h8M4 18h8" />
+                  <circle cx="17" cy="17" r="3" />
+                  <path d="m21 21-1.5-1.5" />
                 </svg>
               </span>
               <span class="nav-text">Master Data</span>
@@ -2108,14 +2461,15 @@
       <header class="topbar">
         <button class="hamburger-btn" type="button" aria-label="Toggle menu" title="Menu">
           <svg class="icon svg-stroke" viewBox="0 0 24 24" style="width:20px;height:20px;color:#fff;">
-            <path d="M4 6h16M4 12h16M4 18h16"/>
+            <path d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
 
         <div class="topbar-tools">
           <div class="notif" title="Notifications">
             <svg class="icon svg-fill" viewBox="0 0 24 24" width="13" height="13">
-              <path d="M12 3a5 5 0 0 0-5 5v2.5c0 .7-.2 1.4-.6 2l-1 1.5a1 1 0 0 0 .8 1.6h11.6a1 1 0 0 0 .8-1.6l-1-1.5a3.7 3.7 0 0 1-.6-2V8a5 5 0 0 0-5-5zm0 17a2.5 2.5 0 0 0 2.4-1.8H9.6A2.5 2.5 0 0 0 12 20z"/>
+              <path
+                d="M12 3a5 5 0 0 0-5 5v2.5c0 .7-.2 1.4-.6 2l-1 1.5a1 1 0 0 0 .8 1.6h11.6a1 1 0 0 0 .8-1.6l-1-1.5a3.7 3.7 0 0 1-.6-2V8a5 5 0 0 0-5-5zm0 17a2.5 2.5 0 0 0 2.4-1.8H9.6A2.5 2.5 0 0 0 12 20z" />
             </svg>
           </div>
           <div class="user">
@@ -2136,20 +2490,20 @@
               <div class="toolbar">
                 <button class="tool-btn" id="filterBtn" type="button" title="Apply filter">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24">
-                    <path d="M4 5h16l-6 7v5l-4 2v-7L4 5z"/>
+                    <path d="M4 5h16l-6 7v5l-4 2v-7L4 5z" />
                   </svg>
                   Filter
                 </button>
                 <button class="tool-btn" id="reloadBtn" type="button" title="Reset filters">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24">
-                    <path d="M4 4v6h6M20 20v-6h-6"/>
-                    <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3"/>
+                    <path d="M4 4v6h6M20 20v-6h-6" />
+                    <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3" />
                   </svg>
                   Reload
                 </button>
                 <button class="tool-btn primary" id="addBtn" type="button" title="Add new record">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;">
-                    <path d="M12 5v14M5 12h14"/>
+                    <path d="M12 5v14M5 12h14" />
                   </svg>
                   Add
                 </button>
@@ -2205,10 +2559,11 @@
                   <option value="Sync Sukses">Sync Sukses</option>
                   <option value="Sync Gagal">Sync Gagal</option>
                 </select>
-                <button id="syncAllBtn" type="button" title="Sync semua yang dipilih" style="width:32px;height:32px;border:1px solid #245fa7;background:linear-gradient(180deg,#2d76c9,#245fa7);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;margin-left:8px;flex-shrink:0;">
+                <button id="syncAllBtn" type="button" title="Sync semua yang dipilih"
+                  style="width:32px;height:32px;border:1px solid #245fa7;background:linear-gradient(180deg,#2d76c9,#245fa7);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;margin-left:8px;flex-shrink:0;">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24" width="14" height="14" style="color:#fff;">
-                    <path d="M4 4v6h6M20 20v-6h-6"/>
-                    <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3"/>
+                    <path d="M4 4v6h6M20 20v-6h-6" />
+                    <path d="M20 8a8 8 0 0 0-14.5-3M4 16a8 8 0 0 0 14.5 3" />
                   </svg>
                 </button>
               </div>
@@ -2251,7 +2606,7 @@
               <div class="table-scroll">
                 <table aria-label="Cetak LPN table">
                   <thead>
-                  <tr>
+                    <tr>
                       <th class="select-cell"><input type="checkbox" id="selectAllChk" title="Select all" /></th>
                       <th style="width:110px;">Action</th>
                       <th style="width:128px;">No. Dokumen</th>
@@ -2293,21 +2648,21 @@
               <div class="form-actions">
                 <button class="form-action-btn" id="backToListBtn" type="button">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24">
-                    <path d="M15 18 9 12l6-6"/>
+                    <path d="M15 18 9 12l6-6" />
                   </svg>
                   Back
                 </button>
                 <button class="form-action-btn print" id="formPrintBtn" type="button">
                   <svg class="icon svg-stroke print-icon" viewBox="0 0 24 24" style="color:#fff;">
-                    <path d="M7 9V4h10v5M7 17h10v3H7z"/>
-                    <path d="M6 9h12a2 2 0 0 1 2 2v5H18v-2H6v2H4v-5a2 2 0 0 1 2-2z"/>
+                    <path d="M7 9V4h10v5M7 17h10v3H7z" />
+                    <path d="M6 9h12a2 2 0 0 1 2 2v5H18v-2H6v2H4v-5a2 2 0 0 1 2-2z" />
                   </svg>
                   Print
                 </button>
                 <button class="form-action-btn primary" id="formSaveBtn" type="button">
                   <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;">
-                    <path d="M5 4h11l3 3v13H5z"/>
-                    <path d="M8 4v6h8V4M8 20v-6h8v6"/>
+                    <path d="M5 4h11l3 3v13H5z" />
+                    <path d="M8 4v6h8V4M8 20v-6h8v6" />
                   </svg>
                   Save
                 </button>
@@ -2322,7 +2677,8 @@
                       <option value="reclass">Reclass RMB</option>
                       <option value="non-reclass">Non-Reclass</option>
                     </select>
-                    <div id="formLpnTypeInfo" class="lpn-type-info">Data akan auto-reclass otomatis pada H+1 jam 13.00</div>
+                    <div id="formLpnTypeInfo" class="lpn-type-info">Data akan auto-reclass otomatis pada H+1 jam 13.00
+                    </div>
                   </div>
                 </div>
                 <div class="form-col">
@@ -2335,7 +2691,8 @@
                     <div class="searchable-select" id="formItemNoSelect">
                       <input type="hidden" id="formItemNo" value="" />
                       <div class="ss-control">
-                        <input id="formItemNoSearch" class="form-input ss-search" type="text" placeholder="Pilih atau cari Item No..." autocomplete="off" />
+                        <input id="formItemNoSearch" class="form-input ss-search" type="text"
+                          placeholder="Pilih atau cari Item No..." autocomplete="off" />
                         <span class="ss-chevron" aria-hidden="true">▾</span>
                       </div>
                       <ul class="ss-list hidden" id="formItemNoList" role="listbox" aria-label="Daftar Item No."></ul>
@@ -2373,33 +2730,39 @@
                   </div>
                   <div class="form-row">
                     <div class="form-label required">New Location Code</div>
-                    <input id="formNewLocationCode" class="form-input readonly-input" type="text" value="AAP-RMB" readonly />
+                    <input id="formNewLocationCode" class="form-input readonly-input" type="text" value="AAP-RMB"
+                      readonly />
                   </div>
                   <div class="form-row">
                     <div class="form-label required">New Bin Code</div>
-                    <select id="formNewBinCode" class="form-select"><option value="">Pilih Bin Code...</option><option value="KL-AAP-RMB">KL-AAP-RMB</option><option value="GT-AAP-RMB">GT-AAP-RMB</option><option value="TD-AAP-RMB">TD-AAP-RMB</option></select>
+                    <select id="formNewBinCode" class="form-select">
+                      <option value="">Pilih Bin Code...</option>
+                      <option value="KL-AAP-RMB">KL-AAP-RMB</option>
+                      <option value="GT-AAP-RMB">GT-AAP-RMB</option>
+                      <option value="TD-AAP-RMB">TD-AAP-RMB</option>
+                    </select>
                   </div>
                   <div class="form-row">
                     <div class="form-label required">Nama Mesin</div>
                     <select id="formMachine" class="form-select">
                       <option value="">Pilih Mesin...</option>
                       <option value="Assembling Auto 1">Assembling Auto 1</option>
-<option value="Assembling Auto 2">Assembling Auto 2</option>
-<option value="Assembling Auto 3">Assembling Auto 3</option>
-<option value="Assembling Auto 4">Assembling Auto 4</option>
-<option value="Assembling Auto 5">Assembling Auto 5</option>
-<option value="Assembling Auto 6">Assembling Auto 6</option>
-<option value="Assembling Line 1 (Pail)">Assembling Line 1 (Pail)</option>
-<option value="Assembling Line 2 (2.5lt)">Assembling Line 2 (2.5lt)</option>
-<option value="Assembling Line 3 (1/2 lt)">Assembling Line 3 (1/2 lt)</option>
-<option value="Assembling Line 4 (50cc)">Assembling Line 4 (50cc)</option>
-<option value="Assembling Line 5 (25cc)">Assembling Line 5 (25cc)</option>
-<option value="Sheetpress 1">Sheetpress 1</option>
-<option value="Sheetpress 2">Sheetpress 2</option>
-<option value="Strepfeed">Strepfeed</option>
-<option value="Manual">Manual</option>
-<option value="Cutting">Cutting</option>
-<option value="Printing">Printing</option>
+                      <option value="Assembling Auto 2">Assembling Auto 2</option>
+                      <option value="Assembling Auto 3">Assembling Auto 3</option>
+                      <option value="Assembling Auto 4">Assembling Auto 4</option>
+                      <option value="Assembling Auto 5">Assembling Auto 5</option>
+                      <option value="Assembling Auto 6">Assembling Auto 6</option>
+                      <option value="Assembling Line 1 (Pail)">Assembling Line 1 (Pail)</option>
+                      <option value="Assembling Line 2 (2.5lt)">Assembling Line 2 (2.5lt)</option>
+                      <option value="Assembling Line 3 (1/2 lt)">Assembling Line 3 (1/2 lt)</option>
+                      <option value="Assembling Line 4 (50cc)">Assembling Line 4 (50cc)</option>
+                      <option value="Assembling Line 5 (25cc)">Assembling Line 5 (25cc)</option>
+                      <option value="Sheetpress 1">Sheetpress 1</option>
+                      <option value="Sheetpress 2">Sheetpress 2</option>
+                      <option value="Strepfeed">Strepfeed</option>
+                      <option value="Manual">Manual</option>
+                      <option value="Cutting">Cutting</option>
+                      <option value="Printing">Printing</option>
                     </select>
                   </div>
                   <div class="form-row">
@@ -2416,37 +2779,48 @@
                     <select id="formOperator" class="form-select">
                       <option value="">Pilih Operator...</option>
                       <option value="13260341">Endrik Saputra (13260341)</option>
-<option value="13260350">Muhamad Amiruddin (13260350)</option>
-<option value="13260660">Dicky Onava Riri Hena (13260660)</option>
-<option value="13260340">Ariska (13260340)</option>
-<option value="13260348">Kurniawan Aji Saputra (13260348)</option>
-<option value="1205013">Febri Widodo (1205013)</option>
+                      <option value="13260350">Muhamad Amiruddin (13260350)</option>
+                      <option value="13260660">Dicky Onava Riri Hena (13260660)</option>
+                      <option value="13260340">Ariska (13260340)</option>
+                      <option value="13260348">Kurniawan Aji Saputra (13260348)</option>
+                      <option value="1205013">Febri Widodo (1205013)</option>
                     </select>
                   </div>
+                </div>
               </div>
-            </div>
           </section>
         </section>
 
         <!-- ═══════════ MASTER DATA VIEW ═══════════ -->
         <section id="masterView" class="hidden" style="padding:20px 24px 32px;">
           <div class="page-title" style="margin-bottom:4px;">Master Data Reclass RMB</div>
-          <div style="font-size:13px;color:#6b7680;margin-bottom:22px;">Kelola referensi item material yang digunakan pada form Reclass RMB.</div>
+          <div style="font-size:13px;color:#6b7680;margin-bottom:22px;">Kelola referensi item material yang digunakan
+            pada form Reclass RMB.</div>
 
           <div class="card">
             <div class="card-head" style="padding:16px 18px 0;">
               <div class="card-title" style="font-size:15px;">List Master Data</div>
               <div class="toolbar">
                 <button class="tool-btn" id="masterExportBtn" type="button" title="Export master data">
-                  <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/><path d="M9 9l3-3 3 3"/><path d="M12 6v9"/></svg>
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" />
+                    <path d="M9 9l3-3 3 3" />
+                    <path d="M12 6v9" />
+                  </svg>
                   Export
                 </button>
                 <button class="tool-btn" id="masterImportBtn" type="button" title="Import master data">
-                  <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M12 5v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16"/></svg>
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24">
+                    <path d="M12 5v10" />
+                    <path d="m8 9 4 4 4-4" />
+                    <path d="M4 19h16" />
+                  </svg>
                   Import
                 </button>
                 <button class="tool-btn primary" id="masterAddBtn" type="button" title="Tambah master data">
-                  <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M12 5v14M5 12h14"/></svg>
+                  <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
                   Add Item
                 </button>
               </div>
@@ -2465,7 +2839,8 @@
               </div>
               <div class="search-box">
                 <span style="color:#6b7680;">Search:</span>
-                <input id="masterQuickSearch" class="search-input" type="text" placeholder="Cari item no, deskripsi..." style="width:280px;border-radius:4px;" />
+                <input id="masterQuickSearch" class="search-input" type="text" placeholder="Cari item no, deskripsi..."
+                  style="width:280px;border-radius:4px;" />
               </div>
             </div>
 
@@ -2513,7 +2888,9 @@
           <p class="modal-subtitle">Isi semua field dengan benar sebelum menyimpan data.</p>
         </div>
         <button class="modal-close" id="masterModalClose" type="button" aria-label="Close">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          <svg class="icon svg-stroke" viewBox="0 0 24 24">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
         </button>
       </div>
       <div class="modal-body" style="padding:22px 24px;">
@@ -2528,7 +2905,8 @@
           </div>
           <div class="mf-field mf-full">
             <label class="mf-label required" for="mfItemDesc">Item Description</label>
-            <input id="mfItemDesc" class="mf-input" type="text" placeholder="Contoh: KL AVIAN SYN 25 CC" autocomplete="off" />
+            <input id="mfItemDesc" class="mf-input" type="text" placeholder="Contoh: KL AVIAN SYN 25 CC"
+              autocomplete="off" />
           </div>
           <div class="mf-field">
             <label class="mf-label required" for="mfBaseQty">Base Quantity</label>
@@ -2544,11 +2922,13 @@
 
           <div class="mf-field">
             <label class="mf-label required" for="mfLocationCode">Location Code</label>
-            <input id="mfLocationCode" class="mf-input" type="text" placeholder="Contoh: AAP-RMK-PI" autocomplete="off" />
+            <input id="mfLocationCode" class="mf-input" type="text" placeholder="Contoh: AAP-RMK-PI"
+              autocomplete="off" />
           </div>
           <div class="mf-field">
             <label class="mf-label required" for="mfBinCode">Bin Code</label>
-            <input id="mfBinCode" class="mf-input" type="text" placeholder="Contoh: KLG-AAP-RMK-PI" autocomplete="off" />
+            <input id="mfBinCode" class="mf-input" type="text" placeholder="Contoh: KLG-AAP-RMK-PI"
+              autocomplete="off" />
           </div>
 
           <!-- Lokasi Tujuan -->
@@ -2591,7 +2971,10 @@
       <div class="modal-foot">
         <button class="foot-btn" id="masterModalCancelBtn" type="button">Batal</button>
         <button class="foot-btn primary" id="masterModalSaveBtn" type="button">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h8V4M8 20v-5h8v5"/></svg>
+          <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;">
+            <path d="M5 4h11l3 3v13H5z" />
+            <path d="M8 4v5h8V4M8 20v-5h8v5" />
+          </svg>
           Simpan
         </button>
       </div>
@@ -2607,18 +2990,25 @@
           <p class="modal-subtitle">Unduh template, isi data, lalu upload kembali ke sistem.</p>
         </div>
         <button class="modal-close" id="masterImportClose" type="button" aria-label="Close">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          <svg class="icon svg-stroke" viewBox="0 0 24 24">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
         </button>
       </div>
       <div class="modal-body" style="padding:20px 22px 22px;">
 
-        <div style="background:#f7f9fb;border:1px solid #e4eaef;border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;">
+        <div
+          style="background:#f7f9fb;border:1px solid #e4eaef;border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;">
           <div>
             <div style="font-size:13px;font-weight:600;color:#243038;margin-bottom:3px;">Template Excel</div>
             <div style="font-size:12px;color:#6b7680;">Format kolom yang dibutuhkan sistem untuk import.</div>
           </div>
           <button class="download-template-btn" id="downloadTemplateBtn" type="button">
-            <svg class="icon svg-stroke" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16"/></svg>
+            <svg class="icon svg-stroke" viewBox="0 0 24 24" width="16" height="16">
+              <path d="M12 5v10" />
+              <path d="m8 9 4 4 4-4" />
+              <path d="M4 19h16" />
+            </svg>
             Download
           </button>
         </div>
@@ -2626,9 +3016,9 @@
         <label class="upload-zone" id="importDropzone" for="importFileInput">
           <div class="upload-zone-icon">
             <svg class="icon svg-stroke" viewBox="0 0 24 24" width="20" height="20">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <path d="m17 8-5-5-5 5"/>
-              <path d="M12 3v12"/>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <path d="m17 8-5-5-5 5" />
+              <path d="M12 3v12" />
             </svg>
           </div>
           <strong>Drag &amp; drop file di sini</strong>
@@ -2638,7 +3028,10 @@
         <input id="importFileInput" type="file" accept=".xlsx,.csv" class="hidden" />
 
         <div class="import-file-name" id="importFileName">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24" width="14" height="14" style="color:#8b96a0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <svg class="icon svg-stroke" viewBox="0 0 24 24" width="14" height="14" style="color:#8b96a0;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+          </svg>
           Belum ada file yang dipilih.
         </div>
 
@@ -2646,7 +3039,11 @@
       <div class="modal-foot">
         <button class="foot-btn" id="masterImportCancelBtn" type="button">Batal</button>
         <button class="foot-btn primary" id="masterImportSubmitBtn" type="button">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <svg class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <path d="m17 8-5-5-5 5" />
+            <path d="M12 3v12" />
+          </svg>
           Upload File
         </button>
       </div>
@@ -2659,19 +3056,25 @@
       <div class="modal-head" style="border-bottom:none;padding-bottom:0;">
         <div style="width:100%;"></div>
         <button class="modal-close" id="errorModalClose" type="button" aria-label="Close">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          <svg class="icon svg-stroke" viewBox="0 0 24 24">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
         </button>
       </div>
       <div class="modal-body" style="padding:8px 24px 20px;text-align:center;">
-        <div id="errorIconWrap" style="width:56px;height:56px;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;background:#fdeaea;color:#da4f4f;">
+        <div id="errorIconWrap"
+          style="width:56px;height:56px;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;background:#fdeaea;color:#da4f4f;">
           <svg class="icon svg-stroke" viewBox="0 0 24 24" width="26" height="26">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 8v4M12 16h.01"/>
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
           </svg>
         </div>
-        <p id="errorModalTitle" style="margin:0 0 8px;font-size:16px;font-weight:700;color:#1a2430;line-height:1.3;">Sync Gagal</p>
+        <p id="errorModalTitle" style="margin:0 0 8px;font-size:16px;font-weight:700;color:#1a2430;line-height:1.3;">
+          Sync Gagal</p>
         <p id="errorModalSubtitle" style="margin:0 0 14px;font-size:13px;font-weight:600;color:#da4f4f;"></p>
-        <div id="errorModalDesc" style="font-size:13px;color:#5a6470;line-height:1.6;background:#f7f9fb;border:1px solid #e4eaef;border-radius:7px;padding:12px 14px;text-align:left;"></div>
+        <div id="errorModalDesc"
+          style="font-size:13px;color:#5a6470;line-height:1.6;background:#f7f9fb;border:1px solid #e4eaef;border-radius:7px;padding:12px 14px;text-align:left;">
+        </div>
       </div>
       <div class="modal-foot" style="justify-content:center;">
         <button class="foot-btn primary" id="errorModalOkBtn" type="button" style="min-width:120px;">Mengerti</button>
@@ -2683,15 +3086,18 @@
     <div class="modal" style="max-width:400px;width:100%;">
       <div class="modal-head" style="border-bottom:none;padding-bottom:0;">
         <div style="width:100%;"></div>
-        <button class="modal-close" id="confirmCloseBtn" type="button" aria-label="Close" onclick="document.getElementById('confirmModal').classList.remove('active');document.getElementById('confirmModal').classList.add('hidden');">
-          <svg class="icon svg-stroke" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <button class="modal-close" id="confirmCloseBtn" type="button" aria-label="Close"
+          onclick="document.getElementById('confirmModal').classList.remove('active');document.getElementById('confirmModal').classList.add('hidden');">
+          <svg class="icon svg-stroke" viewBox="0 0 24 24">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
         </button>
       </div>
       <div class="modal-body" style="padding:8px 24px 24px;text-align:center;">
         <div class="confirm-icon-wrap danger" id="confirmIconWrap">
           <svg id="confirmIconSvg" class="icon svg-stroke" viewBox="0 0 24 24" width="24" height="24">
-            <path d="M4 7h16"/>
-            <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/>
+            <path d="M4 7h16" />
+            <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13" />
           </svg>
         </div>
         <div class="confirm-body-text">
@@ -2703,7 +3109,10 @@
       <div class="modal-foot" style="justify-content:center;gap:10px;">
         <button class="foot-btn" id="confirmCancelBtn" type="button" style="min-width:100px;">Batal</button>
         <button class="foot-btn danger" id="confirmOkBtn" type="button" style="min-width:100px;">
-          <svg id="confirmOkIcon" class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;"><path d="M4 7h16"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13"/></svg>
+          <svg id="confirmOkIcon" class="icon svg-stroke" viewBox="0 0 24 24" style="color:#fff;">
+            <path d="M4 7h16" />
+            <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-8 0 1 13h8l1-13" />
+          </svg>
           <span id="confirmOkLabel">Hapus</span>
         </button>
       </div>
@@ -4282,7 +4691,7 @@
       }).join("");
     }
 
-    
+
     function openBarcodeModal() {
       const row = getPrintSourceRow();
       if (!row) {
@@ -4321,17 +4730,17 @@
 
       // 4 baris gagal (2 lama + 2 baru tambahan)
       const failedConfigs = [
-        { itemIdx: 6,  daysAgo: 5, status: "Sync Gagal", shift: "2", operator: "13260350", errorType: "stock", lpnType: "reclass" },
-        { itemIdx: 7,  daysAgo: 3, status: "Sync Gagal", shift: "3", operator: "13260341", errorType: "connection", lpnType: "reclass" },
-        { itemIdx: 8,  daysAgo: 6, status: "Sync Gagal", shift: "1", operator: "13260660", errorType: null, lpnType: "reclass" },
-        { itemIdx: 9,  daysAgo: 2, status: "Sync Gagal", shift: "2", operator: "13260348", errorType: null, lpnType: "reclass" },
+        { itemIdx: 6, daysAgo: 5, status: "Sync Gagal", shift: "2", operator: "13260350", errorType: "stock", lpnType: "reclass" },
+        { itemIdx: 7, daysAgo: 3, status: "Sync Gagal", shift: "3", operator: "13260341", errorType: "connection", lpnType: "reclass" },
+        { itemIdx: 8, daysAgo: 6, status: "Sync Gagal", shift: "1", operator: "13260660", errorType: null, lpnType: "reclass" },
+        { itemIdx: 9, daysAgo: 2, status: "Sync Gagal", shift: "2", operator: "13260348", errorType: null, lpnType: "reclass" },
       ];
       const normalConfigs = [
         { itemIdx: 2, daysAgo: 0, status: "Sync Sukses", note: "Sync Auto", shift: "1", operator: "13260660", errorType: null, lpnType: "reclass" },
         { itemIdx: 3, daysAgo: 4, status: "Sync Sukses", note: "Sync Auto", shift: "3", operator: "13260340", errorType: null, lpnType: "reclass" },
-        { itemIdx: 4, daysAgo: 0, status: "",             note: "",          shift: "2", operator: "13260348", errorType: null, lpnType: "reclass" },
-        { itemIdx: 0, daysAgo: 0, status: "",             note: "",          shift: "1", operator: "13260340", errorType: null, lpnType: "non-reclass" },
-        { itemIdx: 1, daysAgo: 1, status: "",             note: "",          shift: "2", operator: "13260350", errorType: null, lpnType: "non-reclass" },
+        { itemIdx: 4, daysAgo: 0, status: "", note: "", shift: "2", operator: "13260348", errorType: null, lpnType: "reclass" },
+        { itemIdx: 0, daysAgo: 0, status: "", note: "", shift: "1", operator: "13260340", errorType: null, lpnType: "non-reclass" },
+        { itemIdx: 1, daysAgo: 1, status: "", note: "", shift: "2", operator: "13260350", errorType: null, lpnType: "non-reclass" },
       ];
 
       const allConfigs = [...failedConfigs, ...normalConfigs];
@@ -4385,10 +4794,10 @@
       const latestStatus = Array.isArray(row.statusLog) && row.statusLog.length
         ? row.statusLog[row.statusLog.length - 1]
         : {
-            text: row.status || "Sync Sukses",
-            note: "Sync Auto",
-            at: row.updatedAt || new Date().toISOString()
-          };
+          text: row.status || "Sync Sukses",
+          note: "Sync Auto",
+          at: row.updatedAt || new Date().toISOString()
+        };
 
       return {
         id: row.id || createId(),
@@ -4405,9 +4814,9 @@
         binCode: row.binCode || master.binCode || "",
         newLocationCode: row.lpnType === "non-reclass" ? "" : (row.newLocationCode || master.newLocationCode || ""),
         newBinCode: row.lpnType === "non-reclass" ? "" : (row.newBinCode || master.newBinCode || ""),
-          machine: row.machine || master.machine || "",
-          shift: row.shift || "",
-          operator: row.operator || "",
+        machine: row.machine || master.machine || "",
+        shift: row.shift || "",
+        operator: row.operator || "",
         category: row.category || master.category || "Komponen",
         createdAt,
         sequenceOrder: row.sequenceOrder ?? null,
@@ -4478,8 +4887,8 @@
     }
 
     function canEdit(row) {
-      const latestStatus = row.statusLog && row.statusLog.length > 0 
-        ? row.statusLog[row.statusLog.length - 1].text 
+      const latestStatus = row.statusLog && row.statusLog.length > 0
+        ? row.statusLog[row.statusLog.length - 1].text
         : "";
       return latestStatus !== "Sync Sukses";
     }
@@ -5190,7 +5599,7 @@
             return parsed;
           }
         }
-      } catch (e) {}
+      } catch (e) { }
       // Fall back to masterData from Excel
       return masterData.map(m => ({ ...m }));
     }
@@ -5403,7 +5812,7 @@
       errorModalDesc.innerHTML = description +
         (bulletPoints.length ? "<ul style='margin:10px 0 0 16px;padding:0;'>" +
           bulletPoints.map(b => `<li style='margin-bottom:6px;'>${b}</li>`).join("") +
-        "</ul>" : "");
+          "</ul>" : "");
       errorModal.classList.remove("hidden");
       errorModal.classList.add("active");
     }
@@ -5484,7 +5893,7 @@
     }
 
     function exportMasterRows() {
-      const header = ["item_no","item_description","base_quantity","layer","location_code","bin_code","new_location_code","new_bin_code"];
+      const header = ["item_no", "item_description", "base_quantity", "layer", "location_code", "bin_code", "new_location_code", "new_bin_code"];
       const rows = masterRows.map(row => [row.itemNo, row.itemDesc, row.baseQuantity, row.layer, row.locationCode, row.binCode, row.newLocationCode, row.newBinCode]);
       const csv = [formatCsvRow(header), ...rows.map(formatCsvRow)].join("\r\n");
       downloadFile("master-data-export.xlsx", csv, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;");
@@ -5492,7 +5901,7 @@
     }
 
     function downloadTemplateExcel() {
-      const header = ["item_no","item_description","base_quantity","layer","location_code","bin_code","new_location_code","new_bin_code"];
+      const header = ["item_no", "item_description", "base_quantity", "layer", "location_code", "bin_code", "new_location_code", "new_bin_code"];
       const csv = formatCsvRow(header) + "\r\n";
       downloadFile("master-data-template.xlsx", csv, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;");
       showToast("Template", "Template Excel berhasil diunduh.");
@@ -5621,4 +6030,5 @@
     renderTable();
   </script>
 </body>
+
 </html>
